@@ -17,7 +17,8 @@ const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
 // preprocess configuration
 const pp_conf = svelte_preprocess({
-  sourceMap: !dev,
+	sourceMap: !dev,
+	pug: true,
 });
 
 const onwarn = (warning, onwarn) =>

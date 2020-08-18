@@ -1,11 +1,13 @@
 import { ApolloClient, InMemoryCache, HttpLink } from "apollo-boost";
 import nodeFetch from "node-fetch";
+
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: "http://localhost:3000/graphql",
+  uri: "https://tildateamtop.ru/admin/api",
   fetch: nodeFetch,
 });
-export const client = new ApolloClient({
+
+export const apollo = new ApolloClient({
   cache,
   link,
 });

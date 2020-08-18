@@ -38,13 +38,12 @@
 </script>
 
 
-<svelte:head>
-	<title>Sapper project template</title>
-</svelte:head>
-
 <template lang="pug">
-	+await('$docQuery')
-		p Loading...
+h1 Врачи
+svelte:head
+	title Sapper project template
++await('$docQuery')
+	p Loading...
 	+then('result')
 		ul
 			+each('result.data.allDoctors as doc')
@@ -55,3 +54,12 @@
 		p Error: {error}
 
 </template>
+
+<style>
+	img {
+		display: block;
+		height: 120px;
+		width: 120px;
+		border-radius: 100%;
+	}
+</style>
