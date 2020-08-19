@@ -1,5 +1,6 @@
 module.exports = () => ({
   map: process.env.NODE_ENV === "dev" ? true : false,
+  parser: "sugarss",
   plugins: {
     "postcss-easy-import": {
       extensions: [".css", ".pcss", ".sass"],
@@ -20,7 +21,7 @@ module.exports = () => ({
     "postcss-inline-svg": {
       removeFill: "true",
     },
-    cssnano:
+    "cssnano" :
       process.env.NODE_ENV === "prod"
         ? {
             convertValues: { length: false },

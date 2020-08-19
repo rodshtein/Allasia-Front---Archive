@@ -17,3 +17,11 @@ nav
 			a(rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog") blog
 </template>
 
+
+<style lang='postcss'>
+
+@media( width < 600px )
+	nav
+		display: none
+
+</style>

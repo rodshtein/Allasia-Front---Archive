@@ -4,6 +4,7 @@ module.exports = {
   preprocess: sveltePreprocess({
     pug: true,
     postcss: {
+      parser: "sugarss",
       plugins: {
         "postcss-easy-import": {
           extensions: [".css", ".pcss", ".sass"],

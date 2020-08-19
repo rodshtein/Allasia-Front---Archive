@@ -5,7 +5,7 @@
 
 	const ALLDOCTORS = gql`
 		query {
-			allDoctors (first: 100) {
+			allDoctors (first: 10) {
 					name
 					avatar {
 						publicUrl
@@ -42,7 +42,7 @@
 h1 Врачи
 
 svelte:head
-	title Sapper project template
+	title Аллазия, лечение за рубежем
 
 +await('$docQuery')
 	p Loading...
@@ -62,12 +62,11 @@ svelte:head
 </template>
 
 
-<style>
-	img {
-		display: block;
-		height: 120px;
-		width: 120px;
-		border-radius: 100%;
-	}
+<style lang='postcss'>
+img
+	display: block
+	height: 120px
+	width: 120px
+	border-radius: 100%
 
 </style>
