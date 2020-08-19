@@ -38,10 +38,12 @@
 </script>
 
 
-<template lang="pug">
+<template lang='pug'>
 h1 Врачи
+
 svelte:head
 	title Sapper project template
+
 +await('$docQuery')
 	p Loading...
 	+then('result')
@@ -49,11 +51,16 @@ svelte:head
 			+each('result.data.allDoctors as doc')
 				li {doc.name}
 					+if('doc.avatar')
-						img(class="avatar" alt="Loading Borat..." src="{doc.avatar.publicUrl}")
+						img(
+							class="avatar"
+							alt="Loading Borat..."
+							src="{doc.avatar.publicUrl}"
+						)
 	+catch('error')
-		p Error: {error}
+		pre {error}
 
 </template>
+
 
 <style>
 	img {
@@ -62,4 +69,5 @@ svelte:head
 		width: 120px;
 		border-radius: 100%;
 	}
+
 </style>

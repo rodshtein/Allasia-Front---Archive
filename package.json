@@ -15,6 +15,7 @@
     "compression": "^1.7.1",
     "node-fetch": "^2.6.0",
     "polka": "next",
+    "postcss": "^7.0.32",
     "sirv": "^1.0.0",
     "sugarss": "^2.0.0",
     "svelte-apollo": "^0.3.0"

@@ -18,6 +18,9 @@ const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 // preprocess configuration
 const pp_conf = svelte_preprocess({
 	sourceMap: !dev,
+	defaults: {
+	  style: 'postcss'
+	},
 	pug: true,
 });
 

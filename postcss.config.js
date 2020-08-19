@@ -1,5 +1,4 @@
 module.exports = () => ({
-  // parser: "sugarss",
   map: process.env.NODE_ENV === "dev" ? true : false,
   plugins: {
     "postcss-easy-import": {

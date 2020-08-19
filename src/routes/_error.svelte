@@ -27,6 +27,7 @@
 	}
 </style>
 
+
 <svelte:head>
 	<title>{status}</title>
 </svelte:head>
