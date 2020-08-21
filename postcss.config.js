@@ -3,7 +3,7 @@ module.exports = () => ({
   parser: "sugarss",
   plugins: {
     "postcss-easy-import": {
-      extensions: [".css", ".pcss", ".sass"],
+      extensions: [".sss"],
     },
     "postcss-nested": {},
     "postcss-image-set-polyfill": {},

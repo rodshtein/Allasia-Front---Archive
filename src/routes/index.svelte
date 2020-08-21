@@ -5,7 +5,7 @@
 
 	const ALLDOCTORS = gql`
 		query {
-			allDoctors (first: 10) {
+			allDoctors (first: 2) {
 					name
 					avatar {
 						publicUrl
@@ -39,10 +39,18 @@
 
 
 <template lang='pug'>
-h1 Врачи
 
 svelte:head
 	title Аллазия, лечение за рубежем
+
+.head_block
+	.logo_block
+		img(class="logo" alt="plane illustration" src="illustration/plane.svg")
+		img(class="logotype" alt="logotype" src="icons/special/logo.svg")
+
+	h1.h1 Лечение<br>за рубежом
+	.subheader Подобираем выгодные условия, консультируем с известными  врачами, работаем с лучшими мировыми клиниками
+
 
 +await('$docQuery')
 	p Loading...
@@ -63,10 +71,39 @@ svelte:head
 
 
 <style lang='postcss'>
-img
+
+.head_block
+	display: flex
+	flex-direction: column
+	padding: 50px 15px
+
+.logo_block
+	display: flex
+	flex-direction: column
+	align-items: center
+	margin-bottom: 30px
+
+.logo
+	max-width: 210px
+	margin-bottom: 15px
+
+.logotype
+	max-width: 310px
+
+.h1
+	text-align: center
+	color: #000000
+	margin-bottom: 30px
+
+.subheader
+	text-align: center
+	color: #000000
+	max-width: 345px
+	align-self: center
+
+.avatar
 	display: block
 	height: 120px
 	width: 120px
 	border-radius: 100%
-
 </style>

@@ -6,7 +6,7 @@
 </script>
 
 <style lang='postcss'>
-h1, p
+/* h1, p
 	margin: 0 auto
 h1
 	font-size: 2.8em
@@ -18,7 +18,7 @@ p
 
 @media (min-width: 480px)
 	h1
-		font-size: 4em
+		font-size: 4em */
 
 </style>
 
