@@ -5,6 +5,7 @@ module.exports = () => ({
     "postcss-easy-import": {
       extensions: [".sss"],
     },
+    "postcss-mixins": {},
     "postcss-nested": {},
     "postcss-image-set-polyfill": {},
     "postcss-easing-gradients": {

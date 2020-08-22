@@ -9,6 +9,7 @@ module.exports = {
         "postcss-easy-import": {
           extensions: [".css", ".pcss", ".sass"],
         },
+        "postcss-mixins": {},
         "postcss-nested": {},
         "postcss-image-set-polyfill": {},
         "postcss-easing-gradients": {

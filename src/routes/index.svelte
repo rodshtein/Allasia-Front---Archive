@@ -24,6 +24,9 @@
 </script>
 
 <script>
+	// components
+	import Tel from '../components/Tel.svelte';
+
 	import { onMount } from "svelte";
   import { setClient, restore, query } from "svelte-apollo";
   export let cache; // this matches the return value of `preload` above
@@ -49,23 +52,25 @@ svelte:head
 		img(class="logotype" alt="logotype" src="icons/special/logo.svg")
 
 	h1.h1 Лечение<br>за рубежом
-	.subheader Подобираем выгодные условия, консультируем с известными  врачами, работаем с лучшими мировыми клиниками
+	.subheader Подобираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. За счет сотрудничества с клиниками по всему миру, наши услуги — бесплатны.
+.tel_wrapper
+	Tel
 
-
-+await('$docQuery')
-	p Loading...
-	+then('result')
-		ul
-			+each('result.data.allDoctors as doc')
-				li {doc.name}
-					+if('doc.avatar')
-						img(
-							class="avatar"
-							alt="Loading Borat..."
-							src="{doc.avatar.publicUrl}"
-						)
-	+catch('error')
-		pre {error}
+//-
+	+await('$docQuery')
+		p Loading...
+		+then('result')
+			ul
+				+each('result.data.allDoctors as doc')
+					li {doc.name}
+						+if('doc.avatar')
+							img(
+								class="avatar"
+								alt="Loading Borat..."
+								src="{doc.avatar.publicUrl}"
+							)
+		+catch('error')
+			pre {error}
 
 </template>
 
@@ -76,16 +81,15 @@ svelte:head
 	display: flex
 	flex-direction: column
 	padding: 50px 15px
+	gap: 30px
 
 .logo_block
 	display: flex
 	flex-direction: column
 	align-items: center
-	margin-bottom: 30px
 
 .logo
 	max-width: 210px
-	margin-bottom: 15px
 
 .logotype
 	max-width: 310px
@@ -93,7 +97,6 @@ svelte:head
 .h1
 	text-align: center
 	color: #000000
-	margin-bottom: 30px
 
 .subheader
 	text-align: center
@@ -101,9 +104,9 @@ svelte:head
 	max-width: 345px
 	align-self: center
 
-.avatar
-	display: block
-	height: 120px
-	width: 120px
-	border-radius: 100%
+.tel_wrapper
+	display: flex
+	justify-content: center
+
+
 </style>

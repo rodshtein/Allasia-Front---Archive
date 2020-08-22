@@ -10,6 +10,7 @@ import pkg from './package.json';
 
 // app
 import svelte_preprocess from 'svelte-preprocess';
+import svelteSVG from "rollup-plugin-svelte-svg";
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -36,6 +37,7 @@ export default {
 				'process.browser': true,
 				'process.env.NODE_ENV': JSON.stringify(mode)
 			}),
+			svelteSVG({ dev }),
 			svelte({
 				preprocess: pp_conf,
 				dev,
