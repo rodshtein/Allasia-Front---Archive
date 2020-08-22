@@ -9,19 +9,20 @@ import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
 
 // app
-import svelte_preprocess from 'svelte-preprocess';
+// import svelte_preprocess from 'svelte-preprocess';
 import svelteSVG from "rollup-plugin-svelte-svg";
 
+const sveltePreprocess = require('./svelte.config').getSP;
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
 // preprocess configuration
-const pp_conf = svelte_preprocess({
-	sourceMap: !dev,
-	postcss: true,
-	pug: true,
-});
+// const pp_conf = svelte_preprocess({
+// 	sourceMap: !dev,
+// 	postcss: true,
+// 	pug: true,
+// });
 
 const onwarn = (warning, onwarn) =>
 	(warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
@@ -39,7 +40,7 @@ export default {
 			}),
 			svelteSVG({ dev }),
 			svelte({
-				preprocess: pp_conf,
+				preprocess: sveltePreprocess(dev),
 				dev,
 				hydratable: true,
 				emitCss: true
@@ -84,8 +85,9 @@ export default {
 				'process.browser': false,
 				'process.env.NODE_ENV': JSON.stringify(mode)
 			}),
+			svelteSVG({ dev }),
 			svelte({
-				preprocess: pp_conf,
+				preprocess: sveltePreprocess(dev),
 				generate: 'ssr',
 				hydratable: true,
 				dev

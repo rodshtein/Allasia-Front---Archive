@@ -42,4 +42,5 @@
 
 .devider
   margin-bottom: 9px
+
 </style>
