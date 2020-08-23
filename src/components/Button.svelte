@@ -13,11 +13,10 @@
 
 +if('regular')
   button.btn
-    svelte:component(this="{iconL}")
     span
       slot
         span button
-    svelte:component(this="{iconR}")
+
 
 </template>
 
