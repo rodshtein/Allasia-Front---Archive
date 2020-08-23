@@ -6,10 +6,7 @@ const imageSetPolyfill = require('postcss-image-set-polyfill');
 const easingGradients = require('postcss-easing-gradients');
 const presetEnv = require('postcss-preset-env');
 const inlineSvg = require('postcss-inline-svg');
-const cssnano = require('cssnano');
 const sugarss = require('sugarss');
-
-
 
 function getSP(isDev = false) {
 
@@ -34,12 +31,14 @@ function getSP(isDev = false) {
     }),
   ];
 
-  if(!isDev) postcssPlugins.push(
-    cssnano({
-      convertValues: { length: false },
-      zindex: false,
-    })
-  );
+  if(!isDev) {
+    postcssPlugins.push(
+      require('cssnano')({
+        convertValues: { length: false },
+        zindex: false,
+      })
+    )
+  };
 
   return sveltePreprocess({
     sourceMap: isDev,
