@@ -10,45 +10,45 @@ const cssnano = require('cssnano');
 const sugarss = require('sugarss');
 
 
+
 function getSP(isDev = false) {
-    return sveltePreprocess({
-      sourceMap: isDev,
-      pug: true,
-      postcss: {
-        map: isDev,
-        parser: sugarss,
-        plugins: [
-          easyImport({
-            extensions: [".css", ".pcss", ".sass"]
-          }),
-          mixins(),
-          nested(),
-          imageSetPolyfill(),
-          easingGradients({
-            precision: 0.1,
-            alphaDecimals: 5,
-          }),
-          presetEnv({
-            browsers: "last 2 versions",
-            stage: 0,
-            features: {
-              "nesting-rules": true,
-            },
-          }),
-          inlineSvg({
-            removeFill: "true",
-          }),
-          cssnano(()=> {
-            isDev ?
-            false
-            : {
-                convertValues: { length: false },
-                zindex: false,
-              };
-            }
-          ),
-        ],
+
+  let postcssPlugins = [
+    easyImport(),
+    mixins(),
+    nested(),
+    imageSetPolyfill(),
+    easingGradients({
+      precision: 0.1,
+      alphaDecimals: 5,
+    }),
+    presetEnv({
+      browsers: "last 2 versions",
+      stage: 0,
+      features: {
+        "nesting-rules": true,
       },
+    }),
+    inlineSvg({
+      removeFill: "true",
+    }),
+  ];
+
+  if(!isDev) postcssPlugins.push(
+    cssnano({
+      convertValues: { length: false },
+      zindex: false,
+    })
+  );
+
+  return sveltePreprocess({
+    sourceMap: isDev,
+    pug: true,
+    postcss: {
+      map: isDev,
+      parser: sugarss,
+      plugins: postcssPlugins
+    },
   });
 }
 

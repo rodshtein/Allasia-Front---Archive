@@ -11,8 +11,7 @@
     .devider
     .number.phone 8 800 250 82 97
 
-  Button(regular iconL='ArrowL' alt="Номера представитльств") Номера представитльств
-    Button(regular iconR='ArrowR' alt="Номера представитльств") И государств
+  Button(regular alt="Номера представитльств") Номера представитльств
 </template>
 
 <style lang='postcss'>
