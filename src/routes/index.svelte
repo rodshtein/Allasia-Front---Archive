@@ -48,6 +48,8 @@
 svelte:head
   title Аллазия, лечение за рубежем
 
+Button(type='regular' iconR='arrow-r' iconL='arrow-l') Вопрос-ответ
+Button(type='regular' invert iconR='search' iconL='chat') Вопрос-ответ
 .head_block
   .logo_block
     img.logo(alt="plane illustration" src="illustration/plane.svg")
