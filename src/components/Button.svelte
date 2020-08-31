@@ -1,123 +1,40 @@
 <script>
-  import { onMount } from 'svelte';
-
   export let invert;
   export let href;
-  export let type; // regular| mini | micro
+    /**
+   * Specify the kind of button
+   * @type {"regular" | "mini" | "micro"} [type="regular"]
+   */
+  export let type;
   export let iconL;
   export let iconR;
 
 
-  let bgClass = invert ? 'invert' : '';
+  let bgClass = invert ? 'invert' : 'base-color';
   let typeClass = type ? type : 'regular';
-  let iconLClass = invert ? iconL + '---w': iconL;
-  let iconRClass = invert ? iconR + '---w': iconR;
-  let id = iconL || iconR
-    ? 's' + Math.random().toString(36).substr(2, 9) + 's'
-    : '';
+  let iconLclass = iconL ? iconL : '';
+  let iconRclass = iconR ? iconR : '';
+  let showIconL = iconL ? 'showIconL': '';
+  let showIconR = iconR ? 'showIconR': '';
 
-  let iconSize = {
-    regular: 23,
-    mini: 17
-  }
-
-  let iconsClases = {
-    '_': '',
-    'arrow-b---short': 'arrow-b---short',
-    'arrow-l': 'arrow-l',
-    'arrow-r': 'arrow-r',
-    'handset': 'handset',
-    'question': 'question',
-    'search': 'search',
-    'search---w': 'search--w',
-    'chat---w': 'chat--w',
-    'spinner': 'spinner',
-    'x': 'x',
-  }
-
-  // because if use content url path as --var
-  // it's become as glith on hover animation
-  // we create custom style tag and add uniq id on btn
-  // then, on destroy we clean unused styles by the id
-
-  if (id) {
-    onMount(() => {
-      let style = createStyle().sheet;
-      let count = 0;
-      if (iconL) {
-        style.insertRule(`
-          #${id}::before { content: url('/icons/${iconSize[type]}/${iconsClases[iconLClass]}.svg') }
-      `, style.cssRules.length)
-        count++
-      }
-      if (iconR) {
-        style.insertRule(`
-          #${id}::after { content: url('/icons/${iconSize[type]}/${iconsClases[iconRClass]}.svg') }
-      `, style.cssRules.length)
-        count++
-      }
-      if (count) return () => removeStyle(id, count)
-    });
-  }
-
-
-
-  function createStyle(){
-    let style = document.getElementById('specialStyle');
-    if (style) return style;
-
-    let head = document.head;
-    style = document.createElement('style');
-    style.id = 'specialStyle';
-    head.appendChild(style);
-    style.type = 'text/css';
-
-    return style;
-  }
-
-  function removeStyle(id, count){
-    let style = document.getElementById('specialStyle');
-    if(style && style.sheet && style.sheet.cssRules){
-      let nodes = style.sheet.cssRules;
-      let reg = new RegExp(id,'g');
-
-      let i = 0;
-      let con = true;
-      let delCount = 0;
-      while (con) {
-        if(nodes[i].selectorText.match(reg)){
-          style.sheet.deleteRule(i)
-          delCount++
-        } else {
-          i++
-        }
-        con = i < nodes.length || delCount < count
-        ? true
-        : false;
-      }
-    }
-  }
+  let cls = `${bgClass} ${typeClass}
+    ${showIconL} ${iconLclass}
+    ${showIconR} ${iconRclass}`;
 
 </script>
 
 <!-- svelte-ignore css-unused-selector -->
 <template lang="pug">
 +if('href')
-  a.btn(
-      id='{id}'
-      href='{href}'
-      class='{bgClass, typeClass, iconRClass, iconLClass}'
-    )
+  a.btn( href='{href}' class='{cls}' )
     slot
   +else
-    button.btn(
-        id='{id}'
-        class='{bgClass, typeClass, iconRClass, iconLClass}'
-      )
+    button.btn( class='{cls}' )
       slot
 </template>
 
 <style lang='postcss'>
+
 // ### Buttons @@@
 // reset
 
@@ -136,46 +53,136 @@ a
   justify-content: center
   align-items: center
 
+  color: var( --color--btn-txt---blue)
   font-style: normal
   font-weight: normal
   text-align: center
 
   border-width: 1px
   border-style: solid
-  border-color: transparent
-
-  background-color: var(--color--btn-bg---light-blue)
-  color: var( --color--btn-txt---blue)
+  border-color: var(--color--btn-bg---light-blue)
+  border-radius: 12px
 
   transition: .2s
   cursor: pointer
 
-  border-radius: 12px
-
-  &.regular
-    height: 35px
-    padding: 0 1.4rem
-    // gap: 18px
-
-    font-size: 1.7rem
-    line-height: 1.2
-
-  &.mini
-    height: 29px
-    padding: 0 1.4rem
-    padding-bottom: 0.1rem
-    // gap: 14px
-
-    font-size: 1.4rem
-    line-height: 1.2
-
   &:hover
-    border-color: var(--color--btn-border---light-blue)
+    border-color: var(--color--btn-border---active)
 
   &:focus
     outline: none
 
   &:active
     transform: translateY(2px)
+
+  // icons styles
+  &:after, &:before
+    display: none
+
+  &.showIconL:before,
+  &.showIconR:after
+    display: block
+
+  &.regular
+    height: 33px
+    padding: 0 14px
+
+    font-size: 17px
+    line-height: 1.2
+
+    &:before
+      margin-top: 4px
+      margin-left: -9px
+      margin-right: 7px
+
+    &:after
+      margin-top: 4px
+      margin-left: 7px
+      margin-right: -9px
+
+    &.base-color
+      background-color: var(--color--btn-bg---light-blue)
+
+      &.arrow-b---short
+        &:after, &:before
+          content: url('/icons/23/arrow-b---short.svg')
+      &.arrow-l
+        &:after, &:before
+          content: url('/icons/23/arrow-l.svg')
+      &.arrow-r
+        &:after, &:before
+          content: url('/icons/23/arrow-r.svg')
+      &.handset
+        &:after, &:before
+          content: url('/icons/23/handset.svg')
+      &.question
+        &:after, &:before
+          content: url('/icons/23/question.svg')
+      &.search
+        &:after, &:before
+          content: url('/icons/23/search.svg')
+      &.spinner
+        &:after, &:before
+          content: url('/icons/23/spinner.svg')
+
+    &.invert
+      background-color: var(--color--btn-bg---white)
+
+      &.search
+        &:after, &:before
+          content: url('/icons/23/search---w.svg')
+      &.chat
+        &:after, &:before
+          content: url('/icons/23/chat---w.svg')
+
+  &.mini
+    height: 29px
+    padding: 0 1.4rem
+    padding-bottom: 0.1rem
+
+    font-size: 1.4rem
+    line-height: 1.2
+
+    &:before
+      margin-top: 4px
+      margin-left: -9px
+      margin-right: 6px
+
+    &:after
+      margin-top: 4px
+      margin-left: 6px
+      margin-right: -9px
+
+    &.base-color
+      background-color: var(--color--btn-bg---light-blue)
+
+      &.arrow-b---short
+        &:after, &:before
+          content: url('/icons/17/arrow-b---short.svg')
+      &.arrow-l
+        &:after, &:before
+          content: url('/icons/17/arrow-l.svg')
+      &.arrow-r
+        &:after, &:before
+          content: url('/icons/17/arrow-r.svg')
+      &.handset
+        &:after, &:before
+          content: url('/icons/17/handset.svg')
+      &.question
+        &:after, &:before
+          content: url('/icons/17/question.svg')
+      &.search
+        &:after, &:before
+          content: url('/icons/17/search.svg')
+
+    &.invert
+      background-color: var(--color--btn-bg---white)
+
+      &.search
+        &:after, &:before
+          content: url('/icons/17/search---w.svg')
+      &.chat
+        &:after, &:before
+          content: url('/icons/17/chat---w.svg')
 
 </style>
