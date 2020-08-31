@@ -26,9 +26,7 @@ function getSP(isDev = false) {
         "nesting-rules": true,
       },
     }),
-    inlineSvg({
-      removeFill: "true",
-    }),
+    inlineSvg(),
   ];
 
   if(!isDev) {

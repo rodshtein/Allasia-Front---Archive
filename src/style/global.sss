@@ -9,41 +9,82 @@ html
 body
   margin: 0
   font-family: 'IBM Plex Sans', sans-serif
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
   background-color: var(--color--body---light-blue)
 
+// TODO Need to fix focus outline
+*:focus
+  outline: none
 
 h1, h2, h3, h4, h5, h6, p
   margin: 0
 
 main
   position: relative
-  max-width: 870px
-  padding: 2em
+  max-width: 400px
+  padding: 1.5em
   margin: 0 auto
   box-sizing: border-box
 
-
-.h1
+.h0 .h1, .h2, .h3, .h4, .h5
+  color: var(--color--txt-headers)
   font-style: normal
   font-weight: bold
-  font-size: 5rem
+
+.h1-I
+  font-size: 50px
+  line-height: 90%
+
+.h1
+  font-size: 38px
   line-height: 100%
 
+.h1-S
+  font-size: 33px
+  line-height: 100%
+
+.h2-I
+  font-size: 30px
+  line-height: 100%
+
+.h2
+  font-size: 24px
+  line-height: 100%
+
+.h3
+  font-size: 19px
+  line-height: 115%
+
+.h4
+  font-size: 16px
+  line-height: 115%
 
 .subheader
-  font-style: normal
-  font-weight: normal
-  font-size: 1.9rem
-  line-height: 130%
+  &-h1-I, &-h1, &-h2-I, &-h2, &-h3
+    color: var(--color--txt-subheaders)
+    font-style: normal
 
-.phone
+  &-h1-I
+    font-size: 18px
+    line-height: 120%
+
+  &-h1
+    font-size: 14px
+    line-height: 120%
+
+  &-h2-I
+    font-size: 18px
+    line-height: 120%
+
+.phone-number
   font-style: normal
   font-weight: bold
   font-size: 33px
   line-height: 85%
 
 .devider
-  height: calc(2px - 1px)
+  height: 1px
   width: 100%
-  background-color: var(--color---BLUE)
+  background-color: var(--BLUE)
   opacity: .1

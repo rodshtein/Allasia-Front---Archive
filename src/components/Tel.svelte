@@ -1,7 +1,5 @@
 <script>
-  import Button from './Button.svelte';
-  import ArrowL from './icons/23/arrow---l.svg'
-  import ArrowR from './icons/23/arrow---R.svg'
+  // import Button from './Buttons/Button.svelte';
 </script>
 
 <template lang="pug">
@@ -9,9 +7,9 @@
   .wrapper
     .info Единый, бесплатный номер в РФ
     .devider
-    .number.phone 8 800 250 82 97
-
-  Button(regular iconL='ArrowL' alt="Номера представитльств") Номера представитльств
+    .phone-number 8 800 250 82 97
+  .wrappp(style="display: flex;flex-direction: column;gap: 20px;align-items: center;")
+    // Button(type='mini' iconR='arrow---b-shoer') Номера представитльств
 
 </template>
 
@@ -24,9 +22,7 @@
   align-items: center
   padding: 15px
   width: 100%
-  border-radius: var(--radius--block)
-  background-color: var(--blocks-bg)
-  @mixin shadow
+  @mixin cards_decor__withe
 
 .wrapper
   margin-bottom: 20px
@@ -37,7 +33,7 @@
   font-size: 13px
   line-height: 120%
   text-align: center
-  color: var(--color--txt-light---blue)
+  color: var(--color--txt---light-blue)
   margin-bottom: 7px
 
 .devider
