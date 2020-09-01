@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "Public App",
-      cwd: "/var/www/Front/",
+      cwd: "/var/www/front/",
       script: "npm run start",
       instances: 1,
       watch: false,
@@ -15,7 +15,6 @@ module.exports = {
       max_memory_restart: "1G",
       env: {
         PORT: 3000,
-        DATABASE_URL: "mongodb://localhost/allasia",
         NODE_ENV: "production",
       }
     }
