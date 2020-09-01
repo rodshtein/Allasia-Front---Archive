@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "Public App",
-      cwd: "/var/www/Allasia-2.0--Front/",
+      cwd: "/var/www/Front/",
       script: "npm run start",
       instances: 1,
       watch: false,
