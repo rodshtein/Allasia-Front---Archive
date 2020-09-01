@@ -10,6 +10,9 @@
         children {
           name
         }
+        parent {
+          name
+        }
       }
     }
   `;
@@ -30,11 +33,11 @@
   export let cache; // this matches the return value of `preload` above
   restore(apollo, MEDICALBRANCHES, cache.data);
 
-  let docQuery = query(apollo, { query: MEDICALBRANCHES });
+  let branchesQuery = query(apollo, { query: MEDICALBRANCHES });
 
   onMount(() => { setClient(apollo) });
 
-  $: loading = docQuery.loading;
+  $: loading = branchesQuery.loading;
   $: text = loading ? "Loading..." : "Great success!";
 
   // components
@@ -45,22 +48,6 @@
 
 
 <template lang='pug'>
-
-//-
-  +await('$docQuery')
-    p Loading...
-    +then('result')
-      ul
-        +each('result.data.allDoctors as doc')
-          li {doc.name}
-            +if('doc.avatar')
-              img(
-                class="avatar"
-                alt="Loading Borat..."
-                src="{doc.avatar.publicUrl}"
-              )
-    +catch('error')
-      pre {error}
 
 svelte:head
   title Аллазия, лечение за рубежем
@@ -83,19 +70,30 @@ svelte:head
   .search_wrapper
     SearchBox
 
-  .menu_wrapper
+.branches_block
+  ul.slider
+    +await('$branchesQuery')
+      li Loading...
+      +then('result')
+        +each('result.data.allMedicalBranches as baranch')
+          +if('!baranch.parent')
+            li.items {baranch.name}
 
-  .also_wrapper
-    h3.h3 Смотрите так же
-    .wrapper
-      Button(size='regular' href='#' iconR='arrow-r' ) Акции
-      Button(size='regular' href='#' iconR='arrow-r' ) Клиники
+      +catch('error')
+        pre {error}
 
-.white_card
-  img(alt="Вопрос-ответ" src="illustration/wiki5-s.svg")
-  h2.h2-I Вопрос — ответ
-  p.p-I Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
-  Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
+.also_block
+  h3.h3 Смотрите так же
+  .wrapper
+    Button(size='regular' href='#' iconR='arrow-r' ) Акции
+    Button(size='regular' href='#' iconR='arrow-r' ) Клиники
+
+.cards_wrapper
+  .white_card
+    img(alt="Вопрос-ответ" src="illustration/wiki5-s.svg")
+    h2.h2-I Вопрос — ответ
+    p.p-I Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
+    Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
 
 .about_block
   h2.h2-I О компании
@@ -120,11 +118,12 @@ svelte:head
 
   Button(size='regular' iconR='spinner')
 
-.white_card
-  img(alt="Адреса и контакты" src="illustration/Address2-l.svg")
-  h2.h2-I Контакты
-  .p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
-  Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
+.cards_wrapper
+  .white_card
+    img(alt="Адреса и контакты" src="illustration/Address2-l.svg")
+    h2.h2-I Контакты
+    .p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
+    Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
 
 </template>
 
@@ -159,6 +158,7 @@ h1, h2,
 .tel_wrapper
   display: flex
   justify-content: center
+  padding: 0 15px
 
 .find_block
   display: flex
@@ -180,23 +180,64 @@ h1, h2,
   .search_wrapper
     padding: 25px 15px 30px
 
-  .menu_wrapper
-    height: 150px
+.branches_block
+  overflow-y: scroll
+  padding-bottom: 50px
 
-  .also_wrapper
+  .slider
+    display: grid
+    column-gap: 15px
+    row-gap: 5px
+    list-style: none
+    padding: 0 15px
+    grid-auto-flow: column
+    grid-template-rows: repeat(7, 44px)
+    grid-template-columns: repeat(3, max-content)
+    width: max-content
+
+  .items
     display: flex
-    flex-direction: column
+    justify-content: space-between
     align-items: center
-    padding: 50px 15px
+    padding: 0 15px
+    min-height: 44px
 
-    h3
-      margin-bottom: 20px
+    color: var(--LIGHT-BLACK)
+    border-radius:
+      var(--radius--menu-item)
+    border:
+      solid
+      1px
+      var(--color--borders---card-white)
+    background-color:
+      var(--color--bg--card)
 
-    .wrapper
-      display: grid
-      grid-auto-flow: column
-      column-gap: 20px
 
+    font-style: normal
+    font-weight: normal
+    font-size: 15px
+    line-height: 110%
+    @mixin shadow
+
+    &:after
+      content: url("/icons/25/arrow-r.svg")
+
+.also_block
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 0 15px 50px
+
+  h3
+    margin-bottom: 20px
+
+  .wrapper
+    display: grid
+    grid-auto-flow: column
+    column-gap: 20px
+
+.cards_wrapper
+  padding: 0 15px
 .white_card
   display: flex
   flex-direction: column
@@ -278,6 +319,7 @@ h1, h2,
     line-height: 130%
     text-align: center
     margin-bottom: 20px
+
 
 
 </style>
