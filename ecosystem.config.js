@@ -14,7 +14,7 @@ module.exports = {
       autorestart: true,
       max_memory_restart: "1G",
       env: {
-        PORT: 3001,
+        PORT: 3000,
         DATABASE_URL: "mongodb://localhost/allasia",
         NODE_ENV: "production",
       }
