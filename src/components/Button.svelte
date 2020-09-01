@@ -3,17 +3,18 @@
   export let href;
     /**
    * Specify the kind of button
-   * @type {"regular" | "mini" | "micro"} [type="regular"]
+   * @type {"regular" | "mini" | "micro"} [size="regular"]
    */
-  export let type;
+  export let size;
   export let iconL;
   export let iconR;
 
 
   let bgClass = invert ? 'invert' : 'base-color';
-  let typeClass = type ? type : 'regular';
-  let iconLclass = iconL ? iconL : '';
-  let iconRclass = iconR ? iconR : '';
+  let typeClass = size ? size : 'regular';
+  // Icons can be showing only for the one side
+  let iconLclass = iconL && !iconR ? iconL : '';
+  let iconRclass = iconR && !iconL ? iconR : '';
   let showIconL = iconL ? 'showIconL': '';
   let showIconR = iconR ? 'showIconR': '';
 
@@ -31,7 +32,18 @@
   +else
     button.btn( class='{cls}' )
       slot
+
+//- for tests
+
+  div(style='display: flex; flex-direction: column; align-items: center;gap: 20px')
+    Button( href='#' iconR='arrow-r' iconL='arrow-r' ) Вопрос-ответ
+    Button( invert iconL='search' ) Вопрос-ответ
+
+    Button( href='#' type='mini' iconR='arrow-r' ) Вопрос-ответ
+    Button( type='mini' invert  iconR='chat' ) Вопрос-ответ
+
 </template>
+
 
 <style lang='postcss'>
 
@@ -48,7 +60,8 @@ a
   text-decoration: none
 
 .btn
-  display: inline-flex
+  display: grid
+  grid-auto-flow: column
   position: relative
   justify-content: center
   align-items: center
@@ -84,28 +97,24 @@ a
     display: block
 
   &.regular
+    column-gap: 16px
     height: 33px
-    padding: 0 14px
+    padding: 0 12px
 
     font-size: 17px
     line-height: 1.2
 
-    &:before
+    &:before, &:after
       margin-top: 4px
-      margin-left: -9px
-      margin-right: 7px
-
-    &:after
-      margin-top: 4px
-      margin-left: 7px
-      margin-right: -9px
+      margin-left: -8px
+      margin-right: -8px
 
     &.base-color
       background-color: var(--color--btn-bg---light-blue)
 
-      &.arrow-b---short
+      &.short_arrow-b
         &:after, &:before
-          content: url('/icons/23/arrow-b---short.svg')
+          content: url('/icons/23/short_arrow-b.svg')
       &.arrow-l
         &:after, &:before
           content: url('/icons/23/arrow-l.svg')
@@ -130,35 +139,31 @@ a
 
       &.search
         &:after, &:before
-          content: url('/icons/23/search---w.svg')
+          content: url('/icons/23/search-w.svg')
       &.chat
         &:after, &:before
-          content: url('/icons/23/chat---w.svg')
+          content: url('/icons/23/chat-w.svg')
 
   &.mini
+    column-gap: 12px
     height: 29px
-    padding: 0 1.4rem
-    padding-bottom: 0.1rem
+    padding: 0 12px
+    padding-bottom: 1px
 
-    font-size: 1.4rem
+    font-size: 14px
     line-height: 1.2
 
-    &:before
+    &:before, &:after
       margin-top: 4px
-      margin-left: -9px
-      margin-right: 6px
-
-    &:after
-      margin-top: 4px
-      margin-left: 6px
-      margin-right: -9px
+      margin-left: -6px
+      margin-right: -6px
 
     &.base-color
       background-color: var(--color--btn-bg---light-blue)
 
-      &.arrow-b---short
+      &.short_arrow-b
         &:after, &:before
-          content: url('/icons/17/arrow-b---short.svg')
+          content: url('/icons/17/short_arrow-b.svg')
       &.arrow-l
         &:after, &:before
           content: url('/icons/17/arrow-l.svg')
@@ -180,9 +185,9 @@ a
 
       &.search
         &:after, &:before
-          content: url('/icons/17/search---w.svg')
+          content: url('/icons/17/search-w.svg')
       &.chat
         &:after, &:before
-          content: url('/icons/17/chat---w.svg')
+          content: url('/icons/17/chat-w.svg')
 
 </style>

@@ -3,13 +3,13 @@
   import { apollo } from "../utils";
   import { gql } from "apollo-boost";
 
-  const ALLDOCTORS = gql`
+  const MEDICALBRANCHES = gql`
     query {
-      allDoctors (first: 2) {
+      allMedicalBranches (sortBy:name_ASC) {
+        name
+        children {
           name
-          avatar {
-            publicUrl
-          }
+        }
       }
     }
   `;
@@ -17,44 +17,53 @@
   export async function preload() {
     return {
       cache: await apollo.query({
-        query: ALLDOCTORS
+        query: MEDICALBRANCHES
       })
     };
   }
 </script>
 
 <script>
-  // components
-  import Tel from '../components/Tel.svelte';
-  import SearchBox from '../components/SearchBox.svelte';
-  import Button  from '../components/Button.svelte';
-
+  // Appolo
   import { onMount } from "svelte";
   import { setClient, restore, query } from "svelte-apollo";
   export let cache; // this matches the return value of `preload` above
-  restore(apollo, ALLDOCTORS, cache.data);
+  restore(apollo, MEDICALBRANCHES, cache.data);
 
-  let docQuery = query(apollo, { query: ALLDOCTORS });
+  let docQuery = query(apollo, { query: MEDICALBRANCHES });
 
   onMount(() => { setClient(apollo) });
 
   $: loading = docQuery.loading;
   $: text = loading ? "Loading..." : "Great success!";
+
+  // components
+  import Tel from '../components/Tel.svelte';
+  import SearchBox from '../components/SearchBox.svelte';
+  import Button  from '../components/Button.svelte';
 </script>
 
 
 <template lang='pug'>
 
+//-
+  +await('$docQuery')
+    p Loading...
+    +then('result')
+      ul
+        +each('result.data.allDoctors as doc')
+          li {doc.name}
+            +if('doc.avatar')
+              img(
+                class="avatar"
+                alt="Loading Borat..."
+                src="{doc.avatar.publicUrl}"
+              )
+    +catch('error')
+      pre {error}
+
 svelte:head
   title Аллазия, лечение за рубежем
-
-div(style='display: flex; flex-direction: column; align-items: center;gap: 20px')
-  Button( href='#' iconR='arrow-r' iconL='arrow-r' ) Вопрос-ответ
-  Button( invert iconL='search' ) Вопрос-ответ
-
-  Button( href='#' type='mini' iconR='arrow-r' ) Вопрос-ответ
-  Button( type='mini' invert  iconR='chat' ) Вопрос-ответ
-
 
 .head_block
   .logo_block
@@ -79,15 +88,14 @@ div(style='display: flex; flex-direction: column; align-items: center;gap: 20px'
   .also_wrapper
     h3.h3 Смотрите так же
     .wrapper
-      Button(type='regular' iconR='arrow-b---short' iconL='x') Акции
-      Button(type='regular' href='#' iconR='arrow-r' iconL='arrow-l') Клиники
+      Button(size='regular' href='#' iconR='arrow-r' ) Акции
+      Button(size='regular' href='#' iconR='arrow-r' ) Клиники
 
 .white_card
   img(alt="Вопрос-ответ" src="illustration/wiki5-s.svg")
-  .wrapper
-    h2.h2-I Вопрос — ответ
-    .subheader-h2-I Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
-    Button(type='regular' iconR='arrow---r') Вопрос-ответ
+  h2.h2-I Вопрос — ответ
+  p.p-I Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
+  Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
 
 .about_block
   h2.h2-I О компании
@@ -95,37 +103,28 @@ div(style='display: flex; flex-direction: column; align-items: center;gap: 20px'
   .video_placeholder
     img.cover(alt="Видео о компании" src="video-cover.jpg")
     img.play-btn(alt="Видео о компании" src="icons/special/play.svg")
-  .devider
   .KTO-wrapper
     img(alt="Чат" src="illustration/KTO-logotype.svg")
     p Сотрудничаем с Южнокорейской организацией по туризму
-  .devider
+
+.devider
+
+.feedback_block
+  img(alt="quote icon" src="illustration/quote.svg")
+
+  .quote Огромное человеческое спасибо компании Allasia за то что Вы есть! За Вашу доброту, внимательность и оперативность в решении всех сложнейших вопросов.
+
+  .author
+    b Елена
+    | , Владивосток
+
+  Button(size='regular' iconR='spinner')
 
 .white_card
-  img(alt="Адреса и контакты" src="illustration/Address.svg")
-  .wrapper
-    h2.h2-I Контакты
-    .subheader-h2-I Организуем лечение из любого города России, Казахстана или Кыргызстана
-  Button(type='regular' iconR='arrow---r') Вопрос-ответ
-
-
-
-
-//-
-  +await('$docQuery')
-    p Loading...
-    +then('result')
-      ul
-        +each('result.data.allDoctors as doc')
-          li {doc.name}
-            +if('doc.avatar')
-              img(
-                class="avatar"
-                alt="Loading Borat..."
-                src="{doc.avatar.publicUrl}"
-              )
-    +catch('error')
-      pre {error}
+  img(alt="Адреса и контакты" src="illustration/Address2-l.svg")
+  h2.h2-I Контакты
+  .p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
+  Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
 
 </template>
 
@@ -152,7 +151,9 @@ div(style='display: flex; flex-direction: column; align-items: center;gap: 20px'
   h1
     margin-bottom: 30px
 
-h1, .h2, .subheader-h1-I
+h1, h2,
+.subheader-h1-I,
+.subheader-h2-I
   text-align: center
 
 .tel_wrapper
@@ -162,13 +163,13 @@ h1, .h2, .subheader-h1-I
 .find_block
   display: flex
   flex-direction: column
-  padding: 15px 15px
+  padding: 0 15px
 
   .head_wrapper
     display: flex
     flex-direction: column
     align-items: center
-    padding-top: 30px
+    padding-top: 50px
     padding-left: 15px
     padding-right: 15px
 
@@ -176,11 +177,8 @@ h1, .h2, .subheader-h1-I
       align-self: center
       margin-bottom: 20px
 
-    h2
-      margin-bottom: 10px
-
   .search_wrapper
-    padding: 25px 15px
+    padding: 25px 15px 30px
 
   .menu_wrapper
     height: 150px
@@ -189,7 +187,7 @@ h1, .h2, .subheader-h1-I
     display: flex
     flex-direction: column
     align-items: center
-    padding: 30px 15px
+    padding: 50px 15px
 
     h3
       margin-bottom: 20px
@@ -203,20 +201,25 @@ h1, .h2, .subheader-h1-I
   display: flex
   flex-direction: column
   align-items: center
-  padding: 50px 15px
-  margin: 30px 0
+  padding: 30px 15px 50px
   @mixin cards_decor__withe
+  img
+    margin-bottom: 20px
 
-  .wrapper
-    padding: 30px 20px
-
-  .h1
-    margin-bottom: 10px
+  .p-I
+    margin-left: 15px
+    margin-right: 15px
+    margin-bottom: 30px
+    text-align: center
 
 .about_block
   display: flex
   flex-direction: column
-  padding: 15px 15px
+  padding: 50px 15px 30px
+
+
+  .subheader-h2-I
+    margin-bottom: 30px
 
   .video_placeholder
     position: relative
@@ -225,6 +228,7 @@ h1, .h2, .subheader-h1-I
     overflow: hidden
     width: 80%
     align-self: center
+    margin-bottom: 50px
 
     .cover
       width: 100%
@@ -239,11 +243,41 @@ h1, .h2, .subheader-h1-I
     display: flex
     flex-direction: column
     align-items: center
-    gap: 20px
 
     img
-      height: 120px
+      height: 95px
+      margin-bottom: 10px
 
+    p
+      font-size: 14px
+      text-align: center
+      color: var(--LIGHT-BLACK)
+      max-width: 250px
+
+.feedback_block
+  padding: 30px 15px 50px
+  display: flex
+  flex-direction: column
+  align-items: center
+
+  img
+    margin-bottom: 20px
+
+  .quote
+    font-style: normal
+    font-weight: normal
+    font-size: 16px
+    line-height: 130%
+    text-align: center
+    margin-bottom: 10px
+
+  .author
+    font-style: normal
+    font-weight: normal
+    font-size: 13px
+    line-height: 130%
+    text-align: center
+    margin-bottom: 20px
 
 
 </style>

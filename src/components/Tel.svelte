@@ -1,5 +1,5 @@
 <script>
-  // import Button from './Buttons/Button.svelte';
+  import Button from './Button.svelte';
 </script>
 
 <template lang="pug">
@@ -9,7 +9,7 @@
     .devider
     .phone-number 8 800 250 82 97
   .wrappp(style="display: flex;flex-direction: column;gap: 20px;align-items: center;")
-    // Button(type='mini' iconR='arrow---b-shoer') Номера представитльств
+    Button(size='mini' iconR='short_arrow-b') Номера представитльств
 
 </template>
 

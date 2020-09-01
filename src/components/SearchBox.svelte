@@ -6,7 +6,6 @@
 <template lang="pug">
 .wrapper
   input(type="search" placeholder="Например: Рак желудка")
-  img.icon(alt="find illustration" src="icons/25/search.svg")
 </template>
 
 <style lang="postcss">
@@ -24,10 +23,13 @@
     right: -5px
     top: -5px
     bottom: -5px */
-.icon
+.wrapper:after
+  content: url('/icons/25/search.svg')
   position: absolute
   left: 5px
   top: 5px
+
+
 
 
 input
