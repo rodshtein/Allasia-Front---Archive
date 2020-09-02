@@ -13,6 +13,7 @@ jobs:
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
+      # Build
       - uses: borales/actions-yarn@v2.0.0
         with:
           cmd: install
@@ -24,10 +25,6 @@ jobs:
       - run: mkdir "$HOME/.ssh"
       - run: echo "${{ secrets.DEV_KEY }}" > "$HOME/.ssh/DEV_KEY"
       - run: chmod 600 "$HOME/.ssh/DEV_KEY"
-      # Build
-      - run: npm ci
-      - run: npm install
-      - run: npm run build
       # Deploy
       ## static
       - run: cd static && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/static/
