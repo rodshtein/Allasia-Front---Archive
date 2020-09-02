@@ -44,7 +44,7 @@
   import Tel from '../components/Tel.svelte';
   import SearchBox from '../components/SearchBox.svelte';
   import Button  from '../components/Button.svelte';
-  import BranchesMenu  from '../components/Branches-menu.svelte';
+  import BranchesMenu  fr../components/Branches-menu.sveltenu.svelte';
 </script>
 
 
@@ -93,7 +93,7 @@ BranchesMenu('{branchesQuery}')
     img.cover(alt="Видео о компании" src="video-cover.jpg")
     img.play-btn(alt="Видео о компании" src="icons/special/play.svg")
   .KTO-wrapper
-    img(alt="Чат" src="illustration/kto_logotype.svg")
+    img(alt="Чат" src="illustration/kto-logotype.svg")
     p Сотрудничаем с Южнокорейской организацией по туризму
 
 .devider
@@ -111,7 +111,7 @@ BranchesMenu('{branchesQuery}')
 
 .cards_wrapper
   .white_card
-    img(alt="Адреса и контакты" src="illustration/address-l.svg")
+    img(alt="Адреса и контакты" src="illustration/address.svg")
     h2.h2-I Контакты
     .p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
     Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
