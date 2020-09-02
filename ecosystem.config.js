@@ -5,9 +5,9 @@ module.exports = {
       cwd: "/var/www/front/",
       script: "yarn start",
       instances: 1,
-      watch: false,
+      watch: true,
       watch_delay: 5000,
-      ignore_watch : ["node_modules", "src", "dist"],
+      ignore_watch : ["node_modules", ".git", "cypress", "src", ".github"],
       watch_options: {
         "followSymlinks": false
       },

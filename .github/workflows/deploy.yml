@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Setup key
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.DEV_KEY }}" > "$HOME/.ssh/DEV_KEY"
+      - run: chmod 600 "$HOME/.ssh/DEV_KEY"
+      # Build
+      - run: npm ci
+      - run: npm run build
+      # Deploy
+      - run: "cd static && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/static/",
+      - run: "cd __sapper__/build && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__/build/"

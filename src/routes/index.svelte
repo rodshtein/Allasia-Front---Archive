@@ -63,24 +63,14 @@ svelte:head
   Tel
 .find_block
   .head_wrapper
-    img(alt="Поиск клиники" src="illustration/find2.svg")
+    img(alt="Поиск клиники" src="illustration/find.svg")
     h2.h2-I Подбор лечения
     .subheader-h2-I Услуги, стоимость, акции, отзывы
 
   .search_wrapper
     SearchBox
 
-.branches_block
-  ul.slider
-    +await('$branchesQuery')
-      li Loading...
-      +then('result')
-        +each('result.data.allMedicalBranches as baranch')
-          +if('!baranch.parent')
-            li.items {baranch.name}
-
-      +catch('error')
-        pre {error}
+Branches
 
 .also_block
   h3.h3 Смотрите так же
@@ -90,7 +80,7 @@ svelte:head
 
 .cards_wrapper
   .white_card
-    img(alt="Вопрос-ответ" src="illustration/wiki5-s.svg")
+    img(alt="Вопрос-ответ" src="illustration/wiki-s.svg")
     h2.h2-I Вопрос — ответ
     p.p-I Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
     Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
@@ -120,7 +110,7 @@ svelte:head
 
 .cards_wrapper
   .white_card
-    img(alt="Адреса и контакты" src="illustration/address2-l.svg")
+    img(alt="Адреса и контакты" src="illustration/address-l.svg")
     h2.h2-I Контакты
     .p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
     Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
@@ -179,48 +169,6 @@ h1, h2,
 
   .search_wrapper
     padding: 25px 15px 30px
-
-.branches_block
-  overflow-y: scroll
-  padding-bottom: 50px
-
-  .slider
-    display: grid
-    column-gap: 15px
-    row-gap: 5px
-    list-style: none
-    padding: 0 15px
-    grid-auto-flow: column
-    grid-template-rows: repeat(7, 44px)
-    grid-template-columns: repeat(3, max-content)
-    width: max-content
-
-  .items
-    display: flex
-    justify-content: space-between
-    align-items: center
-    padding: 0 15px
-    min-height: 44px
-
-    color: var(--LIGHT-BLACK)
-    border-radius:
-      var(--radius--menu-item)
-    border:
-      solid
-      1px
-      var(--color--borders---card-white)
-    background-color:
-      var(--color--bg--card)
-
-
-    font-style: normal
-    font-weight: normal
-    font-size: 15px
-    line-height: 110%
-    @mixin shadow
-
-    &:after
-      content: url("/icons/25/arrow-r.svg")
 
 .also_block
   display: flex
