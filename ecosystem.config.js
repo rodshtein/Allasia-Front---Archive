@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "Public App",
       cwd: "/var/www/front/",
-      script: "npm run start",
+      script: "yarn start",
       instances: 1,
       watch: false,
       watch_delay: 5000,
