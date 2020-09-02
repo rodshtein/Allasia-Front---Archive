@@ -1,5 +1,5 @@
 <script>
-
+export let branchesQuery;
 // afterUpdate(() =>{ new Swiper .... })
 </script>
 
@@ -22,6 +22,7 @@
 </template>
 
 <style lang='postcss'>
+@import "../style/mixins.sss"
 
 .branches_block
   overflow-y: scroll
