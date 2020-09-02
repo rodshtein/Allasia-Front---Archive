@@ -44,7 +44,7 @@
   import Tel from '../components/Tel.svelte';
   import SearchBox from '../components/SearchBox.svelte';
   import Button  from '../components/Button.svelte';
-  import BranchesMenu  from '../components/Branches-menu.sveltenu.svelte';
+  import BranchesMenu  from '../components/Branches-menu.svelte';
 </script>
 
 
