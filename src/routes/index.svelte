@@ -102,7 +102,7 @@ svelte:head
     img.cover(alt="Видео о компании" src="video-cover.jpg")
     img.play-btn(alt="Видео о компании" src="icons/special/play.svg")
   .KTO-wrapper
-    img(alt="Чат" src="illustration/KTO-logotype.svg")
+    img(alt="Чат" src="illustration/kto_logotype.svg")
     p Сотрудничаем с Южнокорейской организацией по туризму
 
 .devider
@@ -120,7 +120,7 @@ svelte:head
 
 .cards_wrapper
   .white_card
-    img(alt="Адреса и контакты" src="illustration/Address2-l.svg")
+    img(alt="Адреса и контакты" src="illustration/address2-l.svg")
     h2.h2-I Контакты
     .p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
     Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
