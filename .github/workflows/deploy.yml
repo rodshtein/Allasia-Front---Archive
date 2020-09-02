@@ -23,7 +23,10 @@ jobs:
       - run: chmod 600 "$HOME/.ssh/DEV_KEY"
       # Build
       - run: npm ci
+      - run: npm install
       - run: npm run build
       # Deploy
-      - run: "cd static && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/static/",
-      - run: "cd __sapper__/build && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__/build/"
+      ## static
+      - run: cd static && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/static/
+      ## bild
+      - run: cd __sapper__/build && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__/build/
