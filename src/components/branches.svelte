@@ -3,8 +3,6 @@ export let branchesQuery;
 // afterUpdate(() =>{ new Swiper .... })
 </script>
 
-
-
 <template lang="pug">
 
 .branches_block
