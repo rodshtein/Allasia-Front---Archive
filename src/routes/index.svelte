@@ -44,7 +44,7 @@
   import Tel from '../components/Tel.svelte';
   import SearchBox from '../components/SearchBox.svelte';
   import Button  from '../components/Button.svelte';
-  import Branches  from '../components/Branches.svelte';
+  import BranchesMenu  from '../components/Branches-menu.svelte';
 </script>
 
 
@@ -71,7 +71,7 @@ svelte:head
   .search_wrapper
     SearchBox
 
-Branches('{branchesQuery}')
+BranchesMenu('{branchesQuery}')
 
 .also_block
   h3.h3 Смотрите так же
