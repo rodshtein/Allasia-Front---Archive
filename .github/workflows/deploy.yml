@@ -27,8 +27,7 @@ jobs:
       - run: chmod 600 "$HOME/.ssh/DEV_KEY"
       # Deploy bild
       - run: cd __sapper__/build && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__/build/
-
-      Git pull and restart app
+      # Git pull and restart app
       - name: git pull on sever
         uses: garygrossgarten/github-action-ssh@release
         with:
