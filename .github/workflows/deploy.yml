@@ -29,13 +29,13 @@ jobs:
       - run: cd __sapper__/build && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__/build/
 
       # Git pull and restart app
-      - name: git pull on sever
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          command: |
-            cd /var/www/front
-            git pull
-            pm2 restart Public\ App
-          host: 84.38.182.174
-          username: admin
-          privateKey: ${{ secrets.DEV_KEY }}
+      # - name: git pull on sever
+      #   uses: garygrossgarten/github-action-ssh@release
+      #   with:
+      #     command: |
+      #       cd /var/www/front
+      #       git pull
+      #       pm2 restart Public\ App
+      #     host: 84.38.182.174
+      #     username: admin
+      #     privateKey: ${{ secrets.DEV_KEY }}
