@@ -50,6 +50,14 @@
 
 <template lang='pug'>
 
+div(style='display: flex; flex-direction: column; align-items: center;gap: 20px; margin-top: 100px')
+
+    Button( href='#' iconR='arrow-r' iconL='arrow-r' ) Вопрос-ответ
+    Button( invert iconL='search' ) Вопрос-ответ
+
+    Button( href='#' size='mini' iconR='arrow-r' ) Вопрос-ответ
+    Button( size='mini' invert  iconR='chat' ) Вопрос-ответ
+
 svelte:head
   title Аллазия, лечение за рубежем
 
@@ -114,7 +122,7 @@ BranchesMenu('{branchesQuery}')
     img(alt="Адреса и контакты" src="illustration/address.svg")
     h2.h2-I Контакты
     .p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
-    Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
+    Button(size='regular' href='#' iconR='arrow-r' ) Контакты
 
 </template>
 

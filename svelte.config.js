@@ -2,10 +2,7 @@ const sveltePreprocess = require('svelte-preprocess');
 const easyImport = require('postcss-easy-import');
 const mixins = require('postcss-mixins');
 const nested = require('postcss-nested');
-const imageSetPolyfill = require('postcss-image-set-polyfill');
-const easingGradients = require('postcss-easing-gradients');
 const presetEnv = require('postcss-preset-env');
-const inlineSvg = require('postcss-inline-svg');
 const sugarss = require('sugarss');
 
 function getSP(isDev = false) {
@@ -14,11 +11,6 @@ function getSP(isDev = false) {
     easyImport(),
     mixins(),
     nested(),
-    imageSetPolyfill(),
-    easingGradients({
-      precision: 0.1,
-      alphaDecimals: 5,
-    }),
     presetEnv({
       browsers: "last 2 versions",
       stage: 0,
@@ -26,11 +18,14 @@ function getSP(isDev = false) {
         "nesting-rules": true,
       },
     }),
-    inlineSvg(),
   ];
 
   if(!isDev) {
     postcssPlugins.push(
+      require('postcss-easing-gradients')({
+        precision: 0.1,
+        alphaDecimals: 5,
+      }),
       require('cssnano')({
         convertValues: { length: false },
         zindex: false,

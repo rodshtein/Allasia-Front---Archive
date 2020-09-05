@@ -12,9 +12,10 @@
 
   let bgClass = invert ? 'invert' : 'base-color';
   let typeClass = size ? size : 'regular';
-  // Icons can be showing only for the one side
-  let iconLclass = iconL && !iconR ? iconL : '';
-  let iconRclass = iconR && !iconL ? iconR : '';
+  // Buttons can be showing only whith one icon
+  console.log (iconL && iconR === undefined )
+  let iconLclass = iconL && iconR === undefined ? iconL : '';
+  let iconRclass = iconR;
   let showIconL = iconL ? 'showIconL': '';
   let showIconR = iconR ? 'showIconR': '';
 
@@ -28,10 +29,12 @@
 <template lang="pug">
 +if('href')
   a.btn( href='{href}' class='{cls}' )
-    slot
+    span
+      slot
   +else
     button.btn( class='{cls}' )
-      slot
+      span
+        slot
 
 //- for tests
 
@@ -60,8 +63,7 @@ a
   text-decoration: none
 
 .btn
-  display: grid
-  grid-auto-flow: column
+  display: flex
   position: relative
   justify-content: center
   align-items: center
@@ -73,7 +75,7 @@ a
 
   border-width: 1px
   border-style: solid
-  border-color: var(--color--btn-bg---light-blue)
+  border-color: var(--color--btn-border)
   border-radius: 12px
 
   transition: .2s
@@ -88,13 +90,14 @@ a
   &:active
     transform: translateY(2px)
 
+
   // icons styles
   &:after, &:before
     display: none
 
   &.showIconL:before,
   &.showIconR:after
-    display: block
+    display: inline-block
 
   &.regular
     column-gap: 16px
@@ -152,6 +155,7 @@ a
 
     font-size: 14px
     line-height: 1.2
+
 
     &:before, &:after
       margin-top: 4px

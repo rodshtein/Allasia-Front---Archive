@@ -9,7 +9,6 @@ import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
 
 // app
-import svelteSVG from "rollup-plugin-svelte-svg";
 const sveltePreprocess = require('./svelte.config').getSP;
 
 const mode = process.env.NODE_ENV;
@@ -30,12 +29,10 @@ export default {
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode)
       }),
-      svelteSVG({ dev }),
       svelte({
         preprocess: sveltePreprocess(dev),
         dev,
         hydratable: true,
-        emitCss: true
       }),
       resolve({
         browser: true,
@@ -77,7 +74,6 @@ export default {
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode)
       }),
-      svelteSVG({ generate: "ssr", dev }),
       svelte({
         preprocess: sveltePreprocess(dev),
         generate: 'ssr',
