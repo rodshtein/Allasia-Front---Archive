@@ -50,13 +50,6 @@
 
 <template lang='pug'>
 
-div(style='display: flex; flex-direction: column; align-items: center;gap: 20px; margin-top: 100px')
-
-    Button( href='#' iconR='arrow-r' iconL='arrow-r' ) Вопрос-ответ
-    Button( invert iconL='search' ) Вопрос-ответ
-
-    Button( href='#' size='mini' iconR='arrow-r' ) Вопрос-ответ
-    Button( size='mini' invert  iconR='chat' ) Вопрос-ответ
 
 svelte:head
   title Аллазия, лечение за рубежем
@@ -109,13 +102,15 @@ BranchesMenu('{branchesQuery}')
 .feedback_block
   img(alt="quote icon" src="illustration/quote.svg")
 
-  .quote Огромное человеческое спасибо компании Allasia за то что Вы есть! За Вашу доброту, внимательность и оперативность в решении всех сложнейших вопросов.
+  .wrapper
+    .author
+      b Елена
+      | , Владивосток
 
-  .author
-    b Елена
-    | , Владивосток
+    .quote Огромное человеческое спасибо компании Allasia за то что Вы есть! За Вашу доброту, внимательность и оперативность в решении всех сложнейших вопросов.
 
-  Button(size='regular' iconR='spinner')
+  Button( size='small' ) Читать полностью
+  Button( size='regular' iconOnly iconR='spinner')
 
 .cards_wrapper
   .white_card
@@ -252,22 +247,15 @@ h1, h2,
       color: var(--LIGHT-BLACK)
       max-width: 250px
 
+.devider
+  margin: 0 15px
+
 .feedback_block
   padding: 30px 15px 50px
-  display: flex
-  flex-direction: column
-  align-items: center
-
-  img
-    margin-bottom: 20px
-
-  .quote
-    font-style: normal
-    font-weight: normal
-    font-size: 16px
-    line-height: 130%
-    text-align: center
-    margin-bottom: 10px
+  display: grid
+  grid-auto-flow: row
+  justify-items: center
+  row-gap: 20px
 
   .author
     font-style: normal
@@ -275,8 +263,14 @@ h1, h2,
     font-size: 13px
     line-height: 130%
     text-align: center
-    margin-bottom: 20px
+    margin-bottom: 10px
 
+  .quote
+    font-style: normal
+    font-weight: normal
+    font-size: 16px
+    line-height: 130%
+    text-align: center
 
 
 </style>

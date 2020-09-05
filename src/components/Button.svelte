@@ -3,25 +3,31 @@
   export let href;
     /**
    * Specify the kind of button
-   * @type {"regular" | "mini" | "micro"} [size="regular"]
+   * @type {"regular" | "mini" | "small" | "micro"} [size="regular"]
    */
   export let size;
+  export let iconOnly;
   export let iconL;
   export let iconR;
 
 
+  let iconOnlyClass = iconOnly ? 'iconOnly' : '';
   let bgClass = invert ? 'invert' : 'base-color';
   let typeClass = size ? size : 'regular';
-  // Buttons can be showing only whith one icon
-  console.log (iconL && iconR === undefined )
-  let iconLclass = iconL && iconR === undefined ? iconL : '';
-  let iconRclass = iconR;
-  let showIconL = iconL ? 'showIconL': '';
-  let showIconR = iconR ? 'showIconR': '';
+  let showIcons = typeClass === 'regular' || size === 'mini'
+    ? true
+    : false;
+  // showing only one side icon
+  let iconLclass = iconL && !iconR ? iconL : '';
+  let iconRclass = iconR ? iconR: '';
+  let showIconL = showIcons && iconL && !iconR ? 'showIconL': '';
+  let showIconR = showIcons && iconR ? 'showIconR': '';
 
-  let cls = `${bgClass} ${typeClass}
+  let cls = `
+    ${bgClass} ${typeClass} ${iconOnlyClass}
     ${showIconL} ${iconLclass}
-    ${showIconR} ${iconRclass}`;
+    ${showIconR} ${iconRclass}
+  `;
 
 </script>
 
@@ -31,6 +37,7 @@
   a.btn( href='{href}' class='{cls}' )
     span
       slot
+
   +else
     button.btn( class='{cls}' )
       span
@@ -38,17 +45,52 @@
 
 //- for tests
 
-  div(style='display: flex; flex-direction: column; align-items: center;gap: 20px')
-    Button( href='#' iconR='arrow-r' iconL='arrow-r' ) Вопрос-ответ
-    Button( invert iconL='search' ) Вопрос-ответ
+  div(style='display: flex; flex-direction: column; align-items: center;gap: 20px; margin-top: 100px')
 
-    Button( href='#' type='mini' iconR='arrow-r' ) Вопрос-ответ
-    Button( type='mini' invert  iconR='chat' ) Вопрос-ответ
+      Button( href='#' iconL='arrow-l' iconR='arrow-r') Вопрос-ответ
+      Button( href='#' iconR='arrow-r' iconOnly)
+      Button( invert iconL='search' ) Вопрос-ответ
+
+      Button( href='#' size='mini' iconR='arrow-r' ) Вопрос-ответ
+      Button( size='mini' invert  iconR='chat' ) Вопрос-ответ
+      Button( size='small' invert  iconR='chat' ) Мелкая кнопка
 
 </template>
 
 
 <style lang='postcss'>
+
+// icons syles
+@define-mixin icons--base $size
+  &.short_arrow-b
+    &:after, &:before
+      content: url('/icons/$(size)/short_arrow-b.svg')
+  &.arrow-l
+    &:after, &:before
+      content: url('/icons/$(size)/arrow-l.svg')
+  &.arrow-r
+    &:after, &:before
+      content: url('/icons/$(size)/arrow-r.svg')
+  &.handset
+    &:after, &:before
+      content: url('/icons/$(size)/handset.svg')
+  &.question
+    &:after, &:before
+      content: url('/icons/$(size)/question.svg')
+  &.search
+    &:after, &:before
+      content: url('/icons/$(size)/search.svg')
+  &.spinner
+    &:after, &:before
+      content: url('/icons/$(size)/spinner.svg')
+
+@define-mixin icons--invert $size
+  &.search
+    &:after, &:before
+      content: url('/icons/$(size)/search-w.svg')
+  &.chat
+    &:after, &:before
+      content: url('/icons/$(size)/chat-w.svg')
 
 // ### Buttons @@@
 // reset
@@ -90,7 +132,6 @@ a
   &:active
     transform: translateY(2px)
 
-
   // icons styles
   &:after, &:before
     display: none
@@ -99,13 +140,21 @@ a
   &.showIconR:after
     display: inline-block
 
+  &.iconOnly span
+    display: none
+
   &.regular
-    column-gap: 16px
     height: 33px
     padding: 0 12px
 
     font-size: 17px
     line-height: 1.2
+
+    &.showIconL span
+      margin-left: 16px
+
+    &.showIconR span
+      margin-right: 16px
 
     &:before, &:after
       margin-top: 4px
@@ -114,41 +163,13 @@ a
 
     &.base-color
       background-color: var(--color--btn-bg---light-blue)
-
-      &.short_arrow-b
-        &:after, &:before
-          content: url('/icons/23/short_arrow-b.svg')
-      &.arrow-l
-        &:after, &:before
-          content: url('/icons/23/arrow-l.svg')
-      &.arrow-r
-        &:after, &:before
-          content: url('/icons/23/arrow-r.svg')
-      &.handset
-        &:after, &:before
-          content: url('/icons/23/handset.svg')
-      &.question
-        &:after, &:before
-          content: url('/icons/23/question.svg')
-      &.search
-        &:after, &:before
-          content: url('/icons/23/search.svg')
-      &.spinner
-        &:after, &:before
-          content: url('/icons/23/spinner.svg')
+      @mixin icons--base 23
 
     &.invert
       background-color: var(--color--btn-bg---white)
-
-      &.search
-        &:after, &:before
-          content: url('/icons/23/search-w.svg')
-      &.chat
-        &:after, &:before
-          content: url('/icons/23/chat-w.svg')
+      @mixin icons--invert 23
 
   &.mini
-    column-gap: 12px
     height: 29px
     padding: 0 12px
     padding-bottom: 1px
@@ -156,6 +177,11 @@ a
     font-size: 14px
     line-height: 1.2
 
+    &.showIconL span
+      margin-left: 12px
+
+    &.showIconR span
+      margin-right: 12px
 
     &:before, &:after
       margin-top: 4px
@@ -164,28 +190,11 @@ a
 
     &.base-color
       background-color: var(--color--btn-bg---light-blue)
-
-      &.short_arrow-b
-        &:after, &:before
-          content: url('/icons/17/short_arrow-b.svg')
-      &.arrow-l
-        &:after, &:before
-          content: url('/icons/17/arrow-l.svg')
-      &.arrow-r
-        &:after, &:before
-          content: url('/icons/17/arrow-r.svg')
-      &.handset
-        &:after, &:before
-          content: url('/icons/17/handset.svg')
-      &.question
-        &:after, &:before
-          content: url('/icons/17/question.svg')
-      &.search
-        &:after, &:before
-          content: url('/icons/17/search.svg')
+      @mixin icons--base 17
 
     &.invert
       background-color: var(--color--btn-bg---white)
+      @mixin icons--invert 17
 
       &.search
         &:after, &:before
@@ -193,5 +202,13 @@ a
       &.chat
         &:after, &:before
           content: url('/icons/17/chat-w.svg')
+
+  &.small
+    height: 21px
+    padding: 0 8px
+    padding-bottom: 1px
+
+    font-size: 11px
+    line-height: 14px
 
 </style>
