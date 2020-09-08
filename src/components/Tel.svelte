@@ -9,7 +9,7 @@
     .devider
     .phone-number 8 800 250 82 97
   .wrappp(style="display: flex;flex-direction: column;gap: 20px;align-items: center;")
-    Button(size='mini' iconR='short_arrow-b') Номера представитльств
+    Button(size='mini' iconR='short_arrow-b' text="Номера представитльств")
 
 </template>
 

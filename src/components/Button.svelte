@@ -1,20 +1,17 @@
 <script>
-  export let invert;
-  export let href;
+  export let text = false;
+  export let href = false;
+  export let invert = false;
     /**
    * Specify the kind of button
    * @type {"regular" | "mini" | "small" | "micro"} [size="regular"]
    */
-  export let size;
-  export let iconOnly;
-  export let iconL;
-  export let iconR;
+  export let size= 'regular';
+  export let iconL= false;
+  export let iconR= false;
 
-
-  let iconOnlyClass = iconOnly ? 'iconOnly' : '';
   let bgClass = invert ? 'invert' : 'base-color';
-  let typeClass = size ? size : 'regular';
-  let showIcons = typeClass === 'regular' || size === 'mini'
+  let showIcons = size === 'regular' || size === 'mini'
     ? true
     : false;
   // showing only one side icon
@@ -24,7 +21,7 @@
   let showIconR = showIcons && iconR ? 'showIconR': '';
 
   let cls = `
-    ${bgClass} ${typeClass} ${iconOnlyClass}
+    ${bgClass} ${size}
     ${showIconL} ${iconLclass}
     ${showIconR} ${iconRclass}
   `;
@@ -35,25 +32,15 @@
 <template lang="pug">
 +if('href')
   a.btn( href='{href}' class='{cls}' )
-    span
-      slot
+    +if('text')
+      span {text}
 
   +else
     button.btn( class='{cls}' )
-      span
-        slot
+      +if('text')
+        span {text}
 
 //- for tests
-
-  div(style='display: flex; flex-direction: column; align-items: center;gap: 20px; margin-top: 100px')
-
-      Button( href='#' iconL='arrow-l' iconR='arrow-r') Вопрос-ответ
-      Button( href='#' iconR='arrow-r' iconOnly)
-      Button( invert iconL='search' ) Вопрос-ответ
-
-      Button( href='#' size='mini' iconR='arrow-r' ) Вопрос-ответ
-      Button( size='mini' invert  iconR='chat' ) Вопрос-ответ
-      Button( size='small' invert  iconR='chat' ) Мелкая кнопка
 
 </template>
 
@@ -140,9 +127,6 @@ a
   &.showIconR:after
     display: inline-block
 
-  &.iconOnly span
-    display: none
-
   &.regular
     height: 33px
     padding: 0 12px
@@ -150,16 +134,22 @@ a
     font-size: 17px
     line-height: 1.2
 
-    &.showIconL span
-      margin-left: 16px
-
-    &.showIconR span
-      margin-right: 16px
-
     &:before, &:after
       margin-top: 4px
       margin-left: -8px
       margin-right: -8px
+
+    & span
+      margin-bottom: 1px
+
+    &.showIconL span
+      margin-left: 12px
+      // visual compensation
+      margin-bottom: 0
+
+
+    &.showIconR span
+      margin-right: 16px
 
     &.base-color
       background-color: var(--color--btn-bg---light-blue)
@@ -168,6 +158,8 @@ a
     &.invert
       background-color: var(--color--btn-bg---white)
       @mixin icons--invert 23
+
+
 
   &.mini
     height: 29px
@@ -210,5 +202,7 @@ a
 
     font-size: 11px
     line-height: 14px
+    letter-spacing: .3px
+
 
 </style>

@@ -1,8 +1,7 @@
 module.exports = {
   client: {
     service: {
-      name: "allasia",
-      url: "https://tildateamtop.ru/admin/api"
+      url: "http://localhost:3001/admin/api"
     }
   }
 };

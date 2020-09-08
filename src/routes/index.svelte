@@ -4,7 +4,7 @@
   import { gql } from "apollo-boost";
 
   const MEDICALBRANCHES = gql`
-    query {
+  query getMedicalBranches{
       allMedicalBranches (sortBy:name_ASC) {
         name
         children {
@@ -17,23 +17,49 @@
     }
   `;
 
+  const COUNT = gql`
+  query getQuoteCount{
+      _allFeedbackQuotesMeta {
+        count
+      }
+    }
+  `;
+
+  const ITEM = gql`
+    query getRandQuote($int: Int){
+      allFeedbackQuotes (skip: $int  first: 1) {
+        quote
+        feedback {
+          city {
+            name
+          }
+          name
+        }
+      }
+    }
+  `;
+
+
   export async function preload() {
     return {
       cache: await apollo.query({
-        query: MEDICALBRANCHES
+        query: MEDICALBRANCHES,
+        query: COUNT
       })
     };
   }
+
 </script>
 
 <script>
   // Appolo
   import { onMount } from "svelte";
-  import { setClient, restore, query } from "svelte-apollo";
+  import { setClient, restore, query, } from "svelte-apollo";
   export let cache; // this matches the return value of `preload` above
-  restore(apollo, MEDICALBRANCHES, cache.data);
+  restore(apollo, MEDICALBRANCHES, COUNT, cache.data);
 
   let branchesQuery = query(apollo, { query: MEDICALBRANCHES });
+  let count = query(apollo, { query: COUNT });
 
   onMount(() => { setClient(apollo) });
 
@@ -43,8 +69,9 @@
   // components
   import Tel from '../components/Tel.svelte';
   import SearchBox from '../components/SearchBox.svelte';
-  import Button  from '../components/Button.svelte';
-  import BranchesMenu  from '../components/Branches-menu.svelte';
+  import Button from '../components/Button.svelte';
+  import BranchesMenu from '../components/Branches-menu.svelte';
+  import Quote from '../components/Quote.svelte';
 </script>
 
 
@@ -77,15 +104,15 @@ BranchesMenu('{branchesQuery}')
 .also_block
   h3.h3 Смотрите так же
   .wrapper
-    Button(size='regular' href='#' iconR='arrow-r' ) Акции
-    Button(size='regular' href='#' iconR='arrow-r' ) Клиники
+    Button(size='regular' href='#' iconR='arrow-r' text="Акции")
+    Button(size='regular' href='#' iconR='arrow-r' text="Клиники")
 
 .cards_wrapper
   .white_card
     img(alt="Вопрос-ответ" src="illustration/wiki-s.svg")
     h2.h2-I Вопрос — ответ
     p.p-I Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
-    Button(size='regular' href='#' iconR='arrow-r' ) Вопрос-ответ
+    Button(size='regular' href='#' iconR='arrow-r' text="Вопрос-ответ")
 
 .about_block
   h2.h2-I О компании
@@ -99,25 +126,14 @@ BranchesMenu('{branchesQuery}')
 
 .devider
 
-.feedback_block
-  img(alt="quote icon" src="illustration/quote.svg")
-
-  .wrapper
-    .author
-      b Елена
-      | , Владивосток
-
-    .quote Огромное человеческое спасибо компании Allasia за то что Вы есть! За Вашу доброту, внимательность и оперативность в решении всех сложнейших вопросов.
-
-  Button( size='small' ) Читать полностью
-  Button( size='regular' iconOnly iconR='spinner')
+Quote('{count}')
 
 .cards_wrapper
   .white_card
     img(alt="Адреса и контакты" src="illustration/address.svg")
     h2.h2-I Контакты
     .p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
-    Button(size='regular' href='#' iconR='arrow-r' ) Контакты
+    Button(size='regular' href='#' iconR='arrow-r' text="Контакты")
 
 </template>
 
@@ -249,28 +265,6 @@ h1, h2,
 
 .devider
   margin: 0 15px
-
-.feedback_block
-  padding: 30px 15px 50px
-  display: grid
-  grid-auto-flow: row
-  justify-items: center
-  row-gap: 20px
-
-  .author
-    font-style: normal
-    font-weight: normal
-    font-size: 13px
-    line-height: 130%
-    text-align: center
-    margin-bottom: 10px
-
-  .quote
-    font-style: normal
-    font-weight: normal
-    font-size: 16px
-    line-height: 130%
-    text-align: center
 
 
 </style>
