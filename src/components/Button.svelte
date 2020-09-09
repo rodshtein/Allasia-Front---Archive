@@ -1,4 +1,5 @@
 <script>
+  /** How to call user */
   export let text = false;
   export let href = false;
   export let invert = false;
@@ -30,6 +31,7 @@
 
 <!-- svelte-ignore css-unused-selector -->
 <template lang="pug">
+
 +if('href')
   a.btn( href='{href}' class='{cls}' )
     +if('text')

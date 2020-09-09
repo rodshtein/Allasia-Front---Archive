@@ -4,7 +4,7 @@
   import { gql } from "apollo-boost";
 
   const MEDICALBRANCHES = gql`
-  query getMedicalBranches{
+    {
       allMedicalBranches (sortBy:name_ASC) {
         name
         children {
@@ -14,38 +14,65 @@
           name
         }
       }
-    }
+    },
   `;
 
-  const COUNT = gql`
-  query getQuoteCount{
-      _allFeedbackQuotesMeta {
-        count
-      }
-    }
-  `;
+  const QUOTES_COUNT = gql`{_allFeedbackQuotesMeta { count}}`;
 
-  const ITEM = gql`
+  const QUOTES = gql`
     query getRandQuote($int: Int){
-      allFeedbackQuotes (skip: $int  first: 1) {
-        quote
-        feedback {
-          city {
+        _allFeedbackQuotesMeta {
+          count
+        },
+        allFeedbackQuotes (skip: $int  first: 1) {
+          quote
+          feedback {
+            city {
+              name
+            }
             name
           }
-          name
         }
       }
-    }
   `;
 
+  const ALLDATA = gql`
+    query getRandQuote($int: Int){
+        allFeedbackQuotes (skip: $int  first: 1) {
+          quote
+          feedback {
+            city {
+              name
+            }
+            name
+          }
+        },
+        allMedicalBranches (sortBy:name_ASC) {
+          name
+          children {
+            name
+          }
+          parent {
+            name
+          }
+        }
+      }
+  `;
+
+  function rand(max) {
+    return Math.floor(Math.random() * (max - 2)) + 1;
+  }
 
   export async function preload() {
+    let count = await query(apollo, { query: QUOTES_COUNT }).result();
+    let int = count.data._allFeedbackQuotesMeta.count;
+
     return {
-      cache: await apollo.query({
-        query: MEDICALBRANCHES,
-        query: COUNT
-      })
+      cache:
+        await apollo.query({
+          query: ALLDATA,
+          variables: {int: rand(int)}
+        })
     };
   }
 
@@ -55,16 +82,26 @@
   // Appolo
   import { onMount } from "svelte";
   import { setClient, restore, query, } from "svelte-apollo";
-  export let cache; // this matches the return value of `preload` above
-  restore(apollo, MEDICALBRANCHES, COUNT, cache.data);
+  export let cache;
+
+  restore(apollo, ALLDATA, cache.data);
+
+  //console.log(cache.data.allFeedbackQuotes[0].quote);
 
   let branchesQuery = query(apollo, { query: MEDICALBRANCHES });
-  let count = query(apollo, { query: COUNT });
+
+  // branchesQuery.result().then(
+  //   (result) => {
+  //     //count = result.data._allFeedbackQuotesMeta.count;
+  //     console.log(result);
+  //   },
+  //   (error) => { console.log(error) }
+  // );
 
   onMount(() => { setClient(apollo) });
 
-  $: loading = branchesQuery.loading;
-  $: text = loading ? "Loading..." : "Great success!";
+  // $: loading = branchesQuery.loading;
+  // $: text = loading ? "Loading..." : "Great success!";
 
   // components
   import Tel from '../components/Tel.svelte';
@@ -76,7 +113,7 @@
 
 
 <template lang='pug'>
-
+h1 {cache.data.allFeedbackQuotes[0].quote}
 
 svelte:head
   title Аллазия, лечение за рубежем
@@ -99,7 +136,7 @@ svelte:head
   .search_wrapper
     SearchBox
 
-BranchesMenu('{branchesQuery}')
+//BranchesMenu('{cache.data}')
 
 .also_block
   h3.h3 Смотрите так же
@@ -126,7 +163,7 @@ BranchesMenu('{branchesQuery}')
 
 .devider
 
-Quote('{count}')
+Quote
 
 .cards_wrapper
   .white_card
