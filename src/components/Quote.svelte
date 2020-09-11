@@ -1,12 +1,35 @@
 <script>
-  // components
   import Button from '../components/Button.svelte';
+  import { client } from "../utils";
+  import { gql } from "apollo-boost";
+  import { query } from "svelte-apollo";
+
+  // components
+  export let quoteCountQuery;
+
+  const QUOTE = gql`
+    query ($int: Int){
+      allFeedbackQuotes ( skip: $int  first: 1 ) {
+        quote
+        feedback {
+          city {
+            name
+          }
+          name
+        }
+      },
+    }`;
 
 
-  function randInt(max) {
+  function rand(max) {
     return Math.floor(Math.random() * (max - 2)) + 1;
   }
+  let int = $quoteCountQuery.data._allFeedbackQuotesMeta.count;
 
+  let quoteQuery = query(client, {
+      query: QUOTE,
+      variables: {int: rand(int)}
+    });
 
 </script>
 
@@ -15,8 +38,7 @@
   img(alt="quote icon" src="illustration/quote.svg")
 
   .wrapper
-  //-
-    +await('$q')
+    +await('$quoteQuery')
       li Loading...
       +then('result')
         .author

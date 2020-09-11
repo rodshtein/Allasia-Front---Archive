@@ -1,10 +1,11 @@
 <script context="module">
   // Here we import the graphql client
-  import { apollo } from "../utils";
+  import { client } from "../utils";
   import { gql } from "apollo-boost";
 
-  const MEDICALBRANCHES = gql`
+  const INITDATA = gql`
     {
+      _allFeedbackQuotesMeta { count },
       allMedicalBranches (sortBy:name_ASC) {
         name
         children {
@@ -14,65 +15,29 @@
           name
         }
       }
-    },
-  `;
+    }`;
 
-  const QUOTES_COUNT = gql`{_allFeedbackQuotesMeta { count}}`;
-
-  const QUOTES = gql`
-    query getRandQuote($int: Int){
-        _allFeedbackQuotesMeta {
-          count
-        },
-        allFeedbackQuotes (skip: $int  first: 1) {
-          quote
-          feedback {
-            city {
-              name
-            }
-            name
-          }
-        }
+  const BRANCHES = gql`{
+    allMedicalBranches (sortBy:name_ASC) {
+      name
+      children {
+        name
       }
-  `;
-
-  const ALLDATA = gql`
-    query getRandQuote($int: Int){
-        allFeedbackQuotes (skip: $int  first: 1) {
-          quote
-          feedback {
-            city {
-              name
-            }
-            name
-          }
-        },
-        allMedicalBranches (sortBy:name_ASC) {
-          name
-          children {
-            name
-          }
-          parent {
-            name
-          }
-        }
+      parent {
+        name
       }
-  `;
+    }
+  }`;
 
-  function rand(max) {
-    return Math.floor(Math.random() * (max - 2)) + 1;
-  }
+  const QUOTE_COUNT = gql`{
+    _allFeedbackQuotesMeta { count }
+  }`;
+
 
   export async function preload() {
-    let count = await query(apollo, { query: QUOTES_COUNT }).result();
-    let int = count.data._allFeedbackQuotesMeta.count;
-
     return {
       cache:
-        await apollo.query({
-          query: ALLDATA,
-          variables: {int: rand(int)}
-        })
+        await client.query({ query: INITDATA })
     };
   }
 
@@ -84,24 +49,16 @@
   import { setClient, restore, query, } from "svelte-apollo";
   export let cache;
 
-  restore(apollo, ALLDATA, cache.data);
+  restore(client, INITDATA, cache.data);
 
-  //console.log(cache.data.allFeedbackQuotes[0].quote);
+  let branchesQuery = query(client, { query: BRANCHES });
+  let quoteCountQuery = query(client, { query: QUOTE_COUNT });
 
-  let branchesQuery = query(apollo, { query: MEDICALBRANCHES });
+  onMount(() => {
+    setClient(client)
 
-  // branchesQuery.result().then(
-  //   (result) => {
-  //     //count = result.data._allFeedbackQuotesMeta.count;
-  //     console.log(result);
-  //   },
-  //   (error) => { console.log(error) }
-  // );
+  });
 
-  onMount(() => { setClient(apollo) });
-
-  // $: loading = branchesQuery.loading;
-  // $: text = loading ? "Loading..." : "Great success!";
 
   // components
   import Tel from '../components/Tel.svelte';
@@ -113,10 +70,9 @@
 
 
 <template lang='pug'>
-h1 {cache.data.allFeedbackQuotes[0].quote}
 
 svelte:head
-  title Аллазия, лечение за рубежем
+  title Аллазия, лечение за рубежом
 
 .head_block
   .logo_block
@@ -136,7 +92,7 @@ svelte:head
   .search_wrapper
     SearchBox
 
-//BranchesMenu('{cache.data}')
+BranchesMenu('{branchesQuery}')
 
 .also_block
   h3.h3 Смотрите так же
@@ -163,7 +119,7 @@ svelte:head
 
 .devider
 
-Quote
+Quote('{quoteCountQuery}')
 
 .cards_wrapper
   .white_card
