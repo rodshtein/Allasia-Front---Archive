@@ -16,7 +16,12 @@ function declOfNum(number) {
   return sign[ ( number % 100 > 4 && number % 100 < 20 ) ? 2 : cases[ (number%10<5) ? number % 10 : 5 ] ];
 }
 
-
+const date = d => {
+  return new Date(`${d}`).toLocaleString('ru', {
+      year: 'numeric',
+      month: 'long',
+    });
+  }
 
 const serialize = data => {
   if (Text.isText(data)) {
@@ -72,14 +77,15 @@ Popup(
           +if('data.city')
             span , {data.city.name}
     .devider
-    //- .content
     +html('serialize(JSON.parse(data.review.document))')
+    +if('data.date')
+      .date {date(data.date)}
 
 </template>
 
 <style lang='postcss'>
 .feedback_wrapper
-  padding: 0 15px
+  padding: 0 15px 30px
 
 .feedback-header
   display: flex
@@ -101,5 +107,12 @@ Popup(
 
 .devider
   margin-bottom: 10px
+
+.date
+  font-style: normal
+  font-weight: bold
+  font-size: 13px
+  line-height: 17px
+  color: var(--color--txt-headers)
 
 </style>
