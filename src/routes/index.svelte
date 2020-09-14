@@ -45,8 +45,8 @@
 
 <script>
   // Appolo
-  import { onMount } from "svelte";
-  import { setClient, restore, query, } from "svelte-apollo";
+  import { setContext ,onMount } from "svelte";
+  import { restore, query, } from "svelte-apollo";
   export let cache;
 
   restore(client, INITDATA, cache.data);
@@ -54,11 +54,7 @@
   let branchesQuery = query(client, { query: BRANCHES });
   let quoteCountQuery = query(client, { query: QUOTE_COUNT });
 
-  onMount(() => {
-    setClient(client)
-
-  });
-
+  setContext('apollo', client)
 
   // components
   import Tel from '../components/Tel.svelte';
@@ -207,7 +203,8 @@ h1, h2,
   @mixin cards_decor__withe
   img
     margin-bottom: 20px
-
+  .h2-I
+    margin-bottom: 10px
   .p-I
     margin-left: 15px
     margin-right: 15px

@@ -2,6 +2,7 @@ const sveltePreprocess = require('svelte-preprocess');
 const easyImport = require('postcss-easy-import');
 const mixins = require('postcss-mixins');
 const nested = require('postcss-nested');
+const nestedProps = require('postcss-nested-props');
 const presetEnv = require('postcss-preset-env');
 const sugarss = require('sugarss');
 
@@ -11,6 +12,7 @@ function getSP(isDev = false) {
     easyImport(),
     mixins(),
     nested(),
+    nestedProps(),
     presetEnv({
       browsers: "last 2 versions",
       stage: 0,

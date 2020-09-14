@@ -1,5 +1,5 @@
 @import "theme.sss"
-
+@import "nprogress.sss"
 
 html
   font-size: 10px
@@ -12,12 +12,18 @@ body
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   background-color: var(--color--body---light-blue)
+  scroll-behavior: smooth
 *
   box-sizing: border-box
 
 // TODO Need to fix focus outline
 *:focus
   outline: none
+
+a
+  color: var(--BLUE)
+  &:hover
+    color: var(--ORANGE)
 
 h1, h2, h3, h4, h5, h6, p
   margin: 0
@@ -60,6 +66,7 @@ main
   font-size: 16px
   line-height: 115%
 
+
 .subheader
   &-h1-I, &-h1, &-h2-I, &-h2, &-h3
     color: var(--color--txt-subheaders)
@@ -78,15 +85,17 @@ main
     font-size: 18px
     line-height: 120%
 
+.p
+  font-size: 14px
+  line-height: 120%
+  color: var(--color--p)
+
+.feedback_wrapper
 
 .p-I
-  font-style: normal
-  font-weight: normal
   font-size: 16px
   line-height: 120%
   color: var(--color--p-I)
-  margin-top: 10px
-
 
 .phone-number
   font-style: normal
@@ -99,3 +108,37 @@ main
   height: 1px
   background-color: var(--BLUE)
   opacity: .1
+
+.feedback_wrapper
+  .h4
+    margin-top: 10px
+    margin-bottom: 5px
+    color: var(--color--p)
+
+  .p
+    margin-bottom: 15px
+    color: var(--color--p)
+
+  ul
+    padding-left: 15px
+    margin: 0
+    list-style: '− '
+
+  blockquote
+    position: relative
+    padding-left: 16px
+    margin: 0
+    margin-left: -16px
+
+    &:after
+      content: ""
+      background: var(--ORANGE)
+      position: absolute
+      top: 3px
+      bottom: 1px
+      left: 0
+      width: 2px
+      border-radius: 10px
+
+    p
+      font-style: italic

@@ -9,7 +9,7 @@
 	onMount(async () => {
     NProgress.configure({
 			parent: "#sapper",
-			showSpinner: false
+			showSpinner: true
 		});
     preloading.subscribe(loading => {
       if (loading) {
@@ -20,7 +20,6 @@
     });
 
   });
-
 
 	export let segment;
 </script>
@@ -35,4 +34,3 @@
 <main>
 	<slot></slot>
 </main>
-

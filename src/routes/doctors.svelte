@@ -24,6 +24,8 @@
   import { query } from "svelte-apollo";
   import { getContext } from "svelte";
   import { gql } from "apollo-boost";
+  import { client } from "../utils";
+  import BranchesMenu from '../components/Branches-menu.svelte';
 
   const DOCS = gql`{
     allDoctors (first: 20) {
@@ -31,15 +33,24 @@
     },
   }`;
 
-  //restore(client, DOCS, cache.data);
+  const BRANCHES = gql`{
+    allMedicalBranches (sortBy:name_ASC) {
+      name
+      children {
+        name
+      }
+      parent {
+        name
+      }
+    }
+  }`;
 
-  let client =  getContext('apollo');
   let Query = query(client, { query: DOCS });
-
+  let branchesQuery = query(client, { query: BRANCHES });
 </script>
 
 <template lang='pug'>
-
+BranchesMenu('{branchesQuery}')
 +await('$Query')
   +then('result')
     +each('result.data.allDoctors as el')

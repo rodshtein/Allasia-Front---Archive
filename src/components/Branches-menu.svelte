@@ -8,7 +8,7 @@ export let branchesQuery;
 .branches_block
   ul.slider
     +await('$branchesQuery')
-      li Loading...
+      p Loading...
       +then('result')
         +each('result.data.allMedicalBranches as baranch')
           +if('!baranch.parent')

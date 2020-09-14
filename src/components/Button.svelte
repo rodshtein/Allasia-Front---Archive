@@ -3,6 +3,7 @@
   export let text = false;
   export let href = false;
   export let invert = false;
+  export let disabled = false;
     /**
    * Specify the kind of button
    * @type {"regular" | "mini" | "small" | "micro"} [size="regular"]
@@ -33,12 +34,12 @@
 <template lang="pug">
 
 +if('href')
-  a.btn( href='{href}' class='{cls}' )
+  a.btn( href='{href}' class='{cls}' disabled='{disabled}' on:click )
     +if('text')
       span {text}
 
   +else
-    button.btn( class='{cls}' )
+    button.btn( class='{cls}' disabled='{disabled}' on:click )
       +if('text')
         span {text}
 
@@ -120,6 +121,17 @@ a
 
   &:active
     transform: translateY(2px)
+
+  &:disabled
+    cursor: default
+    & span
+      opacity: .3
+    &:hover
+      border-color: var(--color--btn-border)
+    &:active
+      transform: translateY(0)
+    &:after, &:before
+      opacity: .2
 
   // icons styles
   &:after, &:before
