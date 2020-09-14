@@ -7,9 +7,6 @@
   import Button from '../components/Button.svelte';
   import FeedbackPopup from '../components/Feedback-popup.svelte';
 
-
-  import { Node, Text } from 'slate'
-  // console.log(Text)
   export let quoteCountQuery;
 
   const QUOTE = gql`

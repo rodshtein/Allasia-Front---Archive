@@ -3,10 +3,12 @@ import Popup from '../components/Popup.svelte';
 import Button from '../components/Button.svelte';
 // Content serialization
 import escapeHtml from 'escape-html'
+import { Node, Text } from 'slate'
 
 export let data;
 export let showFeedback;
 
+console.dir(JSON.parse(data.review.document))
 
 function declOfNum(number) {
   let cases = [2, 0, 1, 1, 1, 2];
@@ -14,10 +16,16 @@ function declOfNum(number) {
   return sign[ ( number % 100 > 4 && number % 100 < 20 ) ? 2 : cases[ (number%10<5) ? number % 10 : 5 ] ];
 }
 
+
+
 const serialize = data => {
-  if (data.object === 'text' ) {
-    return escapeHtml(data.text)
-  }
+  if (Text.isText(data)) {
+      return escapeHtml(data.text)
+    }
+
+  // if (data.object === 'text' ) {
+  //   return escapeHtml(data.text)
+  // }
   const children = data.nodes.map(n => serialize(n)).join('')
 
   switch (data.type) {
