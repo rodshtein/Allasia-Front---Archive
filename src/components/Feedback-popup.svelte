@@ -1,14 +1,10 @@
 <script>
-import Popup from '../components/Popup.svelte';
-import Button from '../components/Button.svelte';
-// Content serialization
-import escapeHtml from 'escape-html'
-import { Node, Text } from 'slate'
+import Popup from './Popup.svelte';
+import Button from './Button.svelte';
+import { serialize } from '../helpers.js';
 
 export let data;
 export let showFeedback;
-
-console.dir(JSON.parse(data.review.document))
 
 function declOfNum(number) {
   let cases = [2, 0, 1, 1, 1, 2];
@@ -22,36 +18,6 @@ const date = d => {
       month: 'long',
     });
   }
-
-const serialize = data => {
-  if (Text.isText(data)) {
-      return escapeHtml(data.text)
-    }
-
-  // if (data.object === 'text' ) {
-  //   return escapeHtml(data.text)
-  // }
-  const children = data.nodes.map(n => serialize(n)).join('')
-
-  switch (data.type) {
-    case 'heading':
-      return `<h2 class="h4">${children}</h2>`
-    case 'paragraph':
-      return `<p class='p'>${children}</p>`
-    case 'list-item':
-      return `<li class='p'>${children}</li>`
-    case 'unordered-list':
-      return `<ul>${children}</ul>`
-    case 'blockquote':
-      return `<blockquote><p class='p'>${children}</p></blockquote>`
-    case 'link':
-      return `<a href="${data.data.href}">${children}</a>`
-
-    default:
-      return `${children}`
-  }
-}
-
 </script>
 
 <template lang='pug'>

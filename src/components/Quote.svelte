@@ -39,7 +39,7 @@
 
 
   let animateClass;
-  let count = quoteCountQuery ? $quoteCountQuery.data._allFeedbackQuotesMeta.count: 5;
+  let count = quoteCountQuery ? $quoteCountQuery.data._allFeedbackQuotesMeta.count: 2;
   let intArr = shuffle(Array.from(Array(count).keys()));
   let intCount = 0;
   let int = intArr[intCount];
@@ -87,21 +87,39 @@
   .quote-wrapper(style='min-height: {blockHeight}px')
     +await('$quoteQuery')
       p Загрузка…
+
       +then ('result')
-        div(class='{animateClass}' use:setParentHight)
-          .author
-            b {result.data.allFeedbackQuotes[0].feedback.name}
-            | , {result.data.allFeedbackQuotes[0].feedback.city.name}
-          .quote  {result.data.allFeedbackQuotes[0].quote}
+        +if('result.data.allFeedbackQuotes.length')
+          div(class='{animateClass}' use:setParentHight)
+            .author
+              b {result.data.allFeedbackQuotes[0].feedback.name}
+              | , {result.data.allFeedbackQuotes[0].feedback.city.name}
+            .quote  {result.data.allFeedbackQuotes[0].quote}
+
+          +else
+            p Что-то пошло не так
+
       +catch('error')
         pre {error}
-  Button( size='small' text='Полный отзыв' disabled='{feedbackBtnOff}' on:click!='{() => showFeedback=!showFeedback}'  )
-  Button( size='regular' iconR='spinner' on:click='{handleClick}')
+
+  Button(
+    size='small'
+    text='Полный отзыв'
+    disabled='{feedbackBtnOff}'
+    on:click!='{() => showFeedback=!showFeedback}')
+
+  Button(
+    size='regular'
+    iconR='spinner'
+    on:click='{handleClick}')
+
 +await('$quoteQuery then result')
-  FeedbackPopup(
-    data='{result.data.allFeedbackQuotes[0].feedback}'
-    bind:showFeedback!='{showFeedback}'
+  +if('result.data.allFeedbackQuotes[0].feedback')
+    FeedbackPopup(
+      data='{result.data.allFeedbackQuotes[0].feedback}'
+      bind:showFeedback!='{showFeedback}'
   )
+
 </template>
 
 

@@ -13,6 +13,8 @@ nav
 				the blog data when we hover over the link or tap it on a touchscreen
 		li
 			a(rel=prefetch aria-current="{segment === 'doctors' ? 'page' : undefined}" href="/tests/quotes") tests/quotes
+		li
+			a(rel=prefetch aria-current="{segment === 'medical-pages' ? 'page' : undefined}" href="/medical-pages") medical-pages
 </template>
 
 

@@ -36,8 +36,9 @@
 
   export async function preload() {
     return {
-      cache:
-        await client.query({ query: INITDATA })
+      cache: await client.query({
+        query: INITDATA
+      })
     };
   }
 
@@ -45,7 +46,7 @@
 
 <script>
   // Appolo
-  import { setContext ,onMount } from "svelte";
+  import { onMount } from "svelte";
   import { restore, query, } from "svelte-apollo";
   export let cache;
 
@@ -53,8 +54,6 @@
 
   let branchesQuery = query(client, { query: BRANCHES });
   let quoteCountQuery = query(client, { query: QUOTE_COUNT });
-
-  setContext('apollo', client)
 
   // components
   import Tel from '../components/Tel.svelte';
