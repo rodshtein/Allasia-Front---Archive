@@ -102,7 +102,8 @@ function handleKeydown(e) {
     .wrapper
       .body(in:fly='{{duration: 300, y: 100, opacity: 0.5, easing: sineOut}}')
         Header(bind:show='{show}' header='{header}' on:click)
-        slot
+        .slot-wrapper
+          slot
         footer
           Button( on:click!='{() => show=!show}' text='Закрыть')
 
@@ -169,6 +170,12 @@ function handleKeydown(e) {
   border: solid 1px var(--color--borders---popup)
   border-radius: var(--radius--popup)
   @mixin popup_shadow
+
+  .slot-wrapper
+    padding:
+      left: 15px
+      right: 15px
+      bottom: 15px
 
   footer
     display: flex

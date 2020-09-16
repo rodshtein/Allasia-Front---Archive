@@ -218,5 +218,11 @@ a
     line-height: 14px
     letter-spacing: .3px
 
+    &.base-color
+      background-color: var(--color--btn-bg---light-blue)
+
+    &.invert
+      background-color: var(--color--btn-bg---white)
+
 
 </style>

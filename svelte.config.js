@@ -11,8 +11,8 @@ function getSP(isDev = false) {
   let postcssPlugins = [
     easyImport(),
     mixins(),
-    nested(),
     nestedProps(),
+    nested(),
     presetEnv({
       browsers: "last 2 versions",
       stage: 0,

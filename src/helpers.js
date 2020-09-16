@@ -2,7 +2,8 @@ import escapeHtml from 'escape-html'
 
 export function serialize (data) {
   // prefixClass = prefix ? `class="${prefix}"` : '';
-  const serialize = data => {
+
+  const serialize = (data, length) => {
     // import { Text } from 'slate'
     // if (Text.isText(data)) {
     //     return escapeHtml(data.text)

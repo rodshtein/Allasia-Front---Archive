@@ -1,7 +1,6 @@
 <script context="module">
-  import { client } from "../../utils";
-  import { gql } from "apollo-boost";
-
+  import { client } from '../../utils';
+  import { gql } from 'apollo-boost';
   const PAGE = gql`
     query($id: ID!){
       MedicalPage (where: {id: $id}) {
@@ -102,7 +101,6 @@
     }
   `;
 
-
   export async function preload(page, session) {
     const { slug } = page.params;
     return {
@@ -121,6 +119,12 @@
   // Appolo
   import { onMount } from "svelte";
   import { restore, query, } from "svelte-apollo";
+  // components
+  import Button from '../../components/Button.svelte';
+  import Popup from '../../components/Popup.svelte';
+  import Descripton from '../../components/Descripton.svelte';
+  import { serialize } from '../../helpers.js';
+
   export let cache;
 
   restore(client, PAGE, cache.data);
@@ -143,11 +147,9 @@
 
   // Content
   let branch = data.branch ? getBranch(data.branch) : '';
+  let description = serialize(JSON.parse(data.description.document))
 
-  // components
-  import Button from '../../components/Button.svelte';
 </script>
-
 
 <template lang='pug'>
 
@@ -166,15 +168,21 @@ header
   .devider
 
 .description
-  h2.h2 Описание
+  +if('data.description')
+    .cards_wrapper
+      h2.h2 Описание
+      Descripton(
+        header = '{data.name}'
+        content = '{description}'
+      )
 
 </template>
 
-
 <style lang='postcss'>
-// @import "../style/mixins.sss"
 
-.devider
-  margin: 0 15px
+@import "../../style/mixins.sss"
+
+.cards_wrapper
+  padding: 0 15px
 
 </style>

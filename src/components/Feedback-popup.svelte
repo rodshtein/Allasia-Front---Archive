@@ -21,8 +21,6 @@ const date = d => {
 </script>
 
 <template lang='pug'>
-mixin html(expression)
-  |{@html !{expression}}
 
 Popup(
   bind:show!='{showFeedback}'
@@ -51,7 +49,7 @@ Popup(
 
 <style lang='postcss'>
 .feedback_wrapper
-  padding: 0 15px 30px
+  padding-right: 30px
 
 .feedback-header
   display: flex
