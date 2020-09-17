@@ -5,7 +5,7 @@
 
   // components
   import Button from '../components/Button.svelte';
-  import FeedbackPopup from '../components/Feedback-popup.svelte';
+  import FeedbackPopup from '../components/Popups-feedback.svelte';
 
   export let quoteCountQuery;
 

@@ -1,39 +1,44 @@
 <script>
   import Popup from './Popup.svelte';
   import Button from './Button.svelte';
+  import CardWrapper from './Card-wrapper.svelte';
+  import CardHeader from './Card-header.svelte';
 
   // Content
-  export let header;
-  export let content;
+  export let header ='No header';
+  export let content = 'No content';
   export let btnTxt = 'Читать полностью';
 
   let showContent;
   let CH,WH;
+  let showBtn = (CH,WH) => { return(CH-40 < WH) };
 
 </script>
 
 <template lang='pug'>
 
-.list-wrapper
-  .list-1
-    .content(bind:offsetHeight='{CH}')
-      .wrap(bind:offsetHeight='{WH}')
-        .medical-page-description
-          +html('content')
-    +if('CH < WH')
-      Button(
-          size="small"
-          text="{btnTxt}"
-          on:click!='{() => showContent=!showContent}'
-        )
-      Popup(
-        bind:show!='{showContent}'
-        header='{header}')
-        .popup-devider.devider
-        .medical-page-description
-          +html('content')
-  .list-2
-  .list-3
+CardWrapper
+  CardHeader(header='Описание')
+  .list-wrapper
+    .list-1
+      .content(bind:offsetHeight='{CH}')
+        .wrap(bind:offsetHeight='{WH}')
+          .medical-page-description
+            +html('content')
+      +if('showBtn(CH,WH)')
+        Button(
+            size="small"
+            text="{btnTxt}"
+            on:click!='{() => showContent=!showContent}'
+          )
+        Popup(
+          bind:show!='{showContent}'
+          header='{header}')
+          .popup-devider.devider
+          .medical-page-description
+            +html('content')
+    .list-2
+    .list-3
 
 </template>
 
@@ -42,6 +47,7 @@
 
 .list-wrapper
   position: relative
+  margin-bottom: 15px
 
   .list-1
     display: flex
@@ -115,12 +121,12 @@
   .medical-page-description
     position: relative
 
-    & .h4
+    & h2
       margin-top: 10px
       margin-bottom: 5px
       color: var(--color--p)
 
-    & .p
+    & p
       margin-bottom: 13px
 
     & ul

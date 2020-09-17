@@ -57,7 +57,7 @@
 
   // components
   import Tel from '../components/Tel.svelte';
-  import SearchBox from '../components/SearchBox.svelte';
+  import SearchBox from '../components/Search-box.svelte';
   import Button from '../components/Button.svelte';
   import BranchesMenu from '../components/Branches-menu.svelte';
   import Quote from '../components/Quote.svelte';

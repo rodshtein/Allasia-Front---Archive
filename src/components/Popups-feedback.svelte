@@ -79,4 +79,40 @@ Popup(
   line-height: 17px
   color: var(--color--txt-headers)
 
+:global
+  .feedback_wrapper
+    h2
+      margin-top: 10px
+      margin-bottom: 5px
+      color: var(--color--p)
+
+    p
+      margin-bottom: 15px
+      color: var(--color--p)
+
+    ul
+      padding-left: 15px
+      margin: 0
+      list-style: '− '
+
+    blockquote
+      position: relative
+      padding-left: 16px
+      margin: 0
+      margin-left: -16px
+
+      &:after
+        content: ""
+        background: var(--ORANGE)
+        position: absolute
+        top: 3px
+        bottom: 1px
+        left: 0
+        width: 2px
+        border-radius: 10px
+
+      p
+        font-style: italic
+
+
 </style>
