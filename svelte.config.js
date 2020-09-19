@@ -5,6 +5,7 @@ const nested = require('postcss-nested');
 const nestedProps = require('postcss-nested-props');
 const presetEnv = require('postcss-preset-env');
 const sugarss = require('sugarss');
+const { postcss } = require('postcss');
 
 function getSP(isDev = false) {
 

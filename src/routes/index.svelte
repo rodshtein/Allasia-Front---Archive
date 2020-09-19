@@ -61,6 +61,7 @@
   import Button from '../components/Button.svelte';
   import BranchesMenu from '../components/Branches-menu.svelte';
   import Quote from '../components/Quote.svelte';
+  import CardWrapper from '../components/Card-wrapper.svelte';
 </script>
 
 
@@ -76,8 +77,9 @@ svelte:head
 
   h1.h1-I Лечение<br>за рубежом
   p.subheader-h1-I Подобираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
-.tel_wrapper
-  Tel
+  .tel_wrapper
+    Tel(align="center")
+
 .find_block
   .head_wrapper
     img(alt="Поиск клиники" src="illustration/find.svg")
@@ -95,7 +97,7 @@ BranchesMenu('{branchesQuery}')
     Button(size='regular' href='#' iconR='arrow-r' text="Акции")
     Button(size='regular' href='#' iconR='arrow-r' text="Клиники")
 
-.cards_wrapper
+CardWrapper
   .white_card
     img(alt="Вопрос-ответ" src="illustration/wiki-s.svg")
     h2.h2-I Вопрос — ответ
@@ -116,7 +118,7 @@ BranchesMenu('{branchesQuery}')
 
 Quote('{quoteCountQuery}')
 
-.cards_wrapper
+CardWrapper
   .white_card
     img(alt="Адреса и контакты" src="illustration/address.svg")
     h2.h2-I Контакты
@@ -131,7 +133,10 @@ Quote('{quoteCountQuery}')
 .head_block
   display: flex
   flex-direction: column
-  padding: 50px 15px
+  padding:
+    top: 50px
+    left: 15px
+    right: 15px
 
   .logo_block
     display: flex
@@ -148,6 +153,10 @@ Quote('{quoteCountQuery}')
   h1
     margin-bottom: 30px
 
+  p
+    margin-bottom: 30px
+
+
 h1, h2,
 .subheader-h1-I,
 .subheader-h2-I
@@ -156,7 +165,8 @@ h1, h2,
 .tel_wrapper
   display: flex
   justify-content: center
-  padding: 0 15px
+  padding: 15px
+  @mixin cards_decor__withe
 
 .find_block
   display: flex
@@ -192,8 +202,7 @@ h1, h2,
     grid-auto-flow: column
     column-gap: 20px
 
-.cards_wrapper
-  padding: 0 15px
+
 .white_card
   display: flex
   flex-direction: column

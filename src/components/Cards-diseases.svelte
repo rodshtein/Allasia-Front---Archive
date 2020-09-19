@@ -3,6 +3,17 @@
   import CardHeader from './Card-header.svelte';
 
   export let data;
+  export let pageName;
+
+  let showAdHeader = (item) =>
+    pageName !== item.name
+    || ( item.ad_name && JSON.parse(item.ad_name)[0].length );
+
+  let showItem = (item, i) =>
+    ( item.ad_name && JSON.parse(item.ad_name)[0].length )
+    || showAdHeader(item);
+
+
 </script>
 
 <template lang='pug'>
@@ -11,13 +22,14 @@ CardWrapper
   CardHeader(header='Группа болезней')
   .diseases
     +each('data as item, i' )
-      .item
-        h3 {item.name}
-        +if('item.ad_name')
-          +each('JSON.parse(item.ad_name) as item' )
-            p.p {item}
-        +if('data.length-1 !== i && data.length-1 > 0')
-          .devider
+      +if('showItem(item, i)')
+        .item
+          +if('showAdHeader(item)')
+            h3 {item.name}
+          +if('item.ad_name')
+            +each('JSON.parse(item.ad_name) as item' )
+              +if('item')
+                p.p {item}
 
 </template>
 
@@ -37,7 +49,12 @@ CardWrapper
       line-height: 120%
       margin-bottom: 5px
 
-    .devider
+    &:after
+      content: ''
       margin: 8px 0
+      @mixin devider
+
+    &:last-child:after
+      display: none
 
 </style>

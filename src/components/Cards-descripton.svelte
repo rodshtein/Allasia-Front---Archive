@@ -3,6 +3,7 @@
   import Button from './Button.svelte';
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
+  import { serialize } from '../helpers.js';
 
   // Content
   export let header ='No header';
@@ -13,6 +14,7 @@
   let CH,WH;
   let showBtn = (CH,WH) => { return(CH-40 < WH) };
 
+  let description = serialize(JSON.parse(content))
 </script>
 
 <template lang='pug'>
@@ -24,19 +26,20 @@ CardWrapper
       .content(bind:offsetHeight='{CH}')
         .wrap(bind:offsetHeight='{WH}')
           .medical-page-description
-            +html('content')
+            +html('description')
       +if('showBtn(CH,WH)')
         Button(
-            size="small"
-            text="{btnTxt}"
-            on:click!='{() => showContent=!showContent}'
-          )
+          size="small"
+          text="{btnTxt}"
+          on:click!='{() => showContent=!showContent}'
+        )
         Popup(
           bind:show!='{showContent}'
-          header='{header}')
+          header='{header}'
+        )
           .popup-devider.devider
           .medical-page-description
-            +html('content')
+            +html('description')
     .list-2
     .list-3
 
@@ -127,7 +130,7 @@ CardWrapper
       color: var(--color--p)
 
     & p
-      margin-bottom: 13px
+      margin-bottom: 14px
 
     & ul
       padding-left: 15px

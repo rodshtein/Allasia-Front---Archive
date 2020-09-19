@@ -1,15 +1,18 @@
 <script>
+  export let align = 'left';
+
+  let blockAlign = align === 'center' ? 'center' : 'start'
+  let textAlign = align === 'center' ? 'center' : 'left'
   import Button from './Button.svelte';
 </script>
 
 <template lang="pug">
-.block
-  .wrapper
-    .info Единый, бесплатный номер в РФ
-    .devider
-    .phone-number 8 800 250 82 97
-  .wrappp(style="display: flex;flex-direction: column;gap: 20px;align-items: center;")
-    Button(size='mini' iconR='short_arrow-b' text="Номера представитльств")
+.block(style='align-items:{blockAlign}')
+
+  .info(style='text-align:{textAlign}') Единый, бесплатный номер в РФ
+  .devider
+  .phone-number 8 800 250 82 97
+  Button(size='mini' iconR='short_arrow-b' text="Номера представитльств")
 
 </template>
 
@@ -19,24 +22,21 @@
 .block
   display: flex
   flex-direction: column
-  align-items: center
-  padding: 15px
+  padding: 0
   width: 100%
-  @mixin cards_decor__withe
-
-.wrapper
-  margin-bottom: 20px
 
 .info
   font-style: normal
   font-weight: normal
   font-size: 13px
   line-height: 120%
-  text-align: center
   color: var(--color--txt---light-blue)
-  margin-bottom: 7px
 
-.devider
-  margin-bottom: 9px
+  &:after
+    content: ''
+    margin: 8px 0
+    @mixin devider
 
+.phone-number
+  margin-bottom: 20px
 </style>

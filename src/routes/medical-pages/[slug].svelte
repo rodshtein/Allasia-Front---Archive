@@ -125,7 +125,8 @@
   import Popup from '../../components/Popup.svelte';
   import Descripton from '../../components/Cards-descripton.svelte';
   import Diseases from '../../components/Cards-diseases.svelte';
-  import { serialize } from '../../helpers.js';
+  import Procedures from '../../components/Cards-procedures.svelte';
+  import CallToAction from '../../components/Call-to-action.svelte';
 
   export let cache;
 
@@ -133,7 +134,6 @@
 
   let pageQuery = query(client, { query: PAGE });
   let data = $pageQuery.data.MedicalPage;
-
 
 
   function getBranch (obj, name, count=0) {
@@ -151,7 +151,7 @@
 
   // Content
   let branch = data.branch ? getBranch(data.branch) : '';
-  let description = serialize(JSON.parse(data.description.document))
+
 
   // Show chekers
   let showDiseases = (item) => {
@@ -162,12 +162,31 @@
     return haveUniqName || haveAdName || haveMoreThanOneDisease
   };
 
+  let a = [
+        {
+          "name": "Диагностика",
+          "feature": "",
+          "description": null,
+          "duration": "Амбулаторно 3-7 дней",
+          "price": [
+            {
+              "price": "$2000-5000",
+              "conditions": null,
+              "country": {
+                "name": " Южная Корея"
+              }
+            }
+          ]
+        }
+      ];
+
+
 </script>
 
 <template lang='pug'>
 svelte:head
-  //- +if('data.name')
-  //-   title {data.name}
+  +if('data && data.name')
+    title {data.name}
 
 +await('$pageQuery')
   p Что-то пошло не так…
@@ -183,16 +202,30 @@ svelte:head
           iconL='arrow-l'
           text="{data.branch.name}"
         )
-    .devider
 
     +if('data.description')
       Descripton(
         header = '{data.name}'
-        content = '{description}'
+        content = '{data.description.document}'
       )
 
     +if('showDiseases(data.diseases)')
-      Diseases(data='{data.diseases}')
+      Diseases(
+        data='{data.diseases}'
+        pageName='{data.name}'
+      )
+
+    +if('data.procedures')
+      Procedures(
+        data='{data.procedures}'
+      )
+
+    CallToAction(
+      header='Не нашли нужную услугу?'
+      text='Напишите или позвоните, расскажите какая услуга вас интересует. Мы подберём для вас варианты и посчитаем стоимость.'
+      btnText='Открыть чат'
+      tel
+    )
 
 </template>
 
@@ -201,6 +234,7 @@ svelte:head
 @import "../../style/mixins.sss"
 
 header
+  position: relative
   display: flex
   flex-direction: column
   align-items: center
@@ -213,9 +247,12 @@ header
       top: 20px
       bottom: 30px
 
-.devider
-  margin:
+  &:after
+    content: ''
+    position: absolute
+    bottom: 0
     left: 15px
     right: 15px
+    @mixin devider
 
 </style>
