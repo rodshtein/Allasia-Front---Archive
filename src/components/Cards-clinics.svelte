@@ -24,12 +24,12 @@ mixin body
 
 mixin items
   +if('el.head_img')
-    .slider-item.with-image(
+    .slider-item.with-img(
       style='background-image: url({el.head_img.publicUrl})'
       )
       +body
     +else
-      .slider-item
+      .slider-item.without-img
         +body
 
 CardWrapper
@@ -86,14 +86,16 @@ CardWrapper
   align-items: start
   justify-content: space-between
   max-height: 260px
-  @mixin cards_decor__withe
 
-  &.with-image
+  &.without-img
+    @mixin cards_decor__withe
+
+  &.with-img
     background-size: cover
     background-position: center
-    border: none
     background-color: #6b6b6b94
     background-blend-mode: multiply
+    @mixin cards_decor__img
 
     & .h2, .p
       color: white
