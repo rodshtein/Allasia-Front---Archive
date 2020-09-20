@@ -3,21 +3,26 @@
   import { gql } from 'apollo-boost';
 
   const PAGE = gql`
-    query($id: ID!){
+  query($id: ID!){
       MedicalPage (where: {id: $id}) {
         name
         branch {
           id
           name
           parent {
+            id
             name
             parent {
+              id
               name
               parent {
+                id
                 name
                 parent {
+                  id
                   name
                   parent {
+                    id
                     name
                   }
                 }
@@ -26,18 +31,22 @@
           }
         }
         diseases {
+          id
           name
           ad_name
         }
         description {
+          id
           document
         }
         procedures {
+          id
           name
           feature
           description
           duration
           price {
+            id
             price
             conditions
             country {
@@ -46,26 +55,31 @@
           }
         }
         portfolio {
+          id
           img {
+            id
             publicUrl
           }
           alt
           description
         }
         papers {
+          id
           name
           description {
+            id
             document
           }
-          id
         }
         technology {
           id
           name
           description {
+            id
             document
           }
           head_img {
+            id
             publicUrl
           }
         }
@@ -74,9 +88,11 @@
           name_ru
           full_name_ru
           country {
+            id
             name
           }
           head_img {
+            id
             publicUrl
           }
         }
@@ -84,9 +100,11 @@
           id
           name
           specialty {
+            id
             name
           }
           avatar {
+            id
             publicUrl
           }
         }
@@ -96,17 +114,22 @@
           age
           date
           city {
+            id
             name
           }
           country {
+            id
             name
           }
           review {
+            id
             document
           }
           gallery {
+            id
             alt
             img {
+              id
               publicUrl
             }
           }
