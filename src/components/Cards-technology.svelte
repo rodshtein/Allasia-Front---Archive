@@ -17,6 +17,7 @@
 		showTechnology=!showTechnology
 	}
 
+  let witheContent = (el) => el.head_img && el.head_img.publicUrl ? "content-on-color" : "";
 </script>
 
 <template lang='pug'>
@@ -24,7 +25,7 @@ mixin body
   .head
     h3.h4.header {el.name}
   +if('el.description')
-    .content.content-on-color
+    .content(class='{witheContent(el)}')
       +html('serialize(JSON.parse(el.description.document))')
 
   .btn-wrap

@@ -11,15 +11,22 @@ export let showTechnology;
 <template lang='pug'>
 
 +if('data')
-  Popup(
-    bind:show!='{showTechnology}'
-    header='Технологии'
-    header2='{data.name}'
-    imageURL='{data.head_img.publicUrl}'
+  +if('data.head_img && data.head_img.publicUrl')
+    Popup(
+      bind:show!='{showTechnology}'
+      header='Технологии'
+      header2='{data.name}'
+      imageURL='{data.head_img.publicUrl}'
     )
-
-    .technology_wrapper
-      +html('serialize(JSON.parse(data.description.document))')
+      .technology_wrapper
+          +html('serialize(JSON.parse(data.description.document))')
+    +else
+      Popup(
+        bind:show!='{showTechnology}'
+        header='{data.name}'
+      )
+        .technology_wrapper
+          +html('serialize(JSON.parse(data.description.document))')
 
 
 </template>
