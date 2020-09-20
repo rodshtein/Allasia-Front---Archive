@@ -3,7 +3,35 @@
 
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
+  import { pannable } from './Slider.js';
+  import { onMount } from 'svelte';
+  import { spring } from 'svelte/motion';
 
+
+	const coords = spring({ x: 0}, {
+		stiffness: 0.2,
+		damping: 0.4
+	});
+
+	function handlePanStart() {
+		coords.stiffness = coords.damping = 1;
+	}
+
+	function handlePanMove(event) {
+    console.log(event.detail.x);
+    console.log(event.detail.dx);
+    // event.path[1].scrollLeft = event.detail.x
+		coords.update($coords => ({
+			//x: $coords.x + event.detail.dx,
+		}));
+	}
+
+	function handlePanEnd(event) {
+		coords.stiffness = 0.2;
+		coords.damping = 0.4;
+	}
+
+  let showSlider = data.length > 1;
 </script>
 
 <template lang='pug'>
@@ -30,19 +58,24 @@ mixin procedureItem
             p.conditions {el.conditions}
 
 CardWrapper
-  CardHeader(header='Процедуры и стоимость')
-  +if('data[1]')
+  CardHeader(header='Процедуры')
+  +if('showSlider')
     .slider
-      .slider-wrapper
+      .slider-wrapper(
+        use:pannable
+        on:panstart='{handlePanStart}'
+        on:panmove='{handlePanMove}'
+        on:panend='{handlePanEnd}'
+        style=`transform: translateX({$coords.x}px)`
+      )
         +each('data as el')
           .slider-item
             +procedureItem
 
     +else
-      .slider-wrapper.single
-        +each('data as el')
-          .slider-item
-            +procedureItem
+      +each('data as el')
+        .slider-item.single
+          +procedureItem
 
 </template>
 
@@ -67,21 +100,12 @@ CardWrapper
   // grid-auto-columns: max-content
   margin: 0 10px
 
-  &:last-child:after
-    content: ''
-    width: 17%
-
-  &.single
-    grid-auto-columns: 100%
-    margin: 0
-
-    &:last-child:after
-      display: none
-
 .slider-item
   padding: 23px 19px
   position: relative
   @mixin cards_decor__withe
+  &.single
+    width: 100%
 
 
 .header-wrap:after

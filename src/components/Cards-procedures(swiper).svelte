@@ -3,7 +3,28 @@
 
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
+  import { onMount } from 'svelte';
 
+	let mySwiper;
+	let swiper;
+	let slide;
+  let options = {
+      slidesPerView: 'auto',
+      spaceBetween: 20,
+      slidesOffsetBefore: 10,
+      slidesOffsetAfter: 10,
+      grabCursor: true,
+      slideClass: 'swiper-slide--procedures',
+      wrapperClass: 'swiper-wrapper--procedures',
+    };
+
+	onMount(async () => {
+			const module = await import('svelte-swiper');
+			swiper = module.Swiper
+			slide = module.SwiperSlide
+	});
+
+  let showSwiper = data.length > 1;
 </script>
 
 <template lang='pug'>
@@ -30,59 +51,29 @@ mixin procedureItem
             p.conditions {el.conditions}
 
 CardWrapper
-  CardHeader(header='Процедуры и стоимость')
-  +if('data[1]')
-    .slider
-      .slider-wrapper
-        +each('data as el')
-          .slider-item
-            +procedureItem
-
+  CardHeader(header='Процедуры')
+  +if('showSwiper')
+    svelte:component(this='{swiper}' bind:swiper='{mySwiper}' '{options}')
+      +each('data as el')
+        svelte:component(this='{slide}')
+          +procedureItem
     +else
-      .slider-wrapper.single
-        +each('data as el')
-          .slider-item
-            +procedureItem
+      +each('data as el')
+        .single-item
+          +procedureItem
+
+
 
 </template>
 
 <style lang='postcss'>
 @import "../style/mixins.sss"
 
-.slider
-  position: relative
-  // overflow: hidden
-  padding: 0
-  padding-bottom: 15px
-  overflow-x: scroll
-  margin:
-    left: -10px
-    right: -10px
-
-.slider-wrapper
-  display: grid
-  grid-auto-flow: column
-  grid-column-gap: 20px
-  grid-auto-columns: 83%
-  // grid-auto-columns: max-content
-  margin: 0 10px
-
-  &:last-child:after
-    content: ''
-    width: 17%
-
-  &.single
-    grid-auto-columns: 100%
-    margin: 0
-
-    &:last-child:after
-      display: none
-
-.slider-item
+.single-item
   padding: 23px 19px
+  width: 100%
   position: relative
   @mixin cards_decor__withe
-
 
 .header-wrap:after
   content: ''
@@ -150,5 +141,35 @@ h3
 
   &:last-child:after
     display: none
+
+:global
+  .swiper-container
+    position: relative
+    overflow: hidden
+    padding: 0
+    padding-bottom: 15px
+    z-index: 1
+    margin:
+      left: -10px
+      right: -10px
+
+  .swiper-wrapper--procedures
+    position: relative
+    width: 100%
+    height: 100%
+    z-index: 1
+    display: flex
+    transition-property: transform
+    box-sizing: content-box
+
+  .swiper-slide--procedures
+    padding: 23px 19px
+    width: 83%
+    flex-shrink: 0
+    position: relative
+    transition-property: transform
+    @mixin cards_decor__withe
+
+
 
 </style>

@@ -53,7 +53,12 @@ svelte:head
 <style lang='postcss'>
 /* @import "../style/mixins.sss" */
 
-.devider
-  margin: 0 15px
+a
+  display: block
+  color: black
+  text-decoration: none
+  font-size: 17px
+  &:hover
+    color: red
 
 </style>

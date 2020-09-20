@@ -22,28 +22,29 @@ const date = d => {
 
 <template lang='pug'>
 
-Popup(
-  bind:show!='{showFeedback}'
-  header='{data.header}')
++if('data')
+  Popup(
+    bind:show!='{showFeedback}'
+    header='{data.header}')
 
-  .feedback_wrapper
-    .feedback-header
-      +if('data.name')
-        .person
-          span {data.name}
-          +if('data.age')
-            span , {data.age} {declOfNum(data.age)}
+    .feedback_wrapper
+      .feedback-header
+        +if('data.name')
+          .person
+            span {data.name}
+            +if('data.age')
+              span , {data.age} {declOfNum(data.age)}
 
-      +if('data.country || data.city')
-        .location
-          +if('data.country')
-            span {data.country.name}
-          +if('data.city')
-            span , {data.city.name}
-    .devider
-    +html('serialize(JSON.parse(data.review.document))')
-    +if('data.date')
-      .date {date(data.date)}
+        +if('data.country || data.city')
+          .location
+            +if('data.country')
+              span {data.country.name}
+            +if('data.city')
+              span , {data.city.name}
+      .devider
+      +html('serialize(JSON.parse(data.review.document))')
+      +if('data.date')
+        .date {date(data.date)}
 
 </template>
 

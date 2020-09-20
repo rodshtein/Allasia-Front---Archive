@@ -4,8 +4,8 @@
   import { client } from "../utils";
 
   // components
-  import Button from '../components/Button.svelte';
-  import FeedbackPopup from '../components/Popups-feedback.svelte';
+  import Button from './Button.svelte';
+  import FeedbackPopup from './Popups-feedback.svelte';
 
   export let quoteCountQuery;
 
@@ -118,7 +118,7 @@
     FeedbackPopup(
       data='{result.data.allFeedbackQuotes[0].feedback}'
       bind:showFeedback!='{showFeedback}'
-  )
+    )
 
 </template>
 
