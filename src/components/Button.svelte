@@ -33,8 +33,9 @@
 <!-- svelte-ignore css-unused-selector -->
 <template lang="pug">
 
+//- TODO Подумать над rel='prefetch' и rel='external'
 +if('href')
-  a.btn( href='{href}' class='{cls}' disabled='{disabled}' on:click )
+  a.btn( rel='prefetch' href='{href}' class='{cls}' disabled='{disabled}' on:click )
     +if('text')
       span {text}
 

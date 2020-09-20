@@ -134,6 +134,5 @@ FeedbackPopup(
   position: absolute
   bottom: 23px
   left: 19px
-}
 
 </style>

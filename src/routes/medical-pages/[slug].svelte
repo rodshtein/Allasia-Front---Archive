@@ -68,12 +68,13 @@
         }
         clinics {
           id
-          name
-          head_img {
-            publicUrl
-          }
+          name_ru
+          full_name_ru
           country {
             name
+          }
+          head_img {
+            publicUrl
           }
         }
         doctors {
@@ -137,6 +138,7 @@
   import Diseases from '../../components/Cards-diseases.svelte';
   import Procedures from '../../components/Cards-procedures.svelte';
   import Feedback from '../../components/Cards-feedback.svelte';
+  import Clinics from '../../components/Cards-clinics.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
 
 
@@ -213,17 +215,24 @@ svelte:head
         data='{data.procedures}'
       )
 
-    +if('data.feedback && data.feedback[0]')
-      Feedback(
-        data='{data.feedback}'
-      )
-
     CallToAction(
       header='Не нашли нужную услугу?'
       text='Напишите или позвоните, расскажите какая услуга вас интересует. Мы подберём для вас варианты и посчитаем стоимость.'
       btnText='Открыть чат'
       tel
     )
+
+    +if('data.feedback && data.feedback[0]')
+      Feedback(
+        data='{data.feedback}'
+      )
+
+    +if('data.clinics && data.clinics[0]')
+      Clinics(
+        data='{data.clinics}'
+      )
+
+
 
 
 
