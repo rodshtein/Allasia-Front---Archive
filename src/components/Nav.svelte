@@ -20,7 +20,7 @@ nav
 
 <style lang='postcss'>
 
-@media( width < 400px )
+@media( width < 200px )
 	nav
 		display: none
 
