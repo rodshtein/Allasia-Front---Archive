@@ -7,6 +7,8 @@ import Header from './Popup-header.svelte'
 
 export let show = false;
 export let header = false;
+export let header2 = false
+export let imageURL = false
 
 let isMounted = false;
 let modal;
@@ -101,7 +103,13 @@ function handleKeydown(e) {
     )
     .wrapper
       .body(in:fly='{{duration: 300, y: 100, opacity: 0.5, easing: sineOut}}')
-        Header(bind:show='{show}' header='{header}' on:click)
+        Header(
+          bind:show='{show}'
+          header='{header}'
+          header2='{header2}'
+          imageURL='{imageURL}'
+          on:click
+        )
         .slot-wrapper
           slot
         footer
@@ -165,6 +173,7 @@ function handleKeydown(e) {
   margin-bottom: 100px
   padding: 0
   max-width: 600px
+  overflow: hidden
 
   background: #ffffffa6
   border: solid 1px var(--color--borders---popup)

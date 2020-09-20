@@ -76,21 +76,13 @@ CardWrapper
       max-height: 230px
       margin-bottom: 20px
       position: relative
-
-      &:after
-        content: ''
-        position: absolute
-        background:
-          linear-gradient(
-            180deg,
-            #ffffff00 0%,
-            #ffffffa8 41.71%,
-            #FFFFFF 86.98%
-          )
-        height: 40px
-        width: 100%
-        position: absolute
-        bottom: 0
+      mask-image:
+        linear-gradient(
+          to top,
+          transparent 5%,
+          black 30%,
+          black 100%
+        )
 
   .list-2
     position: absolute

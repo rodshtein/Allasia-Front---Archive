@@ -20,11 +20,18 @@
   const BRANCHES = gql`{
     allMedicalBranches (sortBy:name_ASC) {
       name
+      id
+      pages {
+        id
+        name
+      }
       children {
         name
+        id
       }
       parent {
         name
+        id
       }
     }
   }`;

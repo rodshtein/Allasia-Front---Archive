@@ -4,61 +4,63 @@
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
   import Button from './Button.svelte';
-  import FeedbackPopup from './Popups-feedback.svelte';
+  import TechnologyPopup from './Popups-technology.svelte';
   import { tick } from 'svelte';
   import { serialize } from '../helpers.js';
 
-  let showFeedback = false;
-  let feedback = false;
-
-  function declOfNum(number) {
-    let cases = [2, 0, 1, 1, 1, 2];
-    let sign = ['год',  'года', 'лет'];
-    return sign[ ( number % 100 > 4 && number % 100 < 20 ) ? 2 : cases[ (number%10<5) ? number % 10 : 5 ] ];
-  }
+  let showTechnology = false;
+  let technology = false;
 
 	const toggle = async (el) => {
-		feedback = el
+		technology = el
 		await tick();
-		showFeedback=!showFeedback
+		showTechnology=!showTechnology
 	}
 
 </script>
 
 <template lang='pug'>
-mixin procedureItem
+mixin body
   .head
-    h3.h4 {el.header}
-    p.p {el.name}, {el.age} {declOfNum(el.age)}
-  .content
-    +html('serialize(JSON.parse(el.review.document))')
+    h3.h4.header {el.name}
+  +if('el.description')
+    .content.content-on-color
+      +html('serialize(JSON.parse(el.description.document))')
 
   .btn-wrap
     Button(
       size='small'
-      text='Полный отзыв'
+      text='Подробнее'
       on:click!='{() => toggle(el) }'
     )
 
+mixin items
+  +if('el.head_img && el.head_img.publicUrl')
+    .slider-item.with-img(
+      style='background-image: url({el.head_img.publicUrl})'
+      )
+      +body
+    +else
+      .slider-item.without-img
+        +body
+
 CardWrapper
-  CardHeader(header='Отзывы')
+  CardHeader(header='Технологии')
   +if('data[1]')
     .slider
       .slider-wrapper
         +each('data as el')
-          .slider-item
-            +procedureItem
+          +items
 
     +else
       .slider-wrapper.single
         +each('data as el')
-          .slider-item
-            +procedureItem
+          +items
 
 
-FeedbackPopup(
-  data='{feedback}'
-  bind:showFeedback!='{showFeedback}'
+TechnologyPopup(
+  data='{technology}'
+  bind:showTechnology!='{showTechnology}'
 )
 
 </template>
@@ -101,14 +103,24 @@ FeedbackPopup(
   display: flex
   flex-direction: column
   align-items: start
+  justify-content: space-between
   max-height: 260px
   padding-bottom: 50px
-  @mixin cards_decor__withe
+
+  &.without-img
+    @mixin cards_decor__withe
+
+  &.with-img
+    background-size: cover
+    background-position: center
+    background-color: #6b6b6b94
+    background-blend-mode: multiply
+    @mixin cards_decor__img
+
+    & h3
+      color: white
 
 .head
-  display: grid
-  grid-auto-flow: row
-  row-gap: 7px
   margin-bottom: 13px
 
 .content

@@ -93,7 +93,8 @@ const date = d => {
 
     ul
       padding-left: 15px
-      margin: 0
+      margin-bottom: 15px
+      margin-top: 0
       list-style: '− '
 
     blockquote

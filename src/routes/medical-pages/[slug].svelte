@@ -62,6 +62,9 @@
         technology {
           id
           name
+          description {
+            document
+          }
           head_img {
             publicUrl
           }
@@ -140,6 +143,7 @@
   import Feedback from '../../components/Cards-feedback.svelte';
   import Clinics from '../../components/Cards-clinics.svelte';
   import Doctors from '../../components/Cards-doctors.svelte';
+  import Technology from '../../components/Cards-technology.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
 
 
@@ -236,6 +240,11 @@ svelte:head
     +if('data.doctors && data.doctors[0]')
       Doctors(
         data='{data.doctors}'
+      )
+
+    +if('data.technology && data.technology[0]')
+      Technology(
+        data='{data.technology}'
       )
 
 

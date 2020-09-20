@@ -1,6 +1,18 @@
 <script>
-export let branchesQuery;
-// afterUpdate(() =>{ new Swiper .... })
+  export let branchesQuery;
+
+
+  import BranchesPopup from './Popups-branches.svelte';
+  import { tick } from 'svelte';
+
+  let showBranch = false;
+  let branchId = false;
+
+	const toggle = async (id) => {
+		branchId = id
+		await tick();
+		showBranch=!showBranch
+	}
 </script>
 
 <template lang="pug">
@@ -12,11 +24,18 @@ export let branchesQuery;
       +then('result')
         +each('result.data.allMedicalBranches as baranch')
           +if('!baranch.parent')
-            li.items {baranch.name}
+            li
+              button.items(
+                on:click!='{() => toggle(baranch.id) }'
+              ) {baranch.name}
 
       +catch('error')
         pre {error}
 
+//- BranchesPopup(
+//-   branchId='{branchId}'
+//-   bind:showBranch!='{showBranch}'
+//- )
 </template>
 
 <style lang='postcss'>
@@ -43,6 +62,7 @@ export let branchesQuery;
     align-items: center
     padding: 0 15px
     min-height: 44px
+    width: 100%
 
     color: var(--LIGHT-BLACK)
     border-radius:
@@ -53,7 +73,7 @@ export let branchesQuery;
       var(--color--borders---card-white)
     background-color:
       var(--color--bg--card)
-
+    cursor: pointer
 
     font-style: normal
     font-weight: normal
@@ -63,5 +83,11 @@ export let branchesQuery;
 
     &:after
       content: url("/icons/25/arrow-r.svg")
+
+    &:hover
+      border-color: var(--color--btn-border---active)
+
+    &:active
+      transform: translateY(2px)
 
 </style>
