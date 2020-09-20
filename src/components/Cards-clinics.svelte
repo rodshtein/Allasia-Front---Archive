@@ -23,7 +23,7 @@ mixin body
     )
 
 mixin items
-  +if('el.head_img')
+  +if('el.head_img && el.head_img.publicUrl')
     .slider-item.with-img(
       style='background-image: url({el.head_img.publicUrl})'
       )

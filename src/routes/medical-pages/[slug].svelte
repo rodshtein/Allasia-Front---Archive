@@ -139,6 +139,7 @@
   import Procedures from '../../components/Cards-procedures.svelte';
   import Feedback from '../../components/Cards-feedback.svelte';
   import Clinics from '../../components/Cards-clinics.svelte';
+  import Doctors from '../../components/Cards-doctors.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
 
 
@@ -230,6 +231,11 @@ svelte:head
     +if('data.clinics && data.clinics[0]')
       Clinics(
         data='{data.clinics}'
+      )
+
+    +if('data.doctors && data.doctors[0]')
+      Doctors(
+        data='{data.doctors}'
       )
 
 

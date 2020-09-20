@@ -1,0 +1,137 @@
+<script>
+  export let data;
+
+  import CardWrapper from './Card-wrapper.svelte';
+  import CardHeader from './Card-header.svelte';
+
+
+  function makeSpecialty(arr){
+    let stop = false;
+    let max = 30;
+
+    return arr.reduce((prevVal, item, i, arr)=>{
+      let count = arr.length - i;
+      let lenght = (prevVal + item.name).length;
+
+      let per = lenght > max
+        ? ', +' + count
+        : ', ';
+
+      if (stop) return prevVal
+
+      if (lenght > max && i > 0 && !stop) {
+        stop = true
+        return prevVal + per
+      }
+
+      if (!prevVal) return item.name
+
+      return prevVal + per + item.name
+    }, '')
+  }
+</script>
+
+<template lang='pug'>
+mixin body
+  +if('el.avatar && el.avatar.publicUrl')
+    .avatar(
+      style='background-image: url({el.avatar.publicUrl})'
+      )
+    +else
+      .avatar
+  h3.name {el.name}
+  +if('el.specialty[0]')
+    p.specialty {makeSpecialty(el.specialty)}
+
+
+CardWrapper
+  CardHeader(header='Врачи')
+  +if('data[1]')
+    .slider
+      .slider-wrapper
+        +each('data as el')
+          a.slider-item(alt='Странице о враче' href='.' rel='prefetch')
+            +body
+
+    +else
+      .slider-wrapper.single
+        +each('data as el')
+          a.slider-item(alt='Странице о враче' href='.' rel='prefetch')
+            +body
+
+</template>
+
+<style lang='postcss'>
+@import "../style/mixins.sss"
+
+.slider
+  position: relative
+  // overflow: hidden
+  padding: 0
+  padding-bottom: 15px
+  overflow-x: scroll
+  margin:
+    left: -10px
+    right: -10px
+
+.slider-wrapper
+  display: grid
+  grid-auto-flow: column
+  grid-column-gap: 10px
+  grid-auto-columns: max-content
+  margin: 0 10px
+
+  &:last-child:after
+    content: ''
+    width: 17%
+
+  &.single
+    grid-auto-columns: 100%
+    margin: 0
+
+    &:last-child:after
+      display: none
+
+.slider-item
+  padding: 23px 19px
+  position: relative
+  display: flex
+  flex-direction: column
+  align-items: center
+  width: 140px
+  text-decoration: none
+  color: #000
+  &:hover
+    color: var(--ORANGE)
+
+.avatar
+  position: relative
+  height: 120px
+  width: 120px
+  border-radius: 50%
+  background-size: cover
+  margin-bottom: 20px
+  &:after
+    content: ''
+    position: absolute
+    height: 100%
+    width: 100%
+    border-radius: 50%
+    border: 1px solid rgba(85, 142, 213, 0.15)
+
+.name
+  font-size: 15px
+  font-style: normal
+  font-weight: 700
+  line-height: 15px
+  text-align: center
+  margin-bottom: 7px
+
+.specialty
+  font-size: 12px
+  font-style: normal
+  font-weight: 400
+  line-height: 14px
+  text-align: center
+
+</style>
