@@ -215,12 +215,12 @@ svelte:head
   +if('data && data.name')
     title {data.name}
 
-+if('data && data.name')
-  a.edit(
-    alt='Edit'
-    target='_blank'
-    href='https://tildateamtop.ru/admin{SESSION_PAGE.path}'
-  ) Edit
+
+a.edit(
+  alt='Edit'
+  target='_blank'
+  href='https://tildateamtop.ru/admin{SESSION_PAGE.path}'
+) Edit
 
 +await('$pageQuery')
   p Что-то пошло не так…
