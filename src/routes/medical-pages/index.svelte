@@ -4,9 +4,13 @@
 
   const PAGES = gql`
     query{
-      allMedicalPages {
+      allMedicalPages (sortBy:name_ASC) {
         id
         name
+        branch {
+          id
+          name
+        }
       }
     }
   `;
@@ -45,13 +49,30 @@
 svelte:head
   title Медицинские направления
 
-+each('$pagesQuery.data.allMedicalPages as item')
-  a(alt='{item.name}' href='{PAGE.path}/{item.id}') {item.name}
+.wrap
+  +each('$pagesQuery.data.allMedicalPages as item')
+    .item
+      +if('item.branch && item.branch.name')
+        .branch {item.branch.name}
+      a(alt='{item.name}' href='{PAGE.path}/{item.id}') {item.name}
+
+
 </template>
 
 
 <style lang='postcss'>
 /* @import "../style/mixins.sss" */
+.wrap
+  padding: 20px
+
+.item
+  margin-bottom: 5px
+
+.branch
+  display: block
+  font-size: 11px
+  color: #888
+  margin-bottom: -3px
 
 a
   display: block

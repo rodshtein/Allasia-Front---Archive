@@ -52,8 +52,8 @@ CardWrapper
 .slider
   position: relative
   // overflow: hidden
-  padding: 0
-  padding-bottom: 15px
+  padding: 0 0 20px
+  margin-bottom: -20px
   overflow-x: scroll
   margin:
     left: -10px
