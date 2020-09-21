@@ -5,6 +5,7 @@
   const PAGE = gql`
   query($id: ID!){
       MedicalPage (where: {id: $id}) {
+        id
         name
         branch {
           id
@@ -141,6 +142,7 @@
   export async function preload(page, session) {
     const { slug } = page.params;
     return {
+      SESSION_PAGE: page,
       cache: await client.query({
         query: PAGE,
         variables: {
@@ -171,6 +173,7 @@
 
 
   export let cache;
+  export let SESSION_PAGE;
 
   restore(client, PAGE, cache.data);
 
@@ -207,9 +210,17 @@
 </script>
 
 <template lang='pug'>
+
 svelte:head
   +if('data && data.name')
     title {data.name}
+
++if('data && data.name')
+  a.edit(
+    alt='Edit'
+    target='_blank'
+    href='https://tildateamtop.ru/admin{SESSION_PAGE.path}'
+  ) Edit
 
 +await('$pageQuery')
   p Что-то пошло не так…
