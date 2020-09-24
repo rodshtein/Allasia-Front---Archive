@@ -53,3 +53,4 @@ export function serialize (data) {
 
   return serialize(data);
 }
+

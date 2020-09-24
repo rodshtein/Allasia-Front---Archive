@@ -3,10 +3,10 @@
   export let header = 'Header'
   export let header2 = false
   export let imageURL = false
-  export let button = false
-  export let icon = 'arrow-l'
+  export let btnText = false
+  export let btnIcon = 'arrow-l'
 
-  let headerClass = header.length < 28 ? 'h2':'h3';
+  let headerClass = header && header.length > 28 ? 'h3':'h2';
   import Button from './Button.svelte'
 </script>
 
@@ -15,8 +15,8 @@
 +if('imageURL')
   header.tall(style="background-image: url({imageURL})")
     .wrapper
-      +if('button')
-        Button(size='mini' iconL='{icon}' on:click text='{button}' btnHamdler)
+      +if('btnText')
+        Button(size='mini' iconL='{btnIcon}' on:click text='{btnText}')
         +else
           h1(class="{headerClass}") {header}
       button.closeBtn(on:click!='{() => show=!show}')
@@ -25,8 +25,8 @@
   +else
     header
       .wrapper
-        +if('button')
-          Button(size='mini' iconL='{icon}' on:click text='{button}' btnHamdler)
+        +if('btnText')
+          Button(size='mini' iconL='{btnIcon}' on:click text='{btnText}')
           +else
             h1(class="{headerClass}") {header}
         button.closeBtn(on:click!='{() => show=!show}')
@@ -59,7 +59,7 @@ header
   display: grid
   grid-template-columns: 1fr min-content
   column-gap: 30px
-  align-items: start
+  justify-items: start
 
 button
   background-color: transparent

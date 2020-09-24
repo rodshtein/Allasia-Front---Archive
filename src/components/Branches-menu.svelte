@@ -3,10 +3,6 @@
 
   import { branchId } from './Store-branches.js';
 
-
-  let showBranch = false;
-
-
 	const showMenu = async (id) => {
 		$branchId = id
 	}
@@ -29,10 +25,6 @@
       +catch('error')
         pre {error}
 
-//- BranchesPopup(
-//-   branchId='{branchId}'
-//-   bind:showBranch!='{showBranch}'
-//- )
 </template>
 
 <style lang='postcss'>

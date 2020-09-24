@@ -1,16 +1,18 @@
 <script>
-import { onMount, onDestroy} from 'svelte';
+import { onMount } from 'svelte';
 import { fly } from 'svelte/transition';
 import { sineOut } from 'svelte/easing';
-import Button from './Button.svelte'
-import Header from './Popup-header.svelte'
+import Button from './Button.svelte';
+import Header from './Popup-header.svelte';
 
 export let show = false;
 export let header = false;
-export let header2 = false
-export let imageURL = false
+export let header2 = false;
+export let imageURL = false;
+export let btnText = false;
 
 let isMounted = false;
+let paintModal = false;
 let modal;
 let previouslyFocused;
 
@@ -19,7 +21,7 @@ onMount(() => {
   // show=true;
   });
 
-$:show, fix_content(show);
+$: fix_content(show);
 
 function portalAction(node,parent){
   parent = parent || document.body;
@@ -34,27 +36,29 @@ function fix_content(param) {
     docEl = document.documentElement,
     container = document.getElementById('sapper');
 
-  if (!window.fix_content__content_scroll) {
-    window.fix_content__content_scroll
-      = window.pageYOffset
-      || docEl.scrollTop
-      || body.scrollTop;
-  }
 
   if (param) {
-    window.fix_scroll_value = fix_content__content_scroll;
+    let scrollY = window.pageYOffset
+      || docEl.scrollTop
+      || body.scrollTop;
+
+    window.fix_scroll_value = scrollY;
     // Фиксируем контейнер
     container.classList.add('fixed');
-    container.style.top = '-' + ( fix_content__content_scroll + 0 ) + 'px';
+    container.style.top = '-' + ( scrollY + 0 ) + 'px';
 
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+
+    paintModal = true;
 
     // Keyboard control
     document.addEventListener( 'keydown', handleKeydown);
     previouslyFocused = typeof document !== 'undefined' && document.activeElement;
 
   } else {
+    paintModal = false;
+
     document.removeEventListener( 'keydown', handleKeydown);
     if (previouslyFocused) previouslyFocused.focus();
 
@@ -65,7 +69,6 @@ function fix_content(param) {
     document.body.scrollTop = fix_scroll_value;
     document.documentElement.scrollTop = fix_scroll_value;
     delete window.fix_scroll_value;
-    delete window.fix_content__content_scroll;
   }
 }
 
@@ -97,7 +100,7 @@ function handleKeydown(e) {
 
 
 <template lang="pug">
-+if('show')
++if('paintModal')
   .popup(
     role='dialog'
     aria-modal='true'
@@ -111,6 +114,7 @@ function handleKeydown(e) {
           header='{header}'
           header2='{header2}'
           imageURL='{imageURL}'
+          btnText='{btnText}'
           on:click
         )
         .slot-wrapper
