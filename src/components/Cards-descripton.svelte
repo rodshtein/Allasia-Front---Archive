@@ -25,7 +25,7 @@ CardWrapper
     .list-1
       .content(bind:offsetHeight='{CH}')
         .wrap(bind:offsetHeight='{WH}')
-          .medical-page-description
+          .content.medical-page-description
             +html('description')
       +if('showBtn(CH,WH)')
         Button(
@@ -37,8 +37,7 @@ CardWrapper
           bind:show!='{showContent}'
           header='{header}'
         )
-          .popup-devider.devider
-          .medical-page-description
+          .content
             +html('description')
     .list-2
     .list-3
@@ -108,44 +107,10 @@ CardWrapper
     background-color: var(--color--bg--card)
     @mixin shadow
 
-
 .popup-devider
   margin-bottom: 15px
 
-:global
-  .medical-page-description
-    position: relative
+.medical-page-description
+  position: relative
 
-    & h2
-      margin-top: 10px
-      margin-bottom: 5px
-      color: var(--color--p)
-
-    & p
-      margin-bottom: 14px
-
-    & ul
-      padding-left: 15px
-      margin: 0
-      list-style: '− '
-
-    & blockquote
-      position: relative
-      padding-left: 16px
-      margin: 0
-      margin-left: -16px
-
-      &:after
-        content: ""
-        background: var(--ORANGE)
-        position: absolute
-        top: 3px
-        bottom: 1px
-        left: 0
-        width: 2px
-        border-radius: 10px
-
-      & p
-        font-style: italic
-
-  </style>
+</style>

@@ -11,9 +11,13 @@
 <template lang='pug'>
 mixin body
   .head
-    h3.h2.header {el.name_ru}
-    +if('el.name_ru !== el.full_name_ru')
+    +if('el.country && el.country.name')
+      p.subheader-h3 {el.country.name}
+    +if('el.name_ru')
+      h3.h2 {el.name_ru}
+    +if('el.full_name_ru && el.name_ru && el.name_ru !== el.full_name_ru')
       p.p {el.full_name_ru}
+
 
   .btn-wrap
     Button(
@@ -79,7 +83,11 @@ CardWrapper
       display: none
 
 .slider-item
-  padding: 23px 19px
+  padding:
+    top: 19px
+    right: 19px
+    bottom: 23px
+    left: 19px
   position: relative
   display: flex
   flex-direction: column
@@ -97,14 +105,18 @@ CardWrapper
     background-blend-mode: multiply
     @mixin cards_decor__img
 
-    & .h2, .p
+    & .h2, .p, .subheader-h3
       color: white
 
 .head
-  display: grid
-  grid-auto-flow: row
-  row-gap: 5px
+  display: block
   margin-bottom: 25px
 
+  & .subheader-h3
+    margin-top: 0
+    margin-bottom: 10px
+
+  & .h2
+    margin-bottom: 5px
 
 </style>

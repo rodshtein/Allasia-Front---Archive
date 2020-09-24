@@ -54,7 +54,7 @@ svelte:head
     .item
       +if('item.branch && item.branch.name')
         .branch {item.branch.name}
-      a(alt='{item.name}' href='{PAGE.path}/{item.id}') {item.name}
+      a(alt='{item.name}' rel=prefetch href='{PAGE.path}/{item.id}') {item.name}
 
 
 </template>

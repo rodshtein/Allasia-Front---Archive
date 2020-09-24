@@ -1,66 +1,11 @@
-<script context="module">
-  // Here we import the graphql client
+<script >
+
+  import { query } from "svelte-apollo";
   import { client } from "../utils";
-  import { gql } from "apollo-boost";
-
-  const INITDATA = gql`
-    {
-      _allFeedbackQuotesMeta { count },
-      allMedicalBranches (sortBy:name_ASC) {
-        name
-        children {
-          name
-        }
-        parent {
-          name
-        }
-      }
-    }`;
-
-  const BRANCHES = gql`{
-    allMedicalBranches (sortBy:name_ASC) {
-      name
-      id
-      pages {
-        id
-        name
-      }
-      children {
-        name
-        id
-      }
-      parent {
-        name
-        id
-      }
-    }
-  }`;
-
-  const QUOTE_COUNT = gql`{
-    _allFeedbackQuotesMeta { count }
-  }`;
-
-
-  export async function preload() {
-    return {
-      cache: await client.query({
-        query: INITDATA
-      })
-    };
-  }
-
-</script>
-
-<script>
-  // Appolo
-  import { onMount } from "svelte";
-  import { restore, query, } from "svelte-apollo";
-  export let cache;
-
-  restore(client, INITDATA, cache.data);
+  import { BRANCHES, QUOTE_COUNT } from '../queries';
 
   let branchesQuery = query(client, { query: BRANCHES });
-  let quoteCountQuery = query(client, { query: QUOTE_COUNT });
+
 
   // components
   import Tel from '../components/Tel.svelte';
@@ -123,7 +68,7 @@ CardWrapper
 
 .devider
 
-Quote('{quoteCountQuery}')
+Quote
 
 CardWrapper
   .white_card

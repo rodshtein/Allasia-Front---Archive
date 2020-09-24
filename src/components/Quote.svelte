@@ -1,67 +1,54 @@
 <script>
-  import { gql } from "apollo-boost";
   import { query } from "svelte-apollo";
   import { client } from "../utils";
+  import { QUOTE, QUOTE_COUNT } from '../queries';
 
   // components
   import Button from './Button.svelte';
   import FeedbackPopup from './Popups-feedback.svelte';
 
-  export let quoteCountQuery;
-
-  const QUOTE = gql`
-    query ($int: Int){
-      allFeedbackQuotes ( skip: $int  first: 1 ) {
-        quote
-        feedback {
-          header
-          name
-          age
-          date
-          city {
-            name
-          }
-          country {
-            name
-          }
-          review {
-            document
-          }
-          gallery {
-            alt
-            img {
-              publicUrl
-            }
-          }
-        }
-      },
-    }`;
-
-
-  let animateClass;
-  let count = quoteCountQuery ? $quoteCountQuery.data._allFeedbackQuotesMeta.count: 2;
-  let intArr = shuffle(Array.from(Array(count).keys()));
-  let intCount = 0;
-  let int = intArr[intCount];
-  let showFeedback = false;
-  let feedbackBtnOff = false;
-  let quoteQuery = query(client, {
-      query: QUOTE,
-      variables: {int}
+  let quoteCountQuery = query(client, {
+      query: QUOTE_COUNT,
     });
 
-  $: quoteQuery.refetch({ int });
+  let quoteQuery;
+  let animateClass;
+  let count;
+  let intArr;
+  let intCount = 0;
+  let int = 0;
+  let showFeedback = false;
+  let feedbackBtnOff = false;
+
+  $: quoteQuery = query(client, {
+        query: QUOTE,
+        variables: {int}
+      })
+
+
+  $quoteCountQuery.then (
+    result => {
+      count = result.data._allFeedbackQuotesMeta.count
+      intArr = shuffle(Array.from(Array(count).keys()))
+      int = intArr[intCount]
+    }
+  )
+
+
+  //$: quoteQuery.refetch({ int });
 
 
   function handleClick() {
-		intCount = intCount != intArr.length ? ++intCount : 0;
+		intCount = intCount != intArr.length-1 ? ++intCount : 0;
     int = intArr[intCount];
     animateClass = 'mask'
     feedbackBtnOff= true
-    quoteQuery.refetch().then(function result(){
+
+    $quoteQuery.then(result => {
       animateClass = ''
       feedbackBtnOff = false
     })
+
 	}
 
   let blockHeight = 160;
@@ -85,22 +72,27 @@
 .quote_block
   img(alt="quote icon" src="illustration/quote.svg")
   .quote-wrapper(style='min-height: {blockHeight}px')
-    +await('$quoteQuery')
+    +await('$quoteCountQuery')
       p Загрузка…
-
       +then ('result')
-        +if('result.data.allFeedbackQuotes.length')
-          div(class='{animateClass}' use:setParentHight)
-            .author
-              b {result.data.allFeedbackQuotes[0].feedback.name}
-              | , {result.data.allFeedbackQuotes[0].feedback.city.name}
-            .quote  {result.data.allFeedbackQuotes[0].quote}
+        +await('$quoteQuery')
+          p Загрузка…
+          +then ('result')
+            +if('result && result.data.allFeedbackQuotes.length')
+              div(class='{animateClass}' use:setParentHight)
+                .author
+                  b {result.data.allFeedbackQuotes[0].feedback.name}
+                  | , {result.data.allFeedbackQuotes[0].feedback.city.name}
+                .quote  {result.data.allFeedbackQuotes[0].quote}
 
-          +else
-            p Что-то пошло не так
+              +else
+                p Что-то пошло не так
+
+          +catch('error')
+            pre {JSON.stringify(error, 0, 2)}
 
       +catch('error')
-        pre {error}
+        pre {JSON.stringify(error, 0, 2)}
 
   Button(
     size='small'
@@ -113,12 +105,13 @@
     iconR='spinner'
     on:click='{handleClick}')
 
-+await('$quoteQuery then result')
-  +if('result.data.allFeedbackQuotes[0].feedback')
-    FeedbackPopup(
-      data='{result.data.allFeedbackQuotes[0].feedback}'
-      bind:showFeedback!='{showFeedback}'
-    )
++await('$quoteCountQuery then result')
+  +await('$quoteQuery then result')
+    +if('result.data.allFeedbackQuotes[0].feedback')
+      FeedbackPopup(
+        data='{result.data.allFeedbackQuotes[0].feedback}'
+        bind:showFeedback!='{showFeedback}'
+      )
 
 </template>
 

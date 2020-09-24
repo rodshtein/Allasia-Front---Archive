@@ -1,17 +1,14 @@
 <script>
   export let branchesQuery;
 
+  import { branchId } from './Store-branches.js';
 
-  import BranchesPopup from './Popups-branches.svelte';
-  import { tick } from 'svelte';
 
   let showBranch = false;
-  let branchId = false;
 
-	const toggle = async (id) => {
-		branchId = id
-		await tick();
-		showBranch=!showBranch
+
+	const showMenu = async (id) => {
+		$branchId = id
 	}
 </script>
 
@@ -26,7 +23,7 @@
           +if('!baranch.parent')
             li
               button.items(
-                on:click!='{() => toggle(baranch.id) }'
+                on:click!='{() => showMenu(baranch.id) }'
               ) {baranch.name}
 
       +catch('error')

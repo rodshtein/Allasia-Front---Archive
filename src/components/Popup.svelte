@@ -35,7 +35,10 @@ function fix_content(param) {
     container = document.getElementById('sapper');
 
   if (!window.fix_content__content_scroll) {
-    window.fix_content__content_scroll = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    window.fix_content__content_scroll
+      = window.pageYOffset
+      || docEl.scrollTop
+      || body.scrollTop;
   }
 
   if (param) {

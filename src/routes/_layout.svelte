@@ -8,7 +8,7 @@
 
 	onMount(async () => {
     NProgress.configure({
-			parent: "#sapper",
+			// parent: "#sapper", // set class .nprogress-custom-parent
 			showSpinner: true
 		});
     preloading.subscribe(loading => {
