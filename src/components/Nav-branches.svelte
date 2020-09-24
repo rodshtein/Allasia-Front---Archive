@@ -118,7 +118,7 @@ Popup(
   on:click='{ clickHandler }'
 )
   +if('menuBrunchName')
-    h2.h2 {menuBrunchName}
+    h2.h3 {menuBrunchName}
   ul.slider
     +if('menuPages')
       +each('menuPages as el')
@@ -143,6 +143,9 @@ Popup(
 
 <style lang='postcss'>
 @import "../style/mixins.sss"
+.h3
+  max-width: 300px
+
 .slider
   display: grid
   column-gap: 15px
