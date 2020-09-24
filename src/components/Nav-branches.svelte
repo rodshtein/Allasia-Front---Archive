@@ -14,7 +14,7 @@ let queryResult;
 let menuHeader;
 let menuBrunchName;
 let menuPages;
-let menuParentName;
+let backButtonName;
 let menuParentId;
 let menuChildren;
 
@@ -31,27 +31,29 @@ function findChildrenById(id) {
 
   if(id){
     let item = queryResult.find(item => item.id == id);
-    console.log(item)
+
     menuHeader = null
     menuBrunchName = item.name
     menuPages = item.pages
 
-    if (item.parent) {
-      menuParentName = item.parent.name
-      menuParentId = item.parent.Id
-    }
+    backButtonName = item.parent
+    ? item.parent.name
+    : 'Все разделы';
+
+    menuParentId = item.parent ? item.parent.id : null;
+
     if (item.children.length) menuChildren = item.children;
 
 
   } else {
-    let item = queryResult.filter(item => !item.parent);
+    let items = queryResult.filter(item => !item.parent);
 
     menuHeader = 'Разделы медицины'
     menuBrunchName = null
     menuPages = null
-    menuParentName = null
+    backButtonName = null
     menuParentId = null
-    if (item.children.length) menuChildren = item.children;
+    menuChildren = items
 
   }
 
@@ -112,25 +114,29 @@ function clickHandler() {
 Popup(
   bind:show!='{ $showMenu }'
   header='{ menuHeader }'
-  btnText='{ menuParentName }'
+  btnText='{ backButtonName }'
   on:click='{ clickHandler }'
 )
+  +if('menuBrunchName')
+    h2.h2 {menuBrunchName}
   ul.slider
     +if('menuPages')
       +each('menuPages as el')
         li
           //- TODO Убрать попап при переходе на страницу
-          a.items(
+          a.items.page(
             href=`/medical-pages/{el.id}`
             on:click!='{() => $showMenu = false}'
-          ) {el.name}
+          )
+            span {el.name}
 
     +if('menuChildren')
       +each('menuChildren as el')
         li
-          button.items(
+          button.items.branch(
             on:click!='{() => $branchId = el.id }'
-          ) {el.name}
+          )
+            span {el.name}
 
 
 </template>
@@ -142,11 +148,10 @@ Popup(
   column-gap: 15px
   row-gap: 5px
   list-style: none
-  padding: 0 15px
-  grid-auto-flow: column
-  grid-template-rows: repeat(7, 44px)
-  grid-template-columns: repeat(3, max-content)
-  width: max-content
+  padding: 0
+  grid-auto-flow: row
+
+
 
 .items
   display: flex
@@ -154,8 +159,9 @@ Popup(
   align-items: center
   padding: 0 15px
   min-height: 44px
-  width: 100%
+  width: 320px
 
+  text-decoration: none
   color: var(--LIGHT-BLACK)
   border-radius:
     var(--radius--menu-item)
@@ -173,12 +179,22 @@ Popup(
   line-height: 110%
   @mixin shadow
 
-  &:after
+  &.branch:after
     content: url("/icons/25/arrow-r.svg")
+
+  &.page:after
+    content: url("/icons/25/new-page.svg")
 
   &:hover
     border-color: var(--color--btn-border---active)
 
   &:active
     transform: translateY(2px)
+
+  & span
+    overflow: hidden
+    white-space: nowrap
+    display: block
+    text-overflow: ellipsis
+
 </style>
