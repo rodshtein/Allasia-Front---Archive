@@ -160,6 +160,7 @@
   import { restore, query, } from "svelte-apollo";
 
   // components
+  import { branchId } from '../../components/Store-branches.js';
   import Button from '../../components/Button.svelte';
   import Popup from '../../components/Popup.svelte';
   import Descripton from '../../components/Cards-descripton.svelte';
@@ -207,6 +208,12 @@
     return haveUniqName || haveAdName || haveMoreThanOneDisease
   };
 
+  const showMenu = async (id) => {
+		$branchId = null
+    $branchId = id
+	}
+
+
 </script>
 
 <template lang='pug'>
@@ -235,7 +242,9 @@ a.edit(
           size="mini",
           iconL='arrow-l'
           text="{data.branch.name}"
+          on:click!='{() => showMenu(data.branch.id) }'
         )
+
 
     +if('data.description')
       Descripton(

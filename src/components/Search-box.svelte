@@ -29,9 +29,6 @@
   left: 5px
   top: 5px
 
-
-
-
 input
   position: relative
   font-style: normal
@@ -52,13 +49,17 @@ input
   color: var(--color--txt-subheaders)
 
   &::-webkit-search-cancel-button
-    display: none
+    -webkit-appearance: none
+    cursor: pointer
+    content: url("/icons/17/x.svg")
+    display: block
+
 
   &::placeholder
     color: var(--color--txt-placeholder)
 
   &:hover
-    border-color: var(--color--btn-border---light-blue)
+    border-color: var(--color--btn-border---active)
 
 
 </style>

@@ -4,6 +4,7 @@ import { query } from "svelte-apollo";
 import { showMenu, branchId } from './Store-branches.js';
 import { BRANCHES } from '../queries';
 import Popup from './Popup.svelte';
+import SearchBox from './Search-box.svelte';
 
 
 let branchQuery = query(client, {
@@ -42,7 +43,7 @@ function findChildrenById(id) {
 
     menuParentId = item.parent ? item.parent.id : null;
 
-    if (item.children.length) menuChildren = item.children;
+    menuChildren = item.children.length ? item.children : null;
 
 
   } else {
@@ -117,14 +118,16 @@ Popup(
   btnText='{ backButtonName }'
   on:click='{ clickHandler }'
 )
+  .search_wrapper
+    SearchBox
   +if('menuBrunchName')
     h2.h3 {menuBrunchName}
   ul.slider
     +if('menuPages')
       +each('menuPages as el')
         li
-          //- TODO Убрать попап при переходе на страницу
           a.items.page(
+            rel=prefetch
             href=`/medical-pages/{el.id}`
             on:click!='{() => $showMenu = false}'
           )
@@ -143,6 +146,10 @@ Popup(
 
 <style lang='postcss'>
 @import "../style/mixins.sss"
+
+.search_wrapper
+  margin-bottom: 15px
+
 .h3
   max-width: 300px
 

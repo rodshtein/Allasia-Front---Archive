@@ -4,7 +4,8 @@
   import { branchId } from './Store-branches.js';
 
 	const showMenu = async (id) => {
-		$branchId = id
+    $branchId = null
+    $branchId = id
 	}
 </script>
 
