@@ -14,7 +14,7 @@
   let CH,WH;
   let showBtn = (CH,WH) => { return(CH-40 < WH) };
 
-  let description = serialize(JSON.parse(content))
+  $: description = serialize(JSON.parse(content))
 </script>
 
 <template lang='pug'>

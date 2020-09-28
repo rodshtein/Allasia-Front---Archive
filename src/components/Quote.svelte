@@ -34,10 +34,6 @@
     }
   )
 
-
-  //$: quoteQuery.refetch({ int });
-
-
   function handleClick() {
 		intCount = intCount != intArr.length-1 ? ++intCount : 0;
     int = intArr[intCount];

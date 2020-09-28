@@ -22,7 +22,7 @@ let menuChildren;
 $branchQuery.then(
   result => {
     queryResult = result.data.allMedicalBranches
-    console.log(result.data.allMedicalBranches)
+    // console.log(result.data.allMedicalBranches)
   }
 )
 

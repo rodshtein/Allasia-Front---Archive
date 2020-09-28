@@ -2,10 +2,9 @@
 
   import { query } from "svelte-apollo";
   import { client } from "../utils";
-  import { BRANCHES, QUOTE_COUNT } from '../queries';
+  import { BRANCHES} from '../queries';
 
   let branchesQuery = query(client, { query: BRANCHES });
-
 
   // components
   import Tel from '../components/Tel.svelte';

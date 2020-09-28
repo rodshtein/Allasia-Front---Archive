@@ -1,166 +1,33 @@
 <script context="module">
+  import { onMount } from 'svelte';
   import { client } from '../../utils';
-  import { gql } from 'apollo-boost';
+  import { MEDICAL_PAGE } from '../../queries';
 
-  const PAGE = gql`
-  query($id: ID!){
-      MedicalPage (where: {id: $id}) {
-        id
-        name
-        branch {
-          id
-          name
-          parent {
-            id
-            name
-            parent {
-              id
-              name
-              parent {
-                id
-                name
-                parent {
-                  id
-                  name
-                  parent {
-                    id
-                    name
-                  }
-                }
-              }
-            }
-          }
-        }
-        diseases {
-          id
-          name
-          ad_name
-        }
-        description {
-          id
-          document
-        }
-        procedures {
-          id
-          name
-          feature
-          description
-          duration
-          price {
-            id
-            price
-            conditions
-            country {
-              name
-            }
-          }
-        }
-        portfolio {
-          id
-          img {
-            id
-            publicUrl
-          }
-          alt
-          description
-        }
-        papers {
-          id
-          name
-          description {
-            id
-            document
-          }
-        }
-        technology {
-          id
-          name
-          description {
-            id
-            document
-          }
-          head_img {
-            id
-            publicUrl
-          }
-        }
-        clinics {
-          id
-          name_ru
-          full_name_ru
-          country {
-            id
-            name
-          }
-          head_img {
-            id
-            publicUrl
-          }
-        }
-        doctors {
-          id
-          name
-          specialty {
-            id
-            name
-          }
-          avatar {
-            id
-            publicUrl
-          }
-        }
-        feedback {
-          header
-          name
-          age
-          date
-          city {
-            id
-            name
-          }
-          country {
-            id
-            name
-          }
-          review {
-            id
-            document
-          }
-          gallery {
-            id
-            alt
-            img {
-              id
-              publicUrl
-            }
-          }
-        }
-      }
-    }
-  `;
 
-  export async function preload(page, session) {
-    const { slug } = page.params;
-    return {
-      SESSION_PAGE: page,
-      cache: await client.query({
-        query: PAGE,
+  export async function preload(page) {
+
+    let query = await client.query({
+        query: MEDICAL_PAGE,
         variables: {
-          id: slug
+          id: page.params.slug
         }
-      })
+      });
+
+    return {
+      PAGE: page,
+      DATA: query.data,
+      Q: query.data.MedicalPage,
     };
   }
 
 </script>
 
 <script>
-  // Appolo
-  import { onMount } from "svelte";
-  import { restore, query, } from "svelte-apollo";
+  export let PAGE;
+  export let DATA;
+  export let Q;
 
   // components
-  import { branchId } from '../../components/Store-branches.js';
   import Button from '../../components/Button.svelte';
   import Popup from '../../components/Popup.svelte';
   import Descripton from '../../components/Cards-descripton.svelte';
@@ -173,14 +40,20 @@
   import CallToAction from '../../components/Call-to-action.svelte';
 
 
-  export let cache;
-  export let SESSION_PAGE;
+  // set preloaded data to chache
+  onMount(()=> {
+    client.writeQuery({
+      query: MEDICAL_PAGE,
+      variables: {
+          id: PAGE.params.slug
+      },
+      data: DATA
+    } )
+  });
 
-  restore(client, PAGE, cache.data);
 
-  let pageQuery = query(client, { query: PAGE });
-  let data = $pageQuery.data.MedicalPage;
-
+  // Paint barnch treee
+  $: branch = Q.branch ? getBranch(Q.branch) : '';
 
   function getBranch (obj, name, count=0) {
     let inName = name ? ' / ' + name : '';
@@ -195,19 +68,16 @@
     }
   }
 
-  // Content
-  let branch = data.branch ? getBranch(data.branch) : '';
-
-
-  // Show chekers
-  let showDiseases = (item) => {
-    let haveMoreThanOneDisease = data.diseases.length > 1
-    let haveUniqName = item[0] && item[0].name !== data.name
-    let haveAdName = item[0] && data.diseases[0].ad_name !== null
+  let showDiseases = (data) => {
+    let el = data.diseases;
+    let haveMoreThanOneDisease = el.length > 1;
+    let haveUniqName = el[0] && el[0].name !== data.name;
+    let haveAdName = el[0] && el[0].ad_name !== null;
 
     return haveUniqName || haveAdName || haveMoreThanOneDisease
   };
 
+  import { branchId } from '../../components/Store-branches.js';
   const showMenu = async (id) => {
 		$branchId = null
     $branchId = id
@@ -217,78 +87,68 @@
 </script>
 
 <template lang='pug'>
+//- pre {JSON.stringify(DATA, 0, 2)}
 
-svelte:head
-  +if('data && data.name')
-    title {data.name}
-
-
-a.edit(
-  alt='Edit'
-  target='_blank'
-  href='https://tildateamtop.ru/admin{SESSION_PAGE.path}'
-) Edit
-
-+await('$pageQuery')
++if('!Q')
   p Что-то пошло не так…
-  +then('result')
-    header
-      +if('branch')
-        p.p {branch}
-      +if('branch')
-        h1.h1 {data.name}
-      +if('branch')
-        Button(
-          size="mini",
-          iconL='arrow-l'
-          text="{data.branch.name}"
-          on:click!='{() => showMenu(data.branch.id) }'
-        )
 
-
-    +if('data.description')
-      Descripton(
-        header = '{data.name}'
-        content = '{data.description.document}'
++if('Q')
+  header
+    +if('branch')
+      p.p {branch}
+      h1.h1 {Q.name}
+    +if('branch')
+      Button(
+        size="mini",
+        iconL='arrow-l'
+        text="{Q.branch.name}"
+        on:click!='{() => showMenu(Q.branch.id) }'
       )
 
-    +if('showDiseases(data.diseases)')
-      Diseases(
-        data='{data.diseases}'
-        pageName='{data.name}'
-      )
 
-    +if('data.procedures && data.procedures[0]')
-      Procedures(
-        data='{data.procedures}'
-      )
++if('Q.description')
+  Descripton(
+    header = '{Q.name}'
+    content = '{Q.description.document}'
+  )
 
-    CallToAction(
-      header='Не нашли нужную услугу?'
-      text='Напишите или позвоните, расскажите какая услуга вас интересует. Мы подберём для вас варианты и посчитаем стоимость.'
-      btnText='Открыть чат'
-      tel
-    )
++if('showDiseases(Q)')
+  Diseases(
+    data='{Q.diseases}'
+    pageName='{Q.name}'
+  )
 
-    +if('data.feedback && data.feedback[0]')
-      Feedback(
-        data='{data.feedback}'
-      )
++if('Q.procedures && Q.procedures[0]')
+  Procedures(
+    data='{Q.procedures}'
+  )
 
-    +if('data.clinics && data.clinics[0]')
-      Clinics(
-        data='{data.clinics}'
-      )
+CallToAction(
+  header='Не нашли нужную услугу?'
+  text='Напишите или позвоните, расскажите какая услуга вас интересует. Мы подберём для вас варианты и посчитаем стоимость.'
+  btnText='Открыть чат'
+  tel
+)
 
-    +if('data.doctors && data.doctors[0]')
-      Doctors(
-        data='{data.doctors}'
-      )
++if('Q.feedback && Q.feedback[0]')
+  Feedback(
+    data='{Q.feedback}'
+  )
 
-    +if('data.technology && data.technology[0]')
-      Technology(
-        data='{data.technology}'
-      )
++if('Q.clinics && Q.clinics[0]')
+  Clinics(
+    data='{Q.clinics}'
+  )
+
++if('Q.doctors && Q.doctors[0]')
+  Doctors(
+    data='{Q.doctors}'
+  )
+
++if('Q.technology && Q.technology[0]')
+  Technology(
+    data='{Q.technology}'
+  )
 
 
 
