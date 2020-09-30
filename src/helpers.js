@@ -54,3 +54,14 @@ export function serialize (data) {
   return serialize(data);
 }
 
+export function sort(arr){
+  if(arr.length < 2) return arr;
+
+  return arr.slice().sort((a, b) => {
+    a = a.name
+    b = b.name
+    if (a > b) return 1
+    if (a == b) return 0
+    if (a < b) return -1
+  });
+}

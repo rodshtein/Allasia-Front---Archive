@@ -2,7 +2,7 @@ import { gql } from "apollo-boost";
 
 export const BRANCHES = gql`
   {
-    allMedicalBranches (sortBy:name_ASC) {
+    allMedicalBranches {
       id
       name
       pages {

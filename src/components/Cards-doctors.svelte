@@ -11,15 +11,15 @@
 
     return arr.reduce((prevVal, item, i, arr)=>{
       let count = arr.length - i;
-      let lenght = (prevVal + item.name).length;
+      let length = (prevVal + item.name).length;
 
-      let per = lenght > max
+      let per = length > max
         ? ', +' + count
         : ', ';
 
       if (stop) return prevVal
 
-      if (lenght > max && i > 0 && !stop) {
+      if (length > max && i > 0 && !stop) {
         stop = true
         return prevVal + per
       }

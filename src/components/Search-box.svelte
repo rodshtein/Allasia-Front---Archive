@@ -1,10 +1,13 @@
 <script>
 import { client } from "../utils";
 import { BRANCHES } from '../queries';
+import { showMenu, searchResult } from './Store-branches.js';
+import { get } from 'svelte/store';
 
 let branches = [];
-let searchWord = '';
 let isDisabled = true;
+
+$: $searchResult, search();
 
 
 client.watchQuery({ query: BRANCHES }).subscribe(
@@ -20,12 +23,18 @@ client.watchQuery({ query: BRANCHES }).subscribe(
   (error) => console.log({ 'request error':error  })
 );
 
-function search (string) {
-  if(branches.lenght === 0 || string.lenght === 0) return
+function search () {
 
-  string = string.toLowerCase()
+  let string = $searchResult.searchString;
+  string = string ? string.trim().toLowerCase() : null;
 
-  let sortedPages = [];
+  if(!string) {
+    searchResult.pages = null
+    searchResult.branches = null
+    return
+  }
+
+  let filteredPages = [];
 
   let filteredBranches = branches.filter((branch) => {
     if(branch.pages.length) pageSearch(branch)
@@ -33,7 +42,7 @@ function search (string) {
   });
 
   /*
-  sortedPages = [
+  filteredPages = [
     // eg. branch
     {
       id: '';
@@ -59,9 +68,9 @@ function search (string) {
       })
 
       if(pageMatched || matchedDisease != undefined) {
-        let alreadyBranch = sortedPages.find((item) => item.id === branch.id);
+        let alreadyBranch = filteredPages.find((item) => item.id === branch.id);
         if(alreadyBranch == undefined){
-          sortedPages.push({
+          filteredPages.push({
             id: branch.id,
             name: branch.name,
             pages: [
@@ -75,18 +84,17 @@ function search (string) {
     });
   }
 
-  //  console.log(sortedPages)
-  // console.log(filteredFolders)
+  // console.log(filteredPages)
+  // console.log(filteredBranches)
+
+  searchResult.pages =  filteredPages
+  searchResult.branches = filteredBranches
+
 }
-
-
 
 function keyHandler(e) {
-  if (e.key === 'Enter' || e.keyCode === 13) {
-      console.clear()
-      search(searchWord)
-    }
-}
+    if(e.target.value) $showMenu = true
+  }
 
 </script>
 
@@ -95,12 +103,12 @@ function keyHandler(e) {
 .wrapper(class=`{ isDisabled ? 'disabled' : ''}`)
   input(
     type="search"
-    bind:value='{searchWord}'
+    bind:value='{$searchResult.searchString}'
     placeholder=`{ isDisabled
       ? 'Поиск, загружаю данные…'
       : 'Поиск, например: пластика'
     }`
-    on:keyup='{keyHandler}'
+    on:search='{keyHandler}'
     disabled='{isDisabled}'
     )
 </template>
