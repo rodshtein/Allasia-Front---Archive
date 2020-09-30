@@ -1,5 +1,5 @@
 <script>
-  export let branchesQuery;
+  export let branchQuery;
 
   import { branchId } from './Store-branches.js';
 
@@ -13,7 +13,7 @@
 
 .branches_block
   ul.slider
-    +await('$branchesQuery')
+    +await('$branchQuery')
       p Loading...
       +then('result')
         +each('result.data.allMedicalBranches as baranch')

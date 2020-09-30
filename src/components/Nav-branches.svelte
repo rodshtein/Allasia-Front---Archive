@@ -14,15 +14,14 @@ let branchQuery = query(client, {
 let queryResult;
 let menuHeader;
 let menuBrunchName;
-let menuPages;
 let backButtonName;
 let menuParentId;
+let menuPages;
 let menuChildren;
 
 $branchQuery.then(
   result => {
     queryResult = result.data.allMedicalBranches
-    // console.log(result.data.allMedicalBranches)
   }
 )
 
@@ -42,9 +41,7 @@ function findChildrenById(id) {
     : 'Все разделы';
 
     menuParentId = item.parent ? item.parent.id : null;
-
     menuChildren = item.children.length ? item.children : null;
-
 
   } else {
     let items = queryResult.filter(item => !item.parent);
@@ -55,52 +52,14 @@ function findChildrenById(id) {
     backButtonName = null
     menuParentId = null
     menuChildren = items
-
   }
 
   $showMenu = true;
 }
 
 
-
-let arr =  {
-  "id": "5eddc357d68e5559b055a20d",
-  "name": "Отоларингология (ЛОР)",
-  "pages": [
-    {
-      "id": "5ee7f90c08e719754698fda5",
-      "name": "Аденоиды",
-      "__typename": "Medical_page"
-    },
-    {
-      "id": "5ee7fa8308e719754698fdab",
-      "name": "Искривление носовой перегородки",
-      "__typename": "Medical_page"
-    },
-    {
-      "id": "5ee7faf308e719754698fdb1",
-      "name": "Полипозный синусит",
-      "__typename": "Medical_page"
-    },
-    {
-      "id": "5ee7fb5d08e719754698fdb7",
-      "name": "Сфеноидит",
-      "__typename": "Medical_page"
-    },
-    {
-      "id": "5ee7fbf208e719754698fdc1",
-      "name": "Тугоухость",
-      "__typename": "Medical_page"
-    }
-  ],
-  "children": [],
-  "parent": null,
-  "__typename": "Medical_branch"
-};
-
 // if id comes from the store
 $: findChildrenById($branchId)
-
 
 function clickHandler() {
   $branchId = menuParentId ? menuParentId : null;
@@ -109,7 +68,6 @@ function clickHandler() {
 </script>
 
 <template lang='pug'>
-
 
 
 Popup(

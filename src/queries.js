@@ -8,6 +8,11 @@ export const BRANCHES = gql`
       pages {
         id
         name
+        diseases {
+          id
+          name
+          ad_name
+        }
       }
       children {
         id

@@ -4,7 +4,7 @@
   import { client } from "../utils";
   import { BRANCHES} from '../queries';
 
-  let branchesQuery = query(client, { query: BRANCHES });
+  let branchQuery = query(client, { query: BRANCHES });
 
   // components
   import Tel from '../components/Tel.svelte';
@@ -40,7 +40,7 @@ svelte:head
   .search_wrapper
     SearchBox
 
-BranchesMenu('{branchesQuery}')
+BranchesMenu('{branchQuery}')
 
 .also_block
   h3.h3 Смотрите так же
