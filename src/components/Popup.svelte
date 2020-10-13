@@ -1,7 +1,5 @@
 <script>
 import { onMount } from 'svelte';
-import { fly } from 'svelte/transition';
-import { sineOut } from 'svelte/easing';
 import Button from './Button.svelte';
 import Header from './Popup-header.svelte';
 
@@ -45,6 +43,8 @@ function fix_content(param) {
     window.fix_scroll_value = scrollY;
     // Фиксируем контейнер
     container.classList.add('fixed');
+    container.setAttribute( 'aria-hidden', 'true');
+
     container.style.top = '-' + ( scrollY + 0 ) + 'px';
 
     document.body.scrollTop = 0;
@@ -63,7 +63,8 @@ function fix_content(param) {
     if (previouslyFocused) previouslyFocused.focus();
 
     // Убираем фикс
-  	container.classList.remove('fixed');
+    container.classList.remove('fixed');
+    container.removeAttribute( 'aria-hidden' );
     container.style.top = "";
 
     document.body.scrollTop = fix_scroll_value;
@@ -108,7 +109,7 @@ function handleKeydown(e) {
     use:portalAction
     )
     .wrapper
-      .body(in:fly='{{duration: 300, y: 100, opacity: 0.5, easing: sineOut}}')
+      .body
         Header(
           bind:show='{show}'
           header='{header}'
@@ -137,23 +138,22 @@ function handleKeydown(e) {
       width: 100%
       top: -100vh
       left: 0px
-      background: #f5f7ffa6
-      backdrop-filter: blur(0)
+      background: var(--MILK-BLUE)
       opacity: 0
       transition:
         opacity .4s ease-in,
         top .0s ease-in .4s
       z-index: 100
-      will-change: opacity, backdrop-filter
+      will-change: opacity
 
     &.fixed
       position: fixed
       width: 100%
 
       &:before
-        backdrop-filter: blur(20px)
         top: 0
-        opacity: 1
+        opacity: .9
+        will-change: opacity
         transition:
           opacity .5s ease-out,
           top .0s ease-out .0s
@@ -172,6 +172,11 @@ function handleKeydown(e) {
   justify-content: center
   margin: 20px
 
+  animation:
+    name: showUp, opacity
+    duration: 400ms, 500ms
+    timing-function: ease-out, ease-in
+
 .body
   display: block
   width: fit-content
@@ -182,7 +187,7 @@ function handleKeydown(e) {
   max-width: 600px
   overflow: hidden
 
-  background: #ffffffa6
+  background: #ffffff
   border: solid 1px var(--color--borders---popup)
   border-radius: var(--radius--popup)
   @mixin popup_shadow
@@ -197,4 +202,17 @@ function handleKeydown(e) {
     display: flex
     flex-direction: column
     padding: 15px
+
+
+@keyframes showUp
+  0%
+    transform: translateY(50px)
+  100%
+    transform: translateY(0px)
+
+@keyframes opacity
+  0%
+    opacity: 0
+  100%
+    opacity: 1
 </style>

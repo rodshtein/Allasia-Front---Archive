@@ -1,12 +1,14 @@
 <script>
 import { client } from "../utils";
-import { sort } from "../helpers";
+import { sort, numDeclension } from "../helpers";
 import { BRANCHES } from '../queries';
 import { tick } from 'svelte';
-import {
-  showMenu,
-  branchId,
-  searchResult } from './Store-branches.js';
+
+import { showMenu, branchId } from './Store-branches.js';
+import { searchInProgress, searchString, backPointId,
+  prevSearchString, searchResult } from './Store-search.js';
+
+// Components
 import Popup from './Popup.svelte';
 import SearchBox from './Search-box.svelte';
 
@@ -14,22 +16,12 @@ let branches;
 
 // Level Data
 let mainBranches;
-let menuHeader = 'Разделы медицины';
 let menuBrunchName;
-let backButtonName;
 let menuParentId;
+let currentLevelId;
 let menuPages;
 let menuBranches;
-let searchString;
 
-// search results
-let foundPages;
-let foundBranches;
-
-// if id comes from the store
-$: findChildrenById($branchId)
-$: $searchResult, setFirstLevelData()
-// $: console.log($searchResult)
 
 client.watchQuery({ query: BRANCHES }).subscribe(
   (result) => {
@@ -42,118 +34,181 @@ client.watchQuery({ query: BRANCHES }).subscribe(
   (error) => console.log({ 'request error':error  })
 );
 
-function prepareData(data){
-  branches = data
-  mainBranches = sort(data.filter(item => !item.parent));
-  setFirstLevelData()
+function prepareData(queryResult){
+  branches = queryResult
+  mainBranches = sort(queryResult.filter(item => !item.parent));
+  paintMainLevel()
 }
 
-async function setFirstLevelData(){
+function paintMainLevel(){
+  menuBrunchName = null
+  menuPages = null
+  menuParentId = null
+  menuBranches = mainBranches
+}
 
-  if($searchResult.searchString) {
-    menuPages = null
-    menuBranches = null
+function paintSubLevel() {
+  let item = branches.find(item => item.id == $branchId);
+  menuBrunchName = item.name
+  menuPages = sort(item.pages)
+  menuParentId = item.parent ? item.parent.id : null;
+  menuBranches = item.children.length ? sort(item.children) : null;
+}
 
-    searchString = `
-      Нашлось по запросу «${$searchResult.searchString}»:`
-    await tick();
-    foundBranches = searchResult.branches
-    foundPages = searchResult.pages
+// Paint Main Level When search
+$: $searchResult, searchHandler();
 
-  } else {
-    foundBranches = null
-    foundPages = null
+// Levels Paint by watch branchID
+$: $branchId, branchHandler();
 
-    searchString = null
-    menuHeader = 'Разделы медицины'
-    menuBrunchName = null
-    menuPages = null
-    backButtonName = null
-    menuParentId = null
-    menuBranches = mainBranches
+// Handlers
+function searchHandler(){
+  if( !$searchString || $searchInProgress ) return;
+  branchId.set(null)
+}
+
+function searchCleaner(){
+  if( $searchString && !$searchResult.success && !$searchInProgress ){
+    $searchString = '';
   }
 }
 
-
-function findChildrenById(id) {
-
-  if(!mainBranches) return
-
-  if(id){
-    let item = branches.find(item => item.id == id);
-
-    menuHeader = null
-    menuBrunchName = item.name
-    menuPages = sort(item.pages)
-    backButtonName = item.parent
-    ? item.parent.name
-    : 'Все разделы'; // TODO There we need check to search result
-    menuParentId = item.parent ? item.parent.id : null;
-    menuBranches = item.children.length ? sort(item.children) : null;
-
+function branchHandler(){
+  if($branchId){
+    paintSubLevel()
   } else {
-    setFirstLevelData()
+    paintMainLevel()
   }
-
-  $showMenu = true;
 }
 
+function backHandler() {
+  let id = $branchId === $backPointId
+    ? null
+    : menuParentId
+      ? menuParentId
+      : null;
 
-
-function clickHandler() {
-  $branchId = menuParentId ? menuParentId : null;
+  branchId.set(id);
 }
 
+// Reactive Pain Functions
+
+$: backButtonName = () => {
+  let sublevel = $branchId
+  ? branches.find(item => item.id == $branchId)
+  : null;
+
+  let name = sublevel
+  ? $branchId === $backPointId
+    ? 'Результаты поиска'
+    : sublevel.parent
+      ? sublevel.parent.name
+      : 'Все разделы'
+  : null;
+
+  return name;
+}
+
+$: foundPagesHeader = () => {
+    let length = $searchResult.count.pages;
+    let words = ['Нашлась',  'Нашлось', 'Нашлось'];
+    let sign = numDeclension(length, words)
+    let words2 = ['странца',  'страницы', 'страниц'];
+    let sign2 = numDeclension(length, words2)
+    return `${sign} ${length} ${sign2}`
+}
+
+$: foundBranchesHeader = () => {
+    let length = $searchResult.count.branches;
+    let words = ['Нашелся',  'Нашлось', 'Нашлось'];
+    let sign = numDeclension(length, words);
+    let words2 = ['раздел',  'раздела', 'разделов'];
+    let sign2 = numDeclension(length, words2);
+    return `${sign} ${length} ${sign2}`
+}
 </script>
 
 <template lang='pug'>
 
-
 Popup(
   bind:show!='{ $showMenu }'
-  header='{ menuHeader }'
-  btnText='{ backButtonName }'
-  on:click='{ clickHandler }'
+  header="{ $branchId ? null : 'Разделы медицины' }"
+  btnText='{ backButtonName() }'
+  on:click='{ backHandler }'
 )
-  .search_wrapper
-    SearchBox
-  +if('searchString')
-    h2.h3 {searchString}
-  +if('menuBrunchName')
-    h2.h3 {menuBrunchName}
+
+  //- If search is on we show search box only on top level
+  +if('!$branchId || (!$searchResult.success && $branchId)')
+    .search_wrapper
+      SearchBox
+
+  //- Show sublevel header only in sublevel
+  //- (defines by branch id)
+  +if('$branchId')
+    h2.h3 { menuBrunchName }
+  +if('$searchString && !$searchResult.success && !$searchInProgress')
+    p.p.info Ничего не нашлось
+    h2.h3 Все разделы
   ul.slider
 
-    +if('menuPages')
-      +each('menuPages as el')
-        li.items.page
-          a(
-            rel=prefetch
-            href=`/medical-pages/{el.id}`
-            on:click!='{() => $showMenu = false}'
-          )
-            span {el.name}
 
-    +if('foundPages')
-      +each('foundPages as item')
-        ul.folder
-          h4.folder-header {item.name}
-          +each('item.pages as el')
-            li.items.page
-              a(
-                rel=prefetch
-                href=`/medical-pages/{el.id}`
-                on:click!='{() => $showMenu = false}'
-              )
-                span {el.name}
+    //- Search block
+    //- Shows only if we search,
+    //- or view to first lvl (defines by branch id == null)
+    +if('!$branchId && $searchString')
+      +if('$searchResult.count.pages')
+        h2.h4 { foundPagesHeader() }
+        +each('$searchResult.pages as branch')
+          ul.folder
+            +if('branch.name')
+              h4.folder-header { branch.name }
+            +each('branch.pages as page')
+              li.items.page
+                a(
+                  rel=prefetch
+                  href=`/medical-pages/{page.id}`
+                  on:click!=`{() => {
+                      backPointId.set(page.id)
+                      showMenu.set(false)
+                    }}`)
+                  span { page.name }
 
-    +if('menuBranches')
-      +each('menuBranches as el')
-        li.items.branch
-          button(
-            on:click!='{() => $branchId = el.id }'
-          )
-            span {el.name}
+      +if('$searchResult.count.branches')
+        h2.h4 { foundBranchesHeader() }
+        +each('$searchResult.branches as branch')
+          ul.folder
+            +if('branch.name')
+              h4.folder-header { branch.name }
+            +each('branch.branches as branch')
+              li.items.branch
+                button( on:click!=`{() => {
+                    branchId.set(branch.id)
+                    backPointId.set(branch.id)
+                  }}`)
+                  span { branch.name }
 
+    //- Menu block
+    //- Shows only if search result is no success
+    //- or if we showing a second level (defines by branch id)
+    +if('!$searchResult.success || $branchId')
+      +if('menuPages')
+        +each('menuPages as page')
+          li.items.page
+            a(
+              rel=prefetch
+              href=`/medical-pages/{page.id}`
+              on:click!='{() => showMenu.set(false)}'
+            )
+              span {page.name}
+
+      +if('menuBranches')
+        +each('menuBranches as branch')
+          li.items.branch
+            button( on:click!=`{() => {
+              branchId.set(branch.id)
+              searchCleaner()
+              }}`)
+              span {branch.name}
 
 </template>
 
@@ -163,8 +218,14 @@ Popup(
 .search_wrapper
   margin-bottom: 15px
 
-.h3
-  max-width: 300px
+.h3, .h4
+  margin-right: 50px
+
+.h4
+  margin-bottom: 10px
+
+.info
+  margin-bottom: 20px
 
 .folder-header
   font-family: IBM Plex Sans

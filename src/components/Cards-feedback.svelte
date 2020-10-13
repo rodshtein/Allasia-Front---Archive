@@ -6,16 +6,10 @@
   import Button from './Button.svelte';
   import FeedbackPopup from './Popups-feedback.svelte';
   import { tick } from 'svelte';
-  import { serialize } from '../helpers.js';
+  import { serialize, numDeclension } from '../helpers.js';
 
   let showFeedback = false;
   let feedback = false;
-
-  function declOfNum(number) {
-    let cases = [2, 0, 1, 1, 1, 2];
-    let sign = ['год',  'года', 'лет'];
-    return sign[ ( number % 100 > 4 && number % 100 < 20 ) ? 2 : cases[ (number%10<5) ? number % 10 : 5 ] ];
-  }
 
 	const toggle = async (el) => {
 		feedback = el
@@ -29,7 +23,7 @@
 mixin procedureItem
   .head
     h3.h4 {el.header}
-    p.p {el.name}, {el.age} {declOfNum(el.age)}
+    p.p {el.name}, {el.age} {numDeclension(el.age)}
   .content
     +html('serialize(JSON.parse(el.review.document))')
 

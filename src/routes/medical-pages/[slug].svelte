@@ -1,8 +1,10 @@
 <script context="module">
   import { onMount } from 'svelte';
   import { client } from '../../utils';
+  import { getBranchPath } from '../../helpers';
   import { MEDICAL_PAGE } from '../../queries';
-
+  import { backPointId } from '../../components/Store-search';
+  import { showMenu } from '../../components/Store-branches';
 
   export async function preload(page) {
 
@@ -53,20 +55,7 @@
 
 
   // Paint barnch treee
-  $: branch = Q.branch ? getBranch(Q.branch) : '';
-
-  function getBranch (obj, name, count=0) {
-    let inName = name ? ' / ' + name : '';
-
-    for (let key in obj) {
-      if (obj['parent'] && !count) {
-        let currName = obj['name'] + inName;
-        return getBranch(obj['parent'], currName, ++count)
-      } else {
-        return obj['name'] + inName
-      }
-    }
-  }
+  $: branch = Q.branch ? getBranchPath(Q.branch) : '';
 
   let showDiseases = (data) => {
     let el = data.diseases;
@@ -78,9 +67,15 @@
   };
 
   import { branchId } from '../../components/Store-branches.js';
-  const showMenu = async (id) => {
-		$branchId = null
-    $branchId = id
+
+  function backHandler(){
+    if($backPointId === Q.id) {
+      branchId.set(null)
+      showMenu.set(true)
+    } else {
+      branchId.set(Q.branch.id)
+      showMenu.set(true)
+    }
 	}
 
 
@@ -101,8 +96,12 @@
       Button(
         size="mini",
         iconL='arrow-l'
-        text="{Q.branch.name}"
-        on:click!='{() => showMenu(Q.branch.id) }'
+        text=`{
+            $backPointId === Q.id
+            ? 'Результаты поиска'
+            : Q.branch.name
+          }`
+        on:click!='{backHandler}'
       )
 
 

@@ -1,14 +1,15 @@
 <script>
 import { client } from "../utils";
+import { orderSplice, getRootBranch } from "../helpers";
 import { BRANCHES } from '../queries';
-import { showMenu, searchResult } from './Store-branches.js';
-import { get } from 'svelte/store';
+import { showMenu } from './Store-branches.js';
+import {  searchInProgress,
+          searchString,
+          prevSearchString,
+          searchResult, } from './Store-search.js';
 
 let branches = [];
-let isDisabled = true;
-
-$: $searchResult, search();
-
+let disabled = true;
 
 client.watchQuery({ query: BRANCHES }).subscribe(
   (result) => {
@@ -16,33 +17,117 @@ client.watchQuery({ query: BRANCHES }).subscribe(
       console.log({ 'result error':result.errors })
     } else {
       branches = result.data.allMedicalBranches
-      isDisabled = false
+      disabled = false
       // console.log(result.data);
     }
   },
   (error) => console.log({ 'request error':error  })
 );
 
-function search () {
+$: $searchString, searchThrottle();
 
-  let string = $searchResult.searchString;
-  string = string ? string.trim().toLowerCase() : null;
+function searchThrottle() {
 
-  if(!string) {
-    searchResult.pages = null
-    searchResult.branches = null
+  // checks
+  if(
+    $searchInProgress ||
+    !branches.length ||
+    $prevSearchString === $searchString
+    ) return
+
+  if(!$searchString) {
+    prevSearchString.set(null)
+    searchResult.set({
+      success: false,
+      pages: null,
+      branches: null,
+      count: {
+        pages: null,
+        branches: null
+      }
+    })
     return
   }
 
-  let filteredPages = [];
 
-  let filteredBranches = branches.filter((branch) => {
+  searchInProgress.set(true)
+
+  setTimeout(() => {
+    searchInProgress.set(false)
+    if($searchString) {
+      search()
+      }
+    }, 1000);
+}
+
+
+
+
+function search () {
+
+  let string = $searchString;
+  string = string ? string.trim().toLowerCase() : null;
+
+  let foundBranches = [];
+  let foundPages = [];
+  let branchCount = 0;
+  let pageCount = 0;
+
+  /*
+    foundBranches = [
+      // eg. branch
+      {
+        id: '',       // 0 if root
+        name: '',
+        branches: [
+          {
+            id: '',
+            name: '',
+          }
+        ]
+      },
+    ]
+
+    Branch folder name = branch.parent ? branch.parent : 'root';
+
+
+    Pages folder name = branch.parent ? branch.parent : branch;
+
+
+  */
+
+  branches.forEach( branch => {
     if(branch.pages.length) pageSearch(branch)
-    return branch.name.toLowerCase().includes(string)
+
+    if (branch.name.toLowerCase().includes(string)) {
+      let rootBranch = getRootBranch(branch);
+      let alreadyBranch = foundBranches.find(
+          item => item.id === rootBranch.id
+        );
+      if(alreadyBranch) {
+        branchCount++
+        let item = {
+          id: branch.id,
+          name: branch.name,
+        };
+        orderSplice(alreadyBranch.branches, item, 'name')
+      } else {
+        branchCount++
+        let item = {
+          id: rootBranch.id,
+          name: rootBranch.name,
+          branches: [{
+            id: branch.id,
+            name: branch.name,
+          }]
+        };
+        orderSplice(foundBranches, item, 'name')
+      }
+    }
   });
 
   /*
-  filteredPages = [
+  foundPages = [
     // eg. branch
     {
       id: '';
@@ -67,49 +152,70 @@ function search () {
         return diseas.name.toLowerCase().includes(string)
       })
 
-      if(pageMatched || matchedDisease != undefined) {
-        let alreadyBranch = filteredPages.find((item) => item.id === branch.id);
-        if(alreadyBranch == undefined){
-          filteredPages.push({
-            id: branch.id,
-            name: branch.name,
+      if(pageMatched || matchedDisease) {
+        let rootBranch = getRootBranch(branch, 1);
+        let alreadyBranch = foundPages.find(
+            (item) => item.id === rootBranch.id
+          );
+
+        if(alreadyBranch){
+          pageCount++
+          orderSplice(alreadyBranch.pages, page, 'name')
+        } else {
+          pageCount++
+          let item = {
+            id: rootBranch.id,
+            name: rootBranch.name,
             pages: [
               page,
             ]
-          })
-        } else {
-          alreadyBranch.pages.push(page)
+          };
+          orderSplice(foundPages, item, 'name')
         }
       }
     });
   }
 
-  // console.log(filteredPages)
-  // console.log(filteredBranches)
+  searchResult.set({
+    success: pageCount + branchCount,
+    pages:foundPages,
+    branches:foundBranches,
+    count: {
+      pages: pageCount,
+      branches: branchCount,
+    }
+  })
 
-  searchResult.pages =  filteredPages
-  searchResult.branches = filteredBranches
-
+  prevSearchString.set($searchString)
 }
 
 function keyHandler(e) {
-    if(e.target.value) $showMenu = true
+  if (e.key === 'Enter' || e.keyCode === 13) {
+    if(e.target.value)
+    showMenu.set(true)
   }
+
+  if (e.key === 'Escape'|| e.keyCode == 27 ){
+    if ($searchString) {
+      e.stopPropagation()
+    }
+  }
+}
 
 </script>
 
-<!-- svelte-ignore css-unused-selector -->
+
 <template lang="pug">
-.wrapper(class=`{ isDisabled ? 'disabled' : ''}`)
+.wrapper(class=`{disabled}`)
   input(
     type="search"
-    bind:value='{$searchResult.searchString}'
-    placeholder=`{ isDisabled
+    bind:value='{$searchString}'
+    placeholder=`{ disabled
       ? 'Поиск, загружаю данные…'
       : 'Поиск, например: пластика'
     }`
-    on:search='{keyHandler}'
-    disabled='{isDisabled}'
+    on:keydown='{keyHandler}'
+    disabled='{disabled}'
     )
 </template>
 
@@ -154,6 +260,7 @@ input
     cursor: pointer
     content: url("/icons/17/x.svg")
     display: block
+    margin-right: 0px
 
 
   &::placeholder
