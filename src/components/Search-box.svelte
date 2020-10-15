@@ -49,7 +49,6 @@ function searchThrottle() {
     return
   }
 
-
   searchInProgress.set(true)
 
   setTimeout(() => {
@@ -59,9 +58,6 @@ function searchThrottle() {
       }
     }, 1000);
 }
-
-
-
 
 function search () {
 
@@ -208,6 +204,7 @@ function keyHandler(e) {
 <template lang="pug">
 .wrapper(class=`{disabled}`)
   input(
+    class=`{$searchInProgress ? 'in_action' : ''}`
     type="search"
     bind:value='{$searchString}'
     placeholder=`{ disabled
@@ -262,6 +259,8 @@ input
     display: block
     margin-right: 0px
 
+  &.in_action::-webkit-search-cancel-button
+    content: url("/icons/17/spinner.svg")
 
   &::placeholder
     color: var(--color--txt-placeholder)
@@ -284,7 +283,6 @@ input
   100%
     opacity: .2
     background: rgb(255 255 255 / 0)
-
 
 @keyframes icon-pulse
   0%

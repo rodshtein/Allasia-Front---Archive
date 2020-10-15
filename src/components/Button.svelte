@@ -105,6 +105,7 @@ a
   font-style: normal
   font-weight: normal
   text-align: center
+  white-space: nowrap
 
   border-width: 1px
   border-style: solid
@@ -153,9 +154,6 @@ a
       margin-top: 4px
       margin-left: -8px
       margin-right: -8px
-
-    & span
-      margin-bottom: 1px
 
     &.showIconL span
       margin-left: 12px

@@ -61,6 +61,10 @@ $: $searchResult, searchHandler();
 // Levels Paint by watch branchID
 $: $branchId, branchHandler();
 
+// Clear unsuccess search
+$: $showMenu, searchCleaner()
+
+
 // Handlers
 function searchHandler(){
   if( !$searchString || $searchInProgress ) return;
@@ -202,7 +206,7 @@ Popup(
               span {page.name}
 
       +if('menuBranches')
-        +each('menuBranches as branch')
+        +each('menuBranches as branch (branch.id)')
           li.items.branch
             button( on:click!=`{() => {
               branchId.set(branch.id)
