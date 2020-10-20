@@ -79,7 +79,25 @@ export function getBranchPath (obj, name, count=0) {
   }
 }
 
-export function getRootBranch (branch, level=0) {
+export function getRootBranch (branch, level=0, name='', id='') {
+  if (branch.parent) {
+    name = name ? branch.name + ' / ' + name : branch.name;
+    return getRootBranch(branch.parent, ++level, name, branch.id)
+  } else if(level){
+    name = name ? branch.name + ' / ' + name : branch.name;
+    return {
+      id: id ? id : branch.id,
+      name: name ? name : branch.name,
+    }
+  } else {
+    return {
+      id: 0,
+      name: '',
+    }
+  }
+}
+
+export function getRootBranch_old (branch, level=0) {
   if (branch.parent) {
     return getRootBranch(branch.parent, ++level)
   } else if(level){

@@ -2,14 +2,20 @@
   import { onMount } from 'svelte';
   import { client } from '../../utils';
   import { getBranchPath } from '../../helpers';
-  import { MEDICAL_PAGE } from '../../queries';
+  import { MEDICAL_PAGE__HEADER, MEDICAL_PAGE__FULL } from '../../queries';
   import { backPointId } from '../../components/Store-search';
   import { showMenu } from '../../components/Store-branches';
 
+
+
   export async function preload(page) {
+    var isBrowser=new Function(`
+        try { return this === window }
+        catch(e) { return false }`
+      );
 
     let query = await client.query({
-        query: MEDICAL_PAGE,
+        query: isBrowser() ? MEDICAL_PAGE__HEADER : MEDICAL_PAGE__FULL,
         variables: {
           id: page.params.slug
         }
@@ -45,14 +51,13 @@
   // set preloaded data to chache
   onMount(()=> {
     client.writeQuery({
-      query: MEDICAL_PAGE,
+      query: MEDICAL_PAGE__FULL,
       variables: {
           id: PAGE.params.slug
       },
       data: DATA
-    } )
+    })
   });
-
 
   // Paint barnch treee
   $: branch = Q.branch ? getBranchPath(Q.branch) : '';
@@ -117,10 +122,10 @@
     pageName='{Q.name}'
   )
 
-+if('Q.procedures && Q.procedures[0]')
-  Procedures(
-    data='{Q.procedures}'
-  )
+Procedures(
+  data='{Q.procedures}'
+  PAGE='{PAGE}'
+)
 
 CallToAction(
   header='Не нашли нужную услугу?'

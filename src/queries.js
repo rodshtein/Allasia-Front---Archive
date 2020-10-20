@@ -57,7 +57,7 @@ export const QUOTE = gql`
     },
   }`;
 
-export const MEDICAL_PAGE = gql`
+export const MEDICAL_PAGE__FULL = gql`
   query($id: ID!){
       MedicalPage (where: {id: $id}) {
         id
@@ -187,6 +187,72 @@ export const MEDICAL_PAGE = gql`
             img {
               id
               publicUrl
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  export const MEDICAL_PAGE__HEADER = gql`
+    query($id: ID!){
+      MedicalPage (where: {id: $id}) {
+        id
+        name
+        branch {
+          id
+          name
+          parent {
+            id
+            name
+            parent {
+              id
+              name
+              parent {
+                id
+                name
+                parent {
+                  id
+                  name
+                  parent {
+                    id
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+        diseases {
+          id
+          name
+          ad_name
+        }
+        description {
+          id
+          document
+        }
+      }
+    }
+  `;
+
+  export const MEDICAL_PAGE__PROCEDURES = gql`
+    query($id: ID!){
+      MedicalPage (where: {id: $id}) {
+        id
+        name
+        procedures {
+          id
+          name
+          feature
+          description
+          duration
+          price {
+            id
+            price
+            conditions
+            country {
+              name
             }
           }
         }

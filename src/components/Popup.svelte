@@ -179,12 +179,12 @@ function handleKeydown(e) {
 
 .body
   display: block
-  width: fit-content
+  width: 100%
   z-index: 1
   position: relative
   margin-bottom: 100px
   padding: 0
-  max-width: 600px
+  max-width: 800px
   overflow: hidden
 
   background: #ffffff

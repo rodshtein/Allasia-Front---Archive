@@ -112,6 +112,9 @@ a
   border-color: var(--color--btn-border)
   border-radius: 12px
 
+  /* overflow: hidden
+  width: 100% */
+
   transition: .2s
   cursor: pointer
 

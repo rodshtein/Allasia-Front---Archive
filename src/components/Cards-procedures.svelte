@@ -1,8 +1,40 @@
 <script>
   export let data;
+  export let PAGE;
+
+  import { onMount } from 'svelte';
+  import { client } from '../utils';
+  import { MEDICAL_PAGE__PROCEDURES } from '../queries';
 
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
+
+  let isMounted = false;
+
+  onMount(()=> { isMounted=true })
+
+  $: request(PAGE)
+
+  function request(PAGE){
+    if(isMounted){
+      client.watchQuery({
+        query: MEDICAL_PAGE__PROCEDURES,
+        variables: {
+            id: PAGE.params.slug
+        }
+      }).subscribe(
+        (result) => {
+          if (result.errors) {
+            console.log({ 'result error':result.errors })
+          } else {
+            console.log({ 'result':result })
+            data = result.data.MedicalPage.procedures
+          }
+        },
+        (error) => console.log({ 'request error':error  })
+      );
+    }
+  }
 
 </script>
 
@@ -29,20 +61,21 @@ mixin procedureItem
           +if('el.conditions')
             p.conditions {el.conditions}
 
-CardWrapper
-  CardHeader(header='Процедуры и стоимость')
-  +if('data[1]')
-    .slider
-      .slider-wrapper
-        +each('data as el')
-          .slider-item
-            +procedureItem
++if('data && data[0]')
+  CardWrapper
+    CardHeader(header='Процедуры и стоимость')
+    +if('data[1]')
+      .slider
+        .slider-wrapper
+          +each('data as el')
+            .slider-item
+              +procedureItem
 
-    +else
-      .slider-wrapper.single
-        +each('data as el')
-          .slider-item
-            +procedureItem
+      +else
+        .slider-wrapper.single
+          +each('data as el')
+            .slider-item
+              +procedureItem
 
 </template>
 

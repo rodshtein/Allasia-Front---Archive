@@ -2,7 +2,9 @@
 import { client } from "../utils";
 import { sort, numDeclension } from "../helpers";
 import { BRANCHES } from '../queries';
-import { tick } from 'svelte';
+
+import { slide } from 'svelte/transition';
+import { quadInOut, quadIn, quadOut } from 'svelte/easing';
 
 import { showMenu, branchId } from './Store-branches.js';
 import { searchInProgress, searchString, backPointId,
@@ -21,6 +23,8 @@ let menuParentId;
 let currentLevelId;
 let menuPages;
 let menuBranches;
+let styleMapBranches = {};
+let styleMapPages = {};
 
 
 client.watchQuery({ query: BRANCHES }).subscribe(
@@ -38,6 +42,7 @@ function prepareData(queryResult){
   branches = queryResult
   mainBranches = sort(queryResult.filter(item => !item.parent));
   paintMainLevel()
+  // showMenu.set(true)
 }
 
 function paintMainLevel(){
@@ -50,7 +55,7 @@ function paintMainLevel(){
 function paintSubLevel() {
   let item = branches.find(item => item.id == $branchId);
   menuBrunchName = item.name
-  menuPages = sort(item.pages)
+  menuPages = item.pages.length ? sort(item.pages) : null
   menuParentId = item.parent ? item.parent.id : null;
   menuBranches = item.children.length ? sort(item.children) : null;
 }
@@ -62,7 +67,9 @@ $: $searchResult, searchHandler();
 $: $branchId, branchHandler();
 
 // Clear unsuccess search
-$: $showMenu, searchCleaner()
+$: $showMenu, searchCleaner();
+
+
 
 
 // Handlers
@@ -117,7 +124,7 @@ $: foundPagesHeader = () => {
     let length = $searchResult.count.pages;
     let words = ['Нашлась',  'Нашлось', 'Нашлось'];
     let sign = numDeclension(length, words)
-    let words2 = ['странца',  'страницы', 'страниц'];
+    let words2 = ['страница',  'страницы', 'страниц'];
     let sign2 = numDeclension(length, words2)
     return `${sign} ${length} ${sign2}`
 }
@@ -130,6 +137,94 @@ $: foundBranchesHeader = () => {
     let sign2 = numDeclension(length, words2);
     return `${sign} ${length} ${sign2}`
 }
+
+// Calc columns group
+$: {
+  if(menuBranches && menuBranches.length) {
+    styleMapBranches = columnMark({L:menuBranches.length})
+  }
+}
+$: {
+  if(menuPages && menuPages.length) {
+    styleMapPages = columnMark({L:menuPages.length})
+  }
+}
+
+
+function columnMark(
+    {
+      L, // ← arr length
+      C = 3, // ← column count
+      f = 'first',
+      l = 'last',
+      m = 'middle',
+      o = 'only',
+      sep = '--',
+    }) {
+    // if(L == 0) return [o];
+
+    let map = [];
+    let col = {};
+
+    function mark(i, name){
+      map[i] = map[i] ? map[i]+' '+name : name;
+    }
+
+    for (let colCount = 1; colCount <= C; colCount++) {
+
+      // Actual
+      let rowsInCol = Math.ceil( L / colCount );
+      let currCol = 1;
+
+      // Store rows count in cur column conf
+      col[colCount] = rowsInCol;
+
+      // class names
+      let _f = colCount < 1 ? f : f+sep+colCount;
+      let _l = colCount < 1 ? l : l+sep+colCount;
+      let _o = colCount < 1 ? o : o+sep+colCount;
+
+      for (let i = 1; i <= L; i++) {
+        let x = i-1;
+        let colItemsSum = rowsInCol * currCol;
+        let isOnlyChild = L == i && L < colItemsSum;
+
+        // First column child
+        if(
+          i == colItemsSum - rowsInCol + 1 &&   // first in cur column
+          rowsInCol > 1 &&                      // ony if more than one row
+          !isOnlyChild                          // only if not only
+          ) mark(x, _f)
+
+
+        // last column child
+        if(
+          colItemsSum == i &&                   // last in curr col
+          rowsInCol > 1 ) mark(x, _l)           // ony if more than one row
+
+        if( i == L &&                           // last child
+          rowsInCol > 1 &&                      // ony if more than ome row
+          L != rowsInCol * (colCount - 1) + 1   // ony if not only one in col
+          ) mark(x, _l)
+
+        // only column child
+        if(
+          rowsInCol == 1 || isOnlyChild
+         ) mark(x, _o)
+
+        // Fill empty
+        if(!map[x]) map[x] = '';
+
+        // Define next column
+        if(i === rowsInCol * currCol) currCol++
+      }
+    }
+
+    return {map, col, L}
+}
+
+
+
 </script>
 
 <template lang='pug'>
@@ -153,66 +248,83 @@ Popup(
   +if('$searchString && !$searchResult.success && !$searchInProgress')
     p.p.info Ничего не нашлось
     h2.h3 Все разделы
-  ul.slider
 
-
-    //- Search block
-    //- Shows only if we search,
-    //- or view to first lvl (defines by branch id == null)
-    +if('!$branchId && $searchString')
-      +if('$searchResult.count.pages')
-        h2.h4 { foundPagesHeader() }
+  //- ############# SEARCH MENU #############
+  //- Shows only if we search,
+  //- or view to first lvl (defines by branch id == null)
+  +if('!$branchId && $searchString')
+    +if('$searchResult.count.pages')
+      h2.h4 { foundPagesHeader() }
+      .search-result-wrap
         +each('$searchResult.pages as branch')
-          ul.folder
+          .single-folder-wrap
             +if('branch.name')
               h4.folder-header { branch.name }
-            +each('branch.pages as page')
-              li.items.page
-                a(
-                  rel=prefetch
-                  href=`/medical-pages/{page.id}`
-                  on:click!=`{() => {
-                      backPointId.set(page.id)
-                      showMenu.set(false)
-                    }}`)
-                  span { page.name }
+              +else
+                h4.folder-header Корневой раздел
+            ul.single-folder
+              +each('branch.pages as page')
+                li.item-col.item.page
+                  a(
+                    rel=prefetch
+                    href=`/medical-pages/{page.id}`
+                    on:click!=`{() => {
+                        backPointId.set(page.id)
+                        showMenu.set(false)
+                      }}`)
+                    span { page.name }
 
-      +if('$searchResult.count.branches')
-        h2.h4 { foundBranchesHeader() }
+    +if('$searchResult.count.branches')
+      h2.h4 { foundBranchesHeader() }
+      .search-result-wrap
         +each('$searchResult.branches as branch')
-          ul.folder
+          .single-folder-wrap
             +if('branch.name')
               h4.folder-header { branch.name }
-            +each('branch.branches as branch')
-              li.items.branch
-                button( on:click!=`{() => {
-                    branchId.set(branch.id)
-                    backPointId.set(branch.id)
-                  }}`)
-                  span { branch.name }
+              +else
+                h4.folder-header Корневые разделы
+            ul.single-folder
+              +each('branch.branches as branch')
+                li.item-col.item.branch
+                  button( on:click!=`{() => {
+                      branchId.set(branch.id)
+                      backPointId.set(branch.id)
+                    }}`)
+                    span { branch.name }
 
-    //- Menu block
-    //- Shows only if search result is no success
-    //- or if we showing a second level (defines by branch id)
-    +if('!$searchResult.success || $branchId')
-      +if('menuPages')
-        +each('menuPages as page')
-          li.items.page
+  //- ############# DEFAULT MENU #############
+  //- Shows only if search result is no success
+  //- or if we showing a second level (defines by branch id)
+  +if('!$searchResult.success || $branchId')
+    +if('menuPages')
+      ul.folder(style=`
+        --columns--1:{styleMapPages.col[1]};
+        --columns--2:{styleMapPages.col[2]};
+        --columns--3:{styleMapPages.col[3]};`)
+        +each('menuPages as page, i')
+          li.item-grid.item.page(class='{styleMapPages.map[i]}')
             a(
               rel=prefetch
               href=`/medical-pages/{page.id}`
               on:click!='{() => showMenu.set(false)}'
             )
-              span {page.name}
+              span.ellipsis {page.name}
 
-      +if('menuBranches')
-        +each('menuBranches as branch (branch.id)')
-          li.items.branch
+    +if('menuBranches')
+      +if('menuPages')
+        h2.h4 Подразделы
+      ul.folder(style=`
+        --columns--1:{styleMapBranches.col[1]};
+        --columns--2:{styleMapBranches.col[2]};
+        --columns--3:{styleMapBranches.col[3]};`)
+        +each('menuBranches as branch, i')
+          li.item-grid.item.branch(class='{styleMapBranches.map[i]}')
             button( on:click!=`{() => {
-              branchId.set(branch.id)
-              searchCleaner()
-              }}`)
-              span {branch.name}
+                branchId.set(branch.id)
+                searchCleaner()
+                }}`)
+                span.ellipsis {branch.name}
+
 
 </template>
 
@@ -223,10 +335,9 @@ Popup(
   margin-bottom: 15px
 
 .h3, .h4
-  margin-right: 50px
-
-.h4
-  margin-bottom: 10px
+  margin:
+    right: 50px
+    bottom: 10px
 
 .info
   margin-bottom: 20px
@@ -242,45 +353,98 @@ Popup(
   color: var(--color--btn-txt---blue)
   margin-bottom: 8px
 
-.slider
-  display: grid
-  column-gap: 15px
-  row-gap: 5px
+/* Folder mixins */
+@define-mixin first-child
+  border-radius:
+    var(--radius--menu-item)
+    var(--radius--menu-item)
+    0 0
+@define-mixin last-child
+  border-radius:
+    0 0
+    var(--radius--menu-item)
+    var(--radius--menu-item)
+@define-mixin only-child
+  border-radius:
+    var(--radius--menu-item)
+
+.search-result-wrap
+  display: block
+  columns: 3
+  column-gap: 20px
+  @media ( 450px <= width < 650px )
+    columns: 2
+  @media  ( width < 450px )
+    columns: 1
+
+.single-folder-wrap
+  display: block
+  break-inside: avoid-column
+  padding-bottom: 25px
+
+.single-folder
+  display: block
   list-style: none
   padding: 0
-  grid-auto-flow: row
+  margin: 0
+
+  & .item-col
+    border-radius: 0
+    break-inside: avoid-column
+    &:first-child
+      @mixin first-child
+    &:last-child
+      @mixin last-child
+    &:only-child
+      @mixin only-child
+
 
 .folder
-  display: grid
   list-style: none
-  column-gap: 15px
-  row-gap: 0
   padding: 0
-  grid-auto-flow: row
   margin:
     top: 0
-    bottom: 15px
+    bottom: 0
 
-  & li
+  display: grid
+  grid-auto-flow: column
+  grid-column-gap: 20px
+  grid-template-rows: repeat(var(--columns--3), max-content)
+  grid-auto-columns: calc((100% - 40px)/3)
+  @media ( 450px <= width < 650px )
+    grid-auto-columns: calc((100% - 20px)/2)
+    grid-template-rows: repeat(var(--columns--2), max-content)
+  @media  ( width < 450px )
+    grid-auto-columns: 100%
+    grid-template-rows: repeat(var(--columns--1), max-content)
+
+  & .item-grid
     border-radius: 0
+    @media ( width >= 650px )
+      &.first--3
+        @mixin first-child
+      &.last--3
+        @mixin last-child
+      &.only--3
+        @mixin only-child
+    @media ( 450px <= width < 650px )
+      &.first--2
+        @mixin first-child
+      &.last--2
+        @mixin last-child
+      &.only--2
+        @mixin only-child
+    @media  ( width < 450px )
+      &.first--1
+        @mixin first-child
+      &.last--1
+        @mixin last-child
+      &.only--1
+        @mixin only-child
 
-  & li:first-of-type
-    border-radius:
-      var(--radius--menu-item)
-      var(--radius--menu-item)
-      0 0
 
-  & li:last-of-type
-    border-radius:
-      0 0
-      var(--radius--menu-item)
-      var(--radius--menu-item)
-
-  & li:only-of-type
-    border-radius:
-      var(--radius--menu-item)
-
-.items
+.item
+  position: relative
   border-radius:
     var(--radius--menu-item)
   border:
@@ -295,24 +459,28 @@ Popup(
     display: flex
     justify-content: space-between
     align-items: center
-    padding: 0 15px
+    padding: 10px 15px
     min-height: 44px
-    width: 320px
     text-decoration: none
     color: var(--LIGHT-BLACK)
     font-style: normal
     font-weight: normal
-    font-size: 15px
-    line-height: 110%
+    font-size: 14px
+    line-height: 130%
     cursor: pointer
     background-color: #fff0
     border: none
+    width: 100%
 
   &.branch button:after
     content: url("/icons/25/arrow-r.svg")
+    align-self: flex-start
+    margin-left: 12px
 
   &.page a:after
     content: url("/icons/25/new-page.svg")
+    align-self: flex-start
+    margin-left: 12px
 
   &:hover
     border-color: var(--color--btn-border---active)
@@ -321,9 +489,13 @@ Popup(
     transform: translateY(2px)
 
   & span
-    overflow: hidden
-    white-space: nowrap
     display: block
-    text-overflow: ellipsis
+    text-align: left
+
+    &.ellipsis
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+
 
 </style>

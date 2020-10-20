@@ -28,13 +28,6 @@ $: $searchString, searchThrottle();
 
 function searchThrottle() {
 
-  // checks
-  if(
-    $searchInProgress ||
-    !branches.length ||
-    $prevSearchString === $searchString
-    ) return
-
   if(!$searchString) {
     prevSearchString.set(null)
     searchResult.set({
@@ -49,14 +42,18 @@ function searchThrottle() {
     return
   }
 
+  if(
+    $searchInProgress ||
+    !branches.length ||
+    $prevSearchString === $searchString
+    ) return
+
   searchInProgress.set(true)
 
   setTimeout(() => {
     searchInProgress.set(false)
-    if($searchString) {
-      search()
-      }
-    }, 1000);
+    if($searchString) search()
+    }, 300);
 }
 
 function search () {

@@ -28,7 +28,7 @@
         +if('btnText')
           Button(size='mini' iconL='{btnIcon}' on:click text='{btnText}')
           +else
-            h1(class="{headerClass}") {header}
+            h1(class="{headerClass}" ) {header}
         button.closeBtn(on:click!='{() => show=!show}')
 
 </template>
@@ -36,6 +36,7 @@
 <style lang="postcss">
 header
   padding: 15px
+
   &.tall
     display: flex
     flex-direction: column
@@ -56,10 +57,13 @@ header
       content: url('/icons/25/x---w.svg')
 
 .wrapper
+  position: relative
   display: grid
+  min-height: 29px
   grid-template-columns: 1fr min-content
   column-gap: 30px
   justify-items: start
+  align-items: flex-start
 
 button
   background-color: transparent
