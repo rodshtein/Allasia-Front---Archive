@@ -5,11 +5,14 @@
   import { onMount } from 'svelte';
   import { client } from '../utils';
   import { MEDICAL_PAGE__PROCEDURES } from '../queries';
+  import { nailer } from './nailer';
+
 
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
 
   let isMounted = false;
+  let waiteResponse = false;
 
   onMount(()=> { isMounted=true })
 
@@ -17,6 +20,7 @@
 
   function request(PAGE){
     if(isMounted){
+      waiteResponse = true;
       client.watchQuery({
         query: MEDICAL_PAGE__PROCEDURES,
         variables: {
@@ -24,14 +28,17 @@
         }
       }).subscribe(
         (result) => {
+          waiteResponse = false
           if (result.errors) {
             console.log({ 'result error':result.errors })
           } else {
-            console.log({ 'result':result })
             data = result.data.MedicalPage.procedures
           }
         },
-        (error) => console.log({ 'request error':error  })
+        (error) => {
+          waiteResponse = false
+          console.log({ 'request error':error  })
+        }
       );
     }
   }
@@ -61,38 +68,48 @@ mixin procedureItem
           +if('el.conditions')
             p.conditions {el.conditions}
 
-+if('data && data[0]')
++if('data && data[0] && !waiteResponse')
   CardWrapper
     CardHeader(header='Процедуры и стоимость')
     +if('data[1]')
-      .slider
-        .slider-wrapper
+      .slider-wrapper
+        .slider(use:nailer)
           +each('data as el')
             .slider-item
               +procedureItem
 
       +else
-        .slider-wrapper.single
+        .slider.single
           +each('data as el')
             .slider-item
               +procedureItem
+
++if('!waiteResponse')
+  CardWrapper
+    CardHeader(header='')
+    .slider-wrapper
+      .slider
+        .slider-skeleton
+        .slider-skeleton
+        .slider-skeleton
+        .slider-skeleton
+
 
 </template>
 
 <style lang='postcss'>
 @import "../style/mixins.sss"
 
-.slider
+.slider-wrapper
   position: relative
-  // overflow: hidden
+  overflow: hidden
   padding: 0
   padding-bottom: 15px
-  overflow-x: scroll
   margin:
     left: -10px
     right: -10px
 
-.slider-wrapper
+.slider
   display: grid
   grid-auto-flow: column
   grid-column-gap: 20px
@@ -114,8 +131,14 @@ mixin procedureItem
 .slider-item
   padding: 23px 19px
   position: relative
+  user-select: none
   @mixin cards_decor__withe
 
+.slider-skeleton
+  padding: 23px 19px
+  position: relative
+  height: 200px
+  @mixin cards_decor__withe
 
 .header-wrap:after
   content: ''
