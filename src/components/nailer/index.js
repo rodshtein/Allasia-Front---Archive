@@ -7,10 +7,11 @@ import { animate, easing } from './animate'
 
 export function nailer(node, {
   time = 1430,
-  swicthPoint = 100,
+  switchPoint = 100,
   calcA = 60,
   calcB = 4,
   calcTimeout = 100,
+  rightShift = 0,
 }={}) {
   // initial props
   let downX, nodeX, pathX, pointerX;
@@ -112,9 +113,11 @@ export function nailer(node, {
         stepCords.push(node.offsetLeft*-1);
       } else {
         if (!stepCords.length) stepCords.push(0)
+        // align last item ro right
+        // adds right shift by the way
         if (stepCords.length >= 1 && nodeWidth > wrapWidth - margin * 2 ||
           nodeWidth > wrapWidth - margin * 2){
-            stepCords.push((nodeWidth - wrapWidth + margin * 2)/-1)
+            stepCords.push((nodeWidth - wrapWidth + margin * 2 + rightShift)/-1)
             break
         }
       }
@@ -264,7 +267,7 @@ export function nailer(node, {
     let duration = force * time;
 
     // prepare
-    let _duration = duration > swicthPoint &&
+    let _duration = duration > switchPoint &&
         // duration always more than 1000
         duration > 1000 &&
          // ↓ if is no scrollble set time to 1000
@@ -272,7 +275,7 @@ export function nailer(node, {
         startPos < 0
         ? duration
         : 1000;
-    let finish = duration > swicthPoint &&
+    let finish = duration > switchPoint &&
         // duration always more than 1000
         duration > 1000 &&
         // ↓ if is no scrollble set time to 1000
@@ -307,9 +310,10 @@ export function nailer(node, {
   return {
     update(props) {
       time = props.time
-      swicthPoint = props.swicthPoint
+      switchPoint = props.switchPoint
       calcA = props.calcA
       calcB = props.calcB
+      rightShift = props.rightShift
 
       if(props.nextBtn) props.nextBtn.onclick=()=>{slideTo('right')}
       if(props.prevBtn) props.prevBtn.onclick=()=>{slideTo('left')}

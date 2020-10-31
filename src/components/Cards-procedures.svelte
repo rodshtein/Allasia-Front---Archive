@@ -5,9 +5,9 @@
   import { onMount } from 'svelte';
   import { client } from '../utils';
   import { MEDICAL_PAGE__PROCEDURES } from '../queries';
-  import { nailer } from './nailer';
 
 
+  import Nailer from './nailer/Nailer.svelte';
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
 
@@ -72,9 +72,9 @@ mixin procedureItem
   CardWrapper
     CardHeader(header='Процедуры и стоимость')
     +if('data[1]')
-      .slider-wrapper
-        .slider(use:nailer)
-          +each('data as el')
+      Nailer
+        +each('data as el')
+          .item-wrap
             .slider-item
               +procedureItem
 
@@ -114,7 +114,6 @@ mixin procedureItem
   grid-auto-flow: column
   grid-column-gap: 20px
   grid-auto-columns: 83%
-  // grid-auto-columns: max-content
   margin: 0 10px
 
   &:last-child:after
@@ -128,11 +127,24 @@ mixin procedureItem
     &:last-child:after
       display: none
 
+.item-wrap
+  display: inline-block
+  width: calc(83% / 2)
+  margin-right: 15px
+
+  &:first-child .slider-item
+    margin-left: -30px
+
 .slider-item
   padding: 23px 19px
   position: relative
   user-select: none
+
+
+
+
   @mixin cards_decor__withe
+
 
 .slider-skeleton
   padding: 23px 19px
