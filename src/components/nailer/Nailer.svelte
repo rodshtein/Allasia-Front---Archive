@@ -14,7 +14,7 @@
 	}
 
 	let props = {
-    rightShift: -40
+    leftShift: 40
   };
 </script>
 
@@ -51,11 +51,7 @@
 .slider
   display: block
   white-space: nowrap
-  /* grid-auto-flow: column
-  grid-column-gap: 20px */
-  /* grid-auto-columns: calc(83% / 2) */
-  /* grid-template-columns: calc((83% / 2) + 40px) */
-  margin: 0 60px
+  margin: 0 30px
 
 .left-side, .right-side
   display: none

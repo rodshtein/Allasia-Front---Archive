@@ -30,6 +30,11 @@ export var easing = {
   easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
 }
 
+export function back(t) {
+  let x = 2;
+  return Math.pow(t, 2) * ((x + 1) * t - x)
+}
+
 const requestAnimationFrame = window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
       window.mozRequestAnimationFrame ||

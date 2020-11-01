@@ -1,9 +1,9 @@
 // pan swipe
 // reel ribbon
 
-import { onMount } from 'svelte';
+import { onMount, afterUpdate } from 'svelte';
 import { closest, morph } from './helpers'
-import { animate, easing } from './animate'
+import { animate, easing, back } from './animate'
 
 export function nailer(node, {
   time = 1430,
@@ -11,8 +11,10 @@ export function nailer(node, {
   calcA = 60,
   calcB = 4,
   calcTimeout = 100,
+  leftShift = 0,
   rightShift = 0,
 }={}) {
+
   // initial props
   let downX, nodeX, pathX, pointerX;
 
@@ -23,8 +25,6 @@ export function nailer(node, {
   function setBtn(node, direction){
     // node
   }
-
-
 
   function slideTo(direction){
 
@@ -108,6 +108,10 @@ export function nailer(node, {
     let nodeWidth = node.scrollWidth;
     let margin = node.offsetLeft;
 
+    // TODO need change array to set
+    // to prevent unique values (for multiline sliders)
+    // https://learn.javascript.ru/map-set#set
+
     for (let node of children) {
       if ( node.offsetLeft <= nodeWidth - wrapWidth - margin * 2 ){
         stepCords.push(node.offsetLeft*-1);
@@ -122,8 +126,15 @@ export function nailer(node, {
         }
       }
     }
-    // TODO Do we need it?
+
     stepCords.sort( (a, b) => b - a );
+    // adds left shift for all item except first and last
+    // we can do it only after sort, because slide can be multiline
+    // and item on next line can be closer to left/right than first
+    for (let i = 1; i < stepCords.length - 1 ; i++) {
+        stepCords[i] += leftShift
+    }
+
     node.NAILER.hiPoint = stepCords[stepCords.length-1]
     node.NAILER.stepCords = stepCords;
   }
@@ -155,14 +166,17 @@ export function nailer(node, {
   }
 
   // Reactive functions
-  onMount(() => {
+  onMount(init)
+  afterUpdate(init)
+
+  function init(){
     node.addEventListener('mousedown', onDown);
     node.addEventListener('touchstart', onDown);
     if(!node.NAILER) node.NAILER = {
       x: 0,
       hiPoint: 0,
       animationId: 1,
-      animDerection: null,
+      animDirection: null,
       isAnimated: false,
       isMovedTo: false,
     };
@@ -177,7 +191,7 @@ export function nailer(node, {
     node.style.zIndex = '1'
     calcSteps()
     checkOverflow()
-  });
+  }
 
   function onDown(e) {
 
@@ -273,7 +287,9 @@ export function nailer(node, {
          // ↓ if is no scrollble set time to 1000
         startPos > node.NAILER.hiPoint &&
         startPos < 0
-        ? duration
+        ? duration < 2000
+          ? duration
+          : 1000
         : 1000;
     let finish = duration > switchPoint &&
         // duration always more than 1000
@@ -285,13 +301,30 @@ export function nailer(node, {
         : closestPos
     let calc = finish - startPos;
 
-    node.NAILER.animDerection = finish < startPos ? 'left' : 'right';
+
+    node.NAILER.animDirection = finish < startPos ? 'left' : 'right';
+
+
+    function makeEaseOut(timing) {
+      return function(timeFraction) {
+        return 1 - timing(1 - timeFraction);
+      }
+    }
+
+
+    let timing = 0 < endPoint || endPoint < node.NAILER.hiPoint
+      ?  node.NAILER.hiPoint < startPos && startPos < 0
+        ? makeEaseOut(back)
+        : easing.easeOutQuart
+      : easing.easeOutQuart;
+
 
     animate({
       id: node.NAILER.animationId,
       node,
       duration: _duration,
-      timing: easing.easeOutQuart,
+      // timing: easing.easeOutQuart,
+      timing,
       draw: (progress) => {
         node.style.transform = `translate(${startPos + (progress * calc)}px)`
         node.NAILER.x = startPos + (progress * calc)
@@ -306,14 +339,14 @@ export function nailer(node, {
     window.removeEventListener('touchmove', onMove);
     window.removeEventListener('touchend', onUp);
   }
-
   return {
     update(props) {
-      time = props.time
-      switchPoint = props.switchPoint
-      calcA = props.calcA
-      calcB = props.calcB
-      rightShift = props.rightShift
+      if(props.time ) time = props.time
+      if(props.switchPoint) switchPoint = props.switchPoint
+      if(props.calcA) calcA = props.calcA
+      if(props.calcB) calcB = props.calcB
+      if(props.leftShift) leftShift = props.leftShift
+      if(props.rightShift) rightShift = props.rightShift
 
       if(props.nextBtn) props.nextBtn.onclick=()=>{slideTo('right')}
       if(props.prevBtn) props.prevBtn.onclick=()=>{slideTo('left')}

@@ -74,9 +74,12 @@ mixin procedureItem
     +if('data[1]')
       Nailer
         +each('data as el')
-          .item-wrap
-            .slider-item
-              +procedureItem
+          .slider-item
+            +procedureItem
+
+      Nailer
+        +each('Array(10) as el')
+          .slider-item(style='height: 150px')
 
       +else
         .slider.single
@@ -84,7 +87,8 @@ mixin procedureItem
             .slider-item
               +procedureItem
 
-+if('!waiteResponse')
+
++if('waiteResponse')
   CardWrapper
     CardHeader(header='')
     .slider-wrapper
@@ -127,21 +131,16 @@ mixin procedureItem
     &:last-child:after
       display: none
 
-.item-wrap
-  display: inline-block
-  width: calc(83% / 2)
-  margin-right: 15px
-
-  &:first-child .slider-item
-    margin-left: -30px
-
 .slider-item
   padding: 23px 19px
   position: relative
   user-select: none
 
-
-
+  display: inline-block
+  width: calc(83% / 2)
+  margin-right: 15px
+  &:last-child
+    margin-right: 0
 
   @mixin cards_decor__withe
 
