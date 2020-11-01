@@ -348,8 +348,12 @@ export function nailer(node, {
       if(props.leftShift) leftShift = props.leftShift
       if(props.rightShift) rightShift = props.rightShift
 
-      if(props.nextBtn) props.nextBtn.onclick=()=>{slideTo('right')}
-      if(props.prevBtn) props.prevBtn.onclick=()=>{slideTo('left')}
+      if(props.nextBtn) props.nextBtn.addEventListener(
+        'click',()=>slideTo('right')
+        );
+      if(props.prevBtn) props.prevBtn.addEventListener(
+        'click',()=>slideTo('left')
+        );
 
     },
     destroy() {

@@ -31,7 +31,7 @@ export var easing = {
 }
 
 export function back(t) {
-  let x = 2;
+  let x = 1.5;
   return Math.pow(t, 2) * ((x + 1) * t - x)
 }
 
