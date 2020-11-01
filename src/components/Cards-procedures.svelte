@@ -71,17 +71,14 @@ mixin procedureItem
 +if('data && data[0] && !waiteResponse')
   CardWrapper
     CardHeader(header='Процедуры и стоимость')
-    +if('data[1]')
+    +if('data.length')
       Nailer
         +each('data as el')
-          .slider-item
-            +procedureItem
+          +if('el.duration || el.description || el.price' )
+            .slider-item
+              +procedureItem
 
-      Nailer
-        +each('Array(10) as el')
-          .slider-item(style='height: 150px')
-
-      +else
+      +elseif('data[0].duration || data[0].description || data[0].price')
         .slider.single
           +each('data as el')
             .slider-item
@@ -135,7 +132,7 @@ mixin procedureItem
   padding: 23px 19px
   position: relative
   user-select: none
-
+  flex: 0 0 auto
   display: inline-block
   width: calc(83% / 2)
   margin-right: 15px

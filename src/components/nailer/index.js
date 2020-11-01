@@ -1,7 +1,7 @@
 // pan swipe
 // reel ribbon
 
-import { onMount, afterUpdate } from 'svelte';
+import { onMount, afterUpdate, tick } from 'svelte';
 import { closest, morph } from './helpers'
 import { animate, easing, back } from './animate'
 
@@ -140,10 +140,24 @@ export function nailer(node, {
   }
 
   function checkOverflow(){
+    // throttle
+    if(!node.NAILER.throttleCheckOverflow) {
+
+      node.NAILER.throttleCheckOverflow = true
+
+      setTimeout(()=> {
+        checkOverflow()
+        node.NAILER.throttleCheckOverflow = false
+      }, 50)
+
+      return
+    };
+
     // Events
     let e = (data) => new CustomEvent( "update", { detail: data });
 
     let lastCord = node.NAILER.stepCords[node.NAILER.stepCords.length-1];
+
     // Overside starts
     if( Math.round(node.NAILER.x) < 0 && !node.NAILER.overflowL) {
       node.NAILER.overflowL = true
@@ -167,12 +181,13 @@ export function nailer(node, {
 
   // Reactive functions
   onMount(init)
-  afterUpdate(init)
+  afterUpdate(()=>init(true))
 
-  function init(){
+  async function init(update){
+    await tick();
     node.addEventListener('mousedown', onDown);
     node.addEventListener('touchstart', onDown);
-    if(!node.NAILER) node.NAILER = {
+    if(!node.NAILER || update) node.NAILER = {
       x: 0,
       hiPoint: 0,
       animationId: 1,

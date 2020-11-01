@@ -102,8 +102,7 @@
     bottom: 10px
 
 .slider
-  display: block
-  white-space: nowrap
+  display: flex
   margin: 0 30px
 
 </style>
