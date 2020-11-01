@@ -287,9 +287,9 @@ export function nailer(node, {
          // ↓ if is no scrollble set time to 1000
         startPos > node.NAILER.hiPoint &&
         startPos < 0
-        ? duration < 2000
+        ? duration < 1500
           ? duration
-          : 1000
+          : 1500
         : 1000;
     let finish = duration > switchPoint &&
         // duration always more than 1000
