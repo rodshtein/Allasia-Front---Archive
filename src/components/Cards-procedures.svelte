@@ -78,6 +78,10 @@ mixin procedureItem
             .slider-item
               +procedureItem
 
+      //- Nailer
+      //-   +each('Array(5) as el')
+      //-     .slider-item(style='height: 150px')
+
       +elseif('data[0].duration || data[0].description || data[0].price')
         .slider.single
           +each('data as el')
@@ -136,10 +140,10 @@ mixin procedureItem
   display: inline-block
   width: calc(83% / 2)
   margin-right: 15px
+  @mixin cards_decor__withe
+
   &:last-child
     margin-right: 0
-
-  @mixin cards_decor__withe
 
 
 .slider-skeleton

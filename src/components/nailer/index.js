@@ -103,7 +103,7 @@ export function nailer(node, {
   function calcSteps(){
     // Calc step cords
     let stepCords=[];
-    let children = node.childNodes;
+    let children = node.children;
     let wrapWidth = node.parentNode.clientWidth;
     let nodeWidth = node.scrollWidth;
     let margin = node.offsetLeft;

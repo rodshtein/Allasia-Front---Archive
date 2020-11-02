@@ -103,6 +103,8 @@
 
 .slider
   display: flex
+  /* display: block
+  white-space: nowrap */
   margin: 0 30px
 
 </style>
