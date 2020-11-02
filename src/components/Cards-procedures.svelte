@@ -6,7 +6,8 @@
   import CardHeader from './Card-header.svelte';
 
   // remove empty elements from ssr data
-  data = remEmptyData(data)
+  // data will updated on user routing
+  $: data = remEmptyData(data)
 
   function remEmptyData(data){
     if(!data) return null
@@ -20,6 +21,11 @@
   }
 
   let length = (data, i) => data.length > i;
+  let cls = (name) => {
+    if(data.length > 2) return name
+    if(data.length < 2) return `${name} ${name}--1`
+    if(data.length < 3) return `${name} ${name}--2`
+  };
 
 </script>
 
@@ -52,8 +58,8 @@ mixin procedureItem
   CardWrapper
     CardHeader(header='Процедуры и стоимость')
     Nailer
-      +each('data as el')
-        .slider-item
+      +each('data as el (el.id)')
+        .div( class!='{cls("procedure-item")}' )
           +procedureItem
 
 
@@ -63,34 +69,7 @@ mixin procedureItem
 <style lang='postcss'>
 @import "../style/mixins.sss"
 
-.slider-wrapper
-  position: relative
-  overflow: hidden
-  padding: 0
-  padding-bottom: 15px
-  margin:
-    left: -10px
-    right: -10px
-
-.slider
-  display: grid
-  grid-auto-flow: column
-  grid-column-gap: 20px
-  grid-auto-columns: 83%
-  margin: 0 10px
-
-  &:last-child:after
-    content: ''
-    width: 17%
-
-  &.single
-    grid-auto-columns: 100%
-    margin: 0
-
-    &:last-child:after
-      display: none
-
-.slider-item
+.procedure-item
   padding: 23px 19px
   position: relative
   user-select: none
@@ -99,8 +78,23 @@ mixin procedureItem
   margin-right: 15px
   @mixin cards_decor__withe
 
+  @media(width < 650px)
+    width: calc(83%)
+
+  @media(width < 400px)
+    width: calc(100% - 30px)
+
+
   &:last-child
     margin-right: 0
+
+  &--1
+    width: 100%
+
+  &--2
+    width: calc((100% - 15px) / 2)
+    @media(width < 650px)
+      width: calc((83% - 15px))
 
 .header-wrap:after
   content: ''

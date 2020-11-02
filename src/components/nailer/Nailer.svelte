@@ -15,7 +15,7 @@
 	}
 
 	let props = {
-    leftShift: 40
+    leftShift: 15
   };
 </script>
 
@@ -47,8 +47,16 @@
 .container
   position: relative
   margin:
-    left: -30px
-    right: -30px
+    left: -15px
+    right: -15px
+  @media(width < 800px)
+    margin:
+      left: -30px
+      right: -30px
+    @media(width < 500px)
+      margin:
+        left: -15px
+        right: -15px
 
   .left-side, .right-side
     display: block
@@ -58,6 +66,8 @@
     background: var(--BLUE)
     z-index: 2
     transition: all .3s ease-out
+    @media(width < 800px)
+      display: none
 
   .left-side
     left: 0
@@ -99,13 +109,14 @@
   overflow: hidden
   padding: 0
   padding:
-    top: 10px
-    bottom: 10px
+    top: 15px
+    bottom: 15px
 
 .slider
   display: flex
-  /* display: block
-  white-space: nowrap */
-  margin: 0 30px
-
+  margin: 0 15px
+  @media(width < 800px)
+    margin: 0 30px
+  @media(width < 500px)
+    margin: 0 15px
 </style>
