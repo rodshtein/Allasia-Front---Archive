@@ -2,20 +2,15 @@
   import { onMount } from 'svelte';
   import { client } from '../../utils';
   import { getBranchPath } from '../../helpers';
-  import { MEDICAL_PAGE__HEADER, MEDICAL_PAGE__FULL } from '../../queries';
+  import { MEDICAL_PAGE } from '../../queries';
   import { backPointId } from '../../components/Store-search';
   import { showMenu } from '../../components/Store-branches';
 
 
-
   export async function preload(page) {
-    var isBrowser=new Function(`
-        try { return this === window }
-        catch(e) { return false }`
-      );
 
     let query = await client.query({
-        query: isBrowser() ? MEDICAL_PAGE__HEADER : MEDICAL_PAGE__FULL,
+        query: MEDICAL_PAGE,
         variables: {
           id: page.params.slug
         }
@@ -47,11 +42,10 @@
   import Technology from '../../components/Cards-technology.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
 
-
   // set preloaded data to chache
   onMount(()=> {
     client.writeQuery({
-      query: MEDICAL_PAGE__FULL,
+      query: MEDICAL_PAGE,
       variables: {
           id: PAGE.params.slug
       },
@@ -122,10 +116,10 @@
     pageName='{Q.name}'
   )
 
-Procedures(
-  data='{Q.procedures}'
-  PAGE='{PAGE}'
-)
++if('Q.procedures && Q.procedures[0]')
+  Procedures(
+    data='{Q.procedures}'
+  )
 
 CallToAction(
   header='Не нашли нужную услугу?'

@@ -39,6 +39,7 @@
     .slider(use:nailer='{props}' on:update='{eventHandler}')
       slot
 
+
 </template>
 
 <style lang='postcss'>

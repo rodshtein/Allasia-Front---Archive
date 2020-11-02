@@ -1,51 +1,31 @@
 <script>
   export let data;
-  export let PAGE;
-
-  import { onMount } from 'svelte';
-  import { client } from '../utils';
-  import { MEDICAL_PAGE__PROCEDURES } from '../queries';
-
 
   import Nailer from './nailer/Nailer.svelte';
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
 
-  let isMounted = false;
-  let waiteResponse = false;
+  // remove empty elements from ssr data
+  data = remEmptyData(data)
 
-  onMount(()=> { isMounted=true })
-
-  $: request(PAGE)
-
-  function request(PAGE){
-    if(isMounted){
-      waiteResponse = true;
-      client.watchQuery({
-        query: MEDICAL_PAGE__PROCEDURES,
-        variables: {
-            id: PAGE.params.slug
-        }
-      }).subscribe(
-        (result) => {
-          waiteResponse = false
-          if (result.errors) {
-            console.log({ 'result error':result.errors })
-          } else {
-            data = result.data.MedicalPage.procedures
-          }
-        },
-        (error) => {
-          waiteResponse = false
-          console.log({ 'request error':error  })
-        }
-      );
-    }
+  function remEmptyData(data){
+    if(!data) return null
+    let arr = [];
+    data.forEach(item => {
+      if(item.duration || item.description || item.price.length) {
+        arr.push(item)
+      }
+    });
+    return arr
   }
+
+  let length = (data, i) => data.length > i;
 
 </script>
 
 <template lang='pug'>
+
+
 mixin procedureItem
   .wrap
     .header-wrap
@@ -68,36 +48,14 @@ mixin procedureItem
           +if('el.conditions')
             p.conditions {el.conditions}
 
-+if('data && data[0] && !waiteResponse')
++if('data && data[0]')
   CardWrapper
     CardHeader(header='Процедуры и стоимость')
-    +if('data.length')
-      Nailer
-        +each('data as el')
-          +if('el.duration || el.description || el.price' )
-            .slider-item
-              +procedureItem
+    Nailer
+      +each('data as el')
+        .slider-item
+          +procedureItem
 
-      //- Nailer
-      //-   +each('Array(5) as el')
-      //-     .slider-item(style='height: 150px')
-
-      +elseif('data[0].duration || data[0].description || data[0].price')
-        .slider.single
-          +each('data as el')
-            .slider-item
-              +procedureItem
-
-
-+if('waiteResponse')
-  CardWrapper
-    CardHeader(header='')
-    .slider-wrapper
-      .slider
-        .slider-skeleton
-        .slider-skeleton
-        .slider-skeleton
-        .slider-skeleton
 
 
 </template>
@@ -137,20 +95,12 @@ mixin procedureItem
   position: relative
   user-select: none
   flex: 0 0 auto
-  display: inline-block
   width: calc(83% / 2)
   margin-right: 15px
   @mixin cards_decor__withe
 
   &:last-child
     margin-right: 0
-
-
-.slider-skeleton
-  padding: 23px 19px
-  position: relative
-  height: 200px
-  @mixin cards_decor__withe
 
 .header-wrap:after
   content: ''
