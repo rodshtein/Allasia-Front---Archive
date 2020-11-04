@@ -1,6 +1,7 @@
 <script>
   export let data;
 
+  import Nailer from './nailer/Nailer.svelte';
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
   import Button from './Button.svelte';
@@ -15,40 +16,33 @@
 		feedback = el
 		await tick();
 		showFeedback=!showFeedback
-	}
+  }
 
+  let cls = (name) => {
+    if(data.length > 2) return name
+    if(data.length < 2) return `${name} ${name}--1`
+    if(data.length < 3) return `${name} ${name}--2`
+  };
 </script>
 
 <template lang='pug'>
-mixin procedureItem
-  .head
-    h3.h4 {el.header}
-    p.p {el.name}, {el.age} {numDeclension(el.age)}
-  .content
-    +html('serialize(JSON.parse(el.review.document))')
-
-  .btn-wrap
-    Button(
-      size='small'
-      text='Полный отзыв'
-      on:click!='{() => toggle(el) }'
-    )
-
 CardWrapper
   CardHeader(header='Отзывы')
-  +if('data[1]')
-    .slider
-      .slider-wrapper
-        +each('data as el')
-          .slider-item
-            +procedureItem
+  Nailer
+    +each('data as el')
+      .slider-item( class!='{cls("procedure-item")}' )
+        .head
+          h3.h4 {el.header}
+          p.p-note {el.name}, {el.age} {numDeclension(el.age)}
+        .content
+          +html('serialize(JSON.parse(el.review.document))')
 
-    +else
-      .slider-wrapper.single
-        +each('data as el')
-          .slider-item
-            +procedureItem
-
+        .btn-wrap
+          Button(
+            size='small'
+            text='Полный отзыв'
+            on:click!='{() => toggle(el) }'
+          )
 
 FeedbackPopup(
   data='{feedback}'
@@ -60,65 +54,52 @@ FeedbackPopup(
 <style lang='postcss'>
 @import "../style/mixins.sss"
 
-.slider
-  position: relative
-  // overflow: hidden
-  padding: 0
-  padding-bottom: 15px
-  overflow-x: scroll
-  margin:
-    left: -10px
-    right: -10px
-
-.slider-wrapper
-  display: grid
-  grid-auto-flow: column
-  grid-column-gap: 20px
-  grid-auto-columns: 83%
-  // grid-auto-columns: max-content
-  margin: 0 10px
-
-  &:last-child:after
-    content: ''
-    width: 17%
-
-  &.single
-    grid-auto-columns: 100%
-    margin: 0
-
-    &:last-child:after
-      display: none
-
 .slider-item
   padding: 23px 19px
   position: relative
+  user-select: none
+  flex: 0 0 auto
+  width: calc(83% / 2)
   display: flex
   flex-direction: column
   align-items: start
   max-height: 260px
   padding-bottom: 50px
+  margin-right: 15px
   @mixin cards_decor__withe
 
-.head
-  display: grid
-  grid-auto-flow: row
-  row-gap: 7px
-  margin-bottom: 13px
+  @media(width < 650px)
+    width: calc(83%)
 
-.content
-  overflow: hidden
-  position: relative
-  mask-image:
-    linear-gradient(
-      to top,
-      transparent 5%,
-      black 30%,
-      black 100%
-    )
+  @media(width < 400px)
+    width: calc(100% - 30px)
 
-.btn-wrap
-  position: absolute
-  bottom: 23px
-  left: 19px
+  &:last-child
+    margin-right: 0
+
+  .head
+    display: grid
+    grid-auto-flow: row
+    row-gap: 7px
+    margin-bottom: 13px
+
+    .p-note
+      color: var(--LIGHT-BLUE)
+
+  .content
+    overflow: hidden
+    position: relative
+    mask-image:
+      linear-gradient(
+        to top,
+        transparent 5%,
+        black 30%,
+        black 100%
+      )
+
+  .btn-wrap
+    position: absolute
+    bottom: 23px
+    left: 19px
 
 </style>

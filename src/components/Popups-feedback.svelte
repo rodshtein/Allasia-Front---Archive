@@ -30,13 +30,13 @@ const date = d => {
     .feedback_wrapper
       .feedback-header
         +if('data.name')
-          .person
+          p.person
             span {data.name}
             +if('data.age')
               span , {data.age} {declOfNum(data.age)}
 
         +if('data.country || data.city')
-          .location
+          p.p-note.location
             +if('data.country')
               span {data.country.name}
             +if('data.city')
@@ -45,11 +45,13 @@ const date = d => {
       .content
         +html('serialize(JSON.parse(data.review.document))')
       +if('data.date')
-        .date {date(data.date)}
+        p.p-note {date(data.date)}
 
 </template>
 
 <style lang='postcss'>
+@import "../style/mixins.sss"
+
 .feedback_wrapper
   padding-right: 30px
 
@@ -64,21 +66,12 @@ const date = d => {
   font-weight: bold
   font-size: 17px
   margin-right: 20px
+  margin-bottom: 5px
 
-.location
-  font-style: normal
-  font-weight: normal
-  font-size: 13px
-  text-align: right
+.p-note
+  color: var(--LIGHT-BLUE)
 
 .devider
   margin-bottom: 10px
-
-.date
-  font-style: normal
-  font-weight: bold
-  font-size: 13px
-  line-height: 17px
-  color: var(--color--txt-headers)
 
 </style>
