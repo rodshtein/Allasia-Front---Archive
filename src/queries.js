@@ -165,6 +165,7 @@ export const MEDICAL_PAGE = gql`
           }
         }
         feedback {
+          id
           header
           name
           age

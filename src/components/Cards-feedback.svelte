@@ -27,10 +27,10 @@
 
 <template lang='pug'>
 CardWrapper
-  CardHeader(header='Отзывы')
+  CardHeader(header!='{data.length > 1 ? "Отзывы" : "Отзыв" }')
   Nailer
-    +each('data as el')
-      .slider-item( class!='{cls("procedure-item")}' )
+    +each('data as el (el.id)')
+      .slider-item( class!='{cls("slider-item")}' )
         .head
           h3.h4 {el.header}
           p.p-note {el.name}, {el.age} {numDeclension(el.age)}
@@ -76,6 +76,14 @@ FeedbackPopup(
 
   &:last-child
     margin-right: 0
+
+  &--1
+    width: 100%
+
+  &--2
+    width: calc((100% - 15px) / 2)
+    @media(width < 650px)
+      width: calc((83% - 15px))
 
   .head
     display: grid
