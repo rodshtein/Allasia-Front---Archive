@@ -29,7 +29,7 @@ a
 h1, h2, h3, h4, h5, h6, p
   margin: 0
 
-.h0 .h1, .h2, .h3, .h4, .h5
+.h0, .h1, .h2, .h3, .h4, .h5
   color: var(--color--txt-headers)
   font-style: normal
   font-weight: bold
@@ -42,9 +42,8 @@ h1, h2, h3, h4, h5, h6, p
   font-size: 38px
   line-height: 100%
 
-.h1-S
-  font-size: 33px
-  line-height: 100%
+  @media(width > 650px)
+    font-size: 50px
 
 .h2-I
   font-size: 30px
@@ -75,6 +74,9 @@ h1, h2, h3, h4, h5, h6, p
   &-h1
     font-size: 14px
     line-height: 120%
+
+    @media(width > 650px)
+      font-size: 19px
 
   &-h2-I
     margin-top: 5px
@@ -139,12 +141,6 @@ h1, h2, h3, h4, h5, h6, p
 
 .content-on-color *
   color: white
-
-.phone-number
-  font-style: normal
-  font-weight: bold
-  font-size: 33px
-  line-height: 85%
 
 .devider
   @mixin devider

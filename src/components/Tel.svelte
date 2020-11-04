@@ -1,18 +1,22 @@
 <script>
   export let align = 'left';
 
-  let blockAlign = align === 'center' ? 'center' : 'start'
-  let textAlign = align === 'center' ? 'center' : 'left'
+  let blockAlign = align === 'center' ? 'center' : 'start';
+  let textAlign = align === 'center' ? 'center' : 'left';
+  let justify = align === "left"
+    ? "justify-content: space-between"
+    : "justify-content: center";
+
   import Button from './Button.svelte';
 </script>
 
 <template lang="pug">
 .block(style='align-items:{blockAlign}')
-
   .info(style='text-align:{textAlign}') Единый, бесплатный номер в РФ
-  .devider
-  .phone-number 8 800 250 82 97
-  Button(size='mini' iconR='short_arrow-b' text="Номера представитльств")
+  .wrap(style='{justify}')
+    .phone-number(class='{align}') 8 800 250 82 97
+    .button-wrap
+      Button(size='mini' iconR='short_arrow-b' text="Номера представительств")
 
 </template>
 
@@ -31,12 +35,31 @@
   font-size: 13px
   line-height: 120%
   color: var(--color--txt---light-blue)
+  margin-bottom: 10px
+  padding-bottom: 7px
+  @mixin devider_border_bottom
 
-  &:after
-    content: ''
-    margin: 8px 0
-    @mixin devider
+.wrap
+  display: flex
+  flex-wrap: wrap
+  width: 100%
 
-.phone-number
-  margin-bottom: 20px
+  .button-wrap
+    margin-bottom: 15px
+
+  .phone-number
+    font-style: normal
+    font-weight: bold
+    font-size: 33px
+    line-height: 85%
+    margin-bottom: 20px
+    @media(width < 380px)
+      font-size: 27px
+    &.center
+      width: 100%
+      text-align: center
+    &.left
+      @media(width > 420px)
+        margin-right: 40px
+
 </style>

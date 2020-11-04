@@ -31,38 +31,38 @@
 
 <template lang='pug'>
 
-
-mixin procedureItem
-  .wrap
-    .header-wrap
-      h3.h3 {el.name}
-      +if('el.feature')
-        p.subheader-h3 {el.feature}
-    +if('el.duration')
-      .duration
-        p.p {el.duration}
-    +if('el.description')
-      p.p.description {el.description}
-    +if('el.price')
-      +each('el.price as el')
-        .price-item
-          .wrap
-            +if('el.country && el.country.name')
-              p.country {el.country.name}
-            +if('el.price')
-              p.p.price {el.price}
-          +if('el.conditions')
-            p.conditions {el.conditions}
-
 +if('data && data[0]')
   CardWrapper
-    CardHeader(header='Процедуры и стоимость')
+    CardHeader(header='Процедуры' subHeader='Стоимость, особенности, сроки')
     Nailer
       +each('data as el (el.id)')
         .div( class!='{cls("procedure-item")}' )
-          +procedureItem
+          .header-wrap
+            h3.h3 {el.name}
+            +if('el.feature')
+              p.subheader-h3 {el.feature}
 
+          +if('el.duration || el.description')
+            .description-wrap
+              +if('el.duration')
+                .duration
+                  p.p {el.duration}
+              +if('el.description')
+                p.p {el.description}
 
+          +if('el.price')
+            .price-wrap(class!='{el.price.length < 2 ? "price-wrap--one-item": ""}')
+              +each('el.price as el')
+                .price-item
+
+                  .first-line-wrap
+                    +if('el.country && el.country.name')
+                      p.country {el.country.name}
+                    +if('el.price')
+                      p.p.price {el.price}
+
+                  +if('el.conditions')
+                    p.conditions {el.conditions}
 
 </template>
 
@@ -84,83 +84,103 @@ mixin procedureItem
   @media(width < 400px)
     width: calc(100% - 30px)
 
-
   &:last-child
     margin-right: 0
 
+
+  .header-wrap
+    margin-bottom: 15px
+    padding-bottom: 15px
+    @mixin devider_border_bottom
+
+    .h3
+      max-width: 80%
+      margin-bottom: 5px
+    .subheader-h3
+      max-width: 80%
+
+  .description-wrap
+    display: grid
+    grid-auto-flow: row
+    grid-gap: 5px
+    margin-bottom: 15px
+    padding-bottom: 15px
+    @mixin devider_border_bottom
+
+    .duration
+      max-width: 80%
+      p
+        display: flex
+        &:before
+          content: url(/icons/micro/time.svg)
+          display: inline-block
+          margin:
+            top: 1px
+            right: 10px
+
+
+  .price-wrap
+    display: block
+
+    .price-item
+      margin-bottom: 15px
+      break-inside: avoid
+      &:last-child
+        margin-bottom: 0px
+
+      .first-line-wrap
+        display: flex
+        justify-content: space-between
+        flex-wrap: wrap
+
+        .country
+          font-size: 14px
+          font-weight: 700
+          line-height: 17px
+          margin-bottom: 5px
+          white-space: nowrap
+
+        .price
+          flex-grow: 2
+          text-align: right
+          margin-bottom: 5px
+          white-space: nowrap
+
+    .conditions
+      font-size: 12px
+      font-weight: 400
+      line-height: 14px
+      text-align: right
+      color: var(--color--p)
+      margin-left: 20%
+      white-space: nowrap
+
   &--1
     width: 100%
+
+    @media(width > 380px)
+      .price-wrap:not(.price-wrap--one-item)
+        column-count: 2
+        column-gap: 70px
+
+        @media(width > 900px)
+          column-gap: 100px
+
+        @media(380px < width < 600px)
+
+          & .price-item .first-line-wrap
+            flex-direction: column
+
+          & .price-item .first-line-wrap .price
+            text-align: left
+
+          & .price-item .conditions
+            text-align: left
+            margin: 0
 
   &--2
     width: calc((100% - 15px) / 2)
     @media(width < 650px)
       width: calc((83% - 15px))
-
-.header-wrap:after
-  content: ''
-  margin: 12px 0
-  @mixin devider
-
-h3
-  margin-bottom: 5px
-
-.duration
-  padding-top: 3px
-
-  &:after
-    content: ''
-    margin: 12px 0
-    @mixin devider
-
-  p
-    display: flex
-
-    &:before
-      content: url(/icons/micro/time.svg)
-      display: inline-block
-      margin:
-        top: 1px
-        right: 10px
-
-.description
-  padding: 0, 5px
-
-  &:after
-    content: ''
-    margin: 12px 0
-    @mixin devider
-
-.price-item
-  .wrap
-    display: flex
-    justify-content: space-between
-    flex-wrap: wrap
-
-    .country
-      font-size: 14px
-      font-weight: 700
-      line-height: 17px
-      margin-bottom: 5px
-
-    .price
-      flex-grow: 2
-      text-align: right
-      margin-bottom: 5px
-
-  .conditions
-    font-size: 12px
-    font-weight: 400
-    line-height: 14px
-    text-align: right
-    color: var(--color--p)
-    margin-left: 20%
-
-  &:after
-    content: ''
-    margin: 8px 0
-    @mixin devider
-
-  &:last-child:after
-    display: none
 
 </style>

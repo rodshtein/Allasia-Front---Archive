@@ -31,9 +31,11 @@
   export let Q;
 
   // components
+  import CardWrapper from '../../components/Card-wrapper.svelte';
+  import CardHeader from '../../components/Card-header.svelte';
   import Button from '../../components/Button.svelte';
   import Popup from '../../components/Popup.svelte';
-  import Descripton from '../../components/Cards-descripton.svelte';
+  import Description from '../../components/Cards-description.svelte';
   import Diseases from '../../components/Cards-diseases.svelte';
   import Procedures from '../../components/Cards-procedures.svelte';
   import Feedback from '../../components/Cards-feedback.svelte';
@@ -81,16 +83,17 @@
 </script>
 
 <template lang='pug'>
-//- pre {JSON.stringify(DATA, 0, 2)}
 
 +if('!Q')
   p Что-то пошло не так…
 
 +if('Q')
   header
-    +if('branch')
-      p.p {branch}
+    .wrap
+      +if('branch')
+        p.subheader-h1 {branch}
       h1.h1 {Q.name}
+
     +if('branch')
       Button(
         size="mini",
@@ -104,17 +107,23 @@
       )
 
 
-+if('Q.description')
-  Descripton(
-    header = '{Q.name}'
-    content = '{Q.description.document}'
-  )
-
-+if('showDiseases(Q)')
-  Diseases(
-    data='{Q.diseases}'
-    pageName='{Q.name}'
-  )
+  +if('Q.description || showDiseases(Q)')
+    CardWrapper
+      .description-wrap
+        +if('Q.description')
+          div
+            CardHeader(header='Описание')
+            Description(
+              header = '{Q.name}'
+              content = '{Q.description.document}'
+            )
+        +if('showDiseases(Q)')
+          .diseases
+            CardHeader(header='Группа болезней')
+            Diseases(
+              data='{Q.diseases}'
+              pageName='{Q.name}'
+            )
 
 +if('Q.procedures && Q.procedures[0]')
   Procedures(
@@ -163,14 +172,10 @@ header
   display: flex
   flex-direction: column
   align-items: center
-  padding: 30px 15px 50px
-  .p
-    text-align: center
-  h1
-    text-align: center
-    margin:
-      top: 20px
-      bottom: 30px
+  padding: 30px 15px 40px
+
+  @media (width > 800px)
+    align-items: start
 
   &:after
     content: ''
@@ -180,4 +185,40 @@ header
     right: 15px
     @mixin devider
 
+  .wrap
+    display: grid
+    grid-auto-flow: row
+    grid-gap: 20px
+    margin-bottom: 30px
+
+    @media (width > 800px)
+      grid-gap: 10px
+      align-items: left
+
+    .subheader-h1
+      text-align: center
+
+      @media (width > 800px)
+        order: 2
+        text-align: left
+
+    .h1
+      text-align: center
+
+      @media (width > 800px)
+        text-align: left
+
+.description-wrap
+  display: grid
+  grid-auto-flow: row
+  grid-gap: 30px
+  margin-top: 20px
+
+  @media (width > 700px)
+    grid-auto-flow: column
+    grid-gap: 80px
+
+  .diseases
+    display: flex
+    flex-direction: column
 </style>

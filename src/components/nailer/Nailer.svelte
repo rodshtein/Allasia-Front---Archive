@@ -111,6 +111,9 @@
   padding:
     top: 15px
     bottom: 15px
+  margin:
+    top: -15px
+    bottom: -15px
 
 .slider
   display: flex

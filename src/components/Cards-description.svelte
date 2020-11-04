@@ -1,8 +1,6 @@
 <script>
   import Popup from './Popup.svelte';
   import Button from './Button.svelte';
-  import CardWrapper from './Card-wrapper.svelte';
-  import CardHeader from './Card-header.svelte';
   import { serialize } from '../helpers.js';
 
   // Content
@@ -18,30 +16,26 @@
 </script>
 
 <template lang='pug'>
-
-CardWrapper
-  CardHeader(header='Описание')
-  .list-wrapper
-    .list-1
-      .content(bind:offsetHeight='{CH}')
-        .wrap(bind:offsetHeight='{WH}')
-          .content.medical-page-description
-            +html('description')
-      +if('showBtn(CH,WH)')
-        Button(
-          size="small"
-          text="{btnTxt}"
-          on:click!='{() => showContent=!showContent}'
-        )
-        Popup(
-          bind:show!='{showContent}'
-          header='{header}'
-        )
-          .content
-            +html('description')
-    .list-2
-    .list-3
-
+.list-wrapper
+  .list-1
+    .content(bind:offsetHeight='{CH}')
+      .wrap(bind:offsetHeight='{WH}')
+        .content.medical-page-description
+          +html('description')
+    +if('showBtn(CH,WH)')
+      Button(
+        size="small"
+        text="{btnTxt}"
+        on:click!='{() => showContent=!showContent}'
+      )
+      Popup(
+        bind:show!='{showContent}'
+        header='{header}'
+      )
+        .content
+          +html('description')
+  .list-2
+  .list-3
 </template>
 
 <style lang='postcss'>

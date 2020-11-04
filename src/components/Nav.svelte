@@ -9,7 +9,7 @@
 
 <template lang="pug">
 
-.header
+.head
   .logo_wrap
     +if('segment')
       a(rel='prefetch' href=".")
@@ -41,7 +41,11 @@ Branches
 
 
 <style lang='postcss'>
-
+.head
+  @media (width > 650px)
+    margin-bottom: 30px
+  @media (width > 900px)
+    margin-bottom: 60px
 
 .logo_wrap
   display: block
