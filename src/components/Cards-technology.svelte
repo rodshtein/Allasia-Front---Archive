@@ -1,6 +1,7 @@
 <script>
   export let data;
 
+  import Nailer from './nailer/Nailer.svelte';
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
   import Button from './Button.svelte';
@@ -18,6 +19,12 @@
 	}
 
   let witheContent = (el) => el.head_img && el.head_img.publicUrl ? "content-on-color" : "";
+
+  let cls = (name) => {
+    if(data.length > 2) return name
+    if(data.length < 2) return `${name} ${name}--1`
+    if(data.length < 3) return `${name} ${name}--2`
+  };
 </script>
 
 <template lang='pug'>
@@ -35,29 +42,21 @@ mixin body
       on:click!='{() => toggle(el) }'
     )
 
-mixin items
-  +if('el.head_img && el.head_img.publicUrl')
-    .slider-item.with-img(
-      style='background-image: url({el.head_img.publicUrl})'
-      )
-      +body
-    +else
-      .slider-item.without-img
-        +body
-
 CardWrapper
   CardHeader(header='Технологии')
-  +if('data[1]')
-    .slider
-      .slider-wrapper
-        +each('data as el')
-          +items
-
-    +else
-      .slider-wrapper.single
-        +each('data as el')
-          +items
-
+  Nailer
+    +each('data as el (el.id)')
+      +if('el.head_img && el.head_img.publicUrl')
+        .slider-item.with-img(
+          class!='{cls("slider-item")}'
+          style='background-image: url({el.head_img.publicUrl})'
+          )
+          +body
+        +else
+          .slider-item.without-img(
+              class!='{cls("slider-item")}'
+              )
+            +body
 
 TechnologyPopup(
   data='{technology}'
@@ -69,44 +68,38 @@ TechnologyPopup(
 <style lang='postcss'>
 @import "../style/mixins.sss"
 
-.slider
-  position: relative
-  // overflow: hidden
-  padding: 0 0 20px
-  margin-bottom: -20px
-  overflow-x: scroll
-  margin:
-    left: -10px
-    right: -10px
-
-.slider-wrapper
-  display: grid
-  grid-auto-flow: column
-  grid-column-gap: 20px
-  grid-auto-columns: 83%
-  // grid-auto-columns: max-content
-  margin: 0 10px
-
-  &:last-child:after
-    content: ''
-    width: 17%
-
-  &.single
-    grid-auto-columns: 100%
-    margin: 0
-
-    &:last-child:after
-      display: none
-
 .slider-item
   padding: 23px 19px
   position: relative
+
+  user-select: none
+  flex: 0 0 auto
+  width: calc(83% / 2)
+  margin-right: 15px
+
   display: flex
   flex-direction: column
-  align-items: start
   justify-content: space-between
   max-height: 260px
+  align-items: start
   padding-bottom: 50px
+
+  &--1
+    width: 100%
+
+  &--2
+    width: calc((100% - 15px) / 2)
+    @media(width < 650px)
+      width: calc((83% - 15px))
+
+  @media(width < 650px)
+    width: calc(83%)
+
+  @media(width < 400px)
+    width: calc(100% - 30px)
+
+  &:last-child
+    margin-right: 0
 
   &.without-img
     @mixin cards_decor__withe

@@ -1,6 +1,7 @@
 <script>
   export let data;
 
+  import Nailer from './nailer/Nailer.svelte';
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
 
@@ -29,68 +30,31 @@
       return prevVal + per + item.name
     }, '')
   }
+
 </script>
 
 <template lang='pug'>
-mixin body
-  +if('el.avatar && el.avatar.publicUrl')
-    .avatar(
-      style='background-image: url({el.avatar.publicUrl})'
-      )
-    +else
-      .avatar
-  h3.name {el.name}
-  +if('el.specialty[0]')
-    p.specialty {makeSpecialty(el.specialty)}
-
 
 CardWrapper
   CardHeader(header='Врачи')
-  +if('data[1]')
-    .slider
-      .slider-wrapper
-        +each('data as el')
-          a.slider-item(alt='Странице о враче' href='.' rel='prefetch')
-            +body
-
-    +else
-      .slider-wrapper.single
-        +each('data as el')
-          a.slider-item(alt='Странице о враче' href='.' rel='prefetch')
-            +body
+  Nailer
+    +each('data as el (el.id)')
+      a.slider-item(alt='Страница врача' href='.' rel='prefetch')
+        +if('el.avatar && el.avatar.publicUrl')
+          .avatar(
+            style='background-image: url({el.avatar.publicUrl})'
+            )
+          +else
+            .avatar
+        h3.name {el.name}
+        +if('el.specialty[0]')
+          p.specialty {makeSpecialty(el.specialty)}
 
 </template>
 
 <style lang='postcss'>
 @import "../style/mixins.sss"
 
-.slider
-  position: relative
-  // overflow: hidden
-  padding: 0
-  padding-bottom: 15px
-  overflow-x: scroll
-  margin:
-    left: -10px
-    right: -10px
-
-.slider-wrapper
-  display: grid
-  grid-auto-flow: column
-  grid-column-gap: 10px
-  grid-auto-columns: max-content
-  margin: 0 10px
-
-  &:last-child:after
-    content: ''
-    width: 17%
-
-  &.single
-    grid-auto-columns: 100%
-    margin: 0
-
-    &:last-child:after
-      display: none
 
 .slider-item
   padding: 23px 19px
@@ -101,6 +65,8 @@ CardWrapper
   width: 140px
   text-decoration: none
   color: #000
+  user-select: none
+  flex: 0 0 auto
   &:hover
     color: var(--ORANGE)
 
