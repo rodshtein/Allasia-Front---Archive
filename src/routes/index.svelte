@@ -512,9 +512,11 @@ CardWrapper
 
   @media( width > 650px )
     justify-items: start
+
+  @media( width > 800px )
     padding:
       top: 100px
-      bottom: 100px
+      bottom: 50px
 
   .h2-I
     @media( width > 650px )

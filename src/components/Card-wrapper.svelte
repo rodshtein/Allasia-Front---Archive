@@ -8,8 +8,8 @@
 .cards_wrapper
   padding: 15px
   @media( width > 550px )
-    margin-bottom: 25px
+    padding-bottom: 25px
   @media( width > 800px )
-    margin-bottom: 50px
+    padding-bottom: 50px
 
 </style>
