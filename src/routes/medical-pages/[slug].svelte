@@ -216,7 +216,7 @@ header
   grid-gap: 30px
   margin-top: 20px
 
-  &.two-column
+  &.two_column
     @media (width > 700px)
       grid-template-columns: 1fr 240px
       grid-gap: 80px

@@ -67,7 +67,7 @@ Branches
     position: fixed
     width: 100%
     top: 0
-    z-index: 2
+    z-index: 10
 
 .slider-wrap
   position: relative
