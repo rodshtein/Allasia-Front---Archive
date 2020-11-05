@@ -109,7 +109,9 @@
 
   +if('Q.description || showDiseases(Q)')
     CardWrapper
-      .description-wrap
+      .description-wrap(
+        class:two_column!='{showDiseases(Q)}'
+      )
         +if('Q.description')
           div
             CardHeader(header='Описание')
@@ -119,7 +121,7 @@
             )
         +if('showDiseases(Q)')
           .diseases
-            CardHeader(header='Группа болезней')
+            CardHeader(header='Болезни')
             Diseases(
               data='{Q.diseases}'
               pageName='{Q.name}'
@@ -214,9 +216,10 @@ header
   grid-gap: 30px
   margin-top: 20px
 
-  @media (width > 700px)
-    grid-auto-flow: column
-    grid-gap: 80px
+  &.two-column
+    @media (width > 700px)
+      grid-template-columns: 1fr 240px
+      grid-gap: 80px
 
   .diseases
     display: flex

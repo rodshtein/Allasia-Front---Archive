@@ -486,7 +486,7 @@ Popup(
     border-color: var(--color--btn-border---active)
 
   &:active
-    transform: translateY(2px)
+    transform: translateY(-2px)
 
   & span
     display: block

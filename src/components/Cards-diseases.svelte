@@ -15,15 +15,17 @@
 <template lang='pug'>
 
 .diseases
-  +each('data as item, i' )
-    +if('showItem(item, i)')
-      .item
-        +if('showAdHeader(item)')
-          h3 {item.name}
-        +if('item.ad_name')
-          +each('JSON.parse(item.ad_name) as item' )
-            +if('item')
-              p.p {item}
+  div
+    +each('data as item, i' )
+      +if('showItem(item, i)')
+        .item
+          +if('showAdHeader(item)')
+            h3 {item.name}
+          +if('item.ad_name')
+            +each('JSON.parse(item.ad_name) as item' )
+              +if('item')
+                p.p {item}
+  p.p-note Группы болезней попадающих под описываемые услуги
 
 </template>
 
@@ -33,6 +35,9 @@
 .diseases
   flex: 1
   padding: 23px 19px
+  display: flex
+  flex-direction: column
+  justify-content: space-between
   @mixin cards_decor__withe
 
   .item
@@ -52,4 +57,10 @@
     &:last-child:after
       display: none
 
+  .p-note
+    justify-self: end
+    color: var(--LIGHT-BLUE)
+    margin-top: 15px
+    padding-top: 7px
+    @mixin devider_border_top
 </style>

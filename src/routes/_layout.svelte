@@ -3,6 +3,7 @@
   import { stores } from "@sapper/app";
   import NProgress from "nprogress";
   import Nav from '../components/Nav.svelte';
+  import Floating from '../components/Floating-buttons.svelte';
 
   const { preloading } = stores();
 
@@ -30,6 +31,8 @@
 <main>
   <slot></slot>
 </main>
+
+<Floating/>
 
 <style global lang="postcss">
 @import "../style/global.sss"

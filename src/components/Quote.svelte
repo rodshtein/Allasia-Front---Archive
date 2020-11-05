@@ -6,6 +6,7 @@
   // components
   import Button from './Button.svelte';
   import FeedbackPopup from './Popups-feedback.svelte';
+  import { scale } from 'svelte/transition';
 
   let quoteCountQuery = query(client, {
       query: QUOTE_COUNT,
@@ -67,7 +68,8 @@
 <template lang='pug'>
 .quote_block
   img(alt="quote icon" src="illustration/quote.svg")
-  .quote-wrapper(style='min-height: {blockHeight}px')
+  .quote-wrapper(
+    transition:scale!='{{duration: 500}}')
     +await('$quoteCountQuery')
       p Загрузка…
       +then ('result')
@@ -92,7 +94,7 @@
 
   Button(
     size='small'
-    text='Полный отзыв'
+    text='Читать полный отзыв'
     disabled='{feedbackBtnOff}'
     on:click!='{() => showFeedback=!showFeedback}')
 
@@ -151,6 +153,8 @@
     line-height: 130%
     text-align: center
     margin-bottom: 10px
+    @media( width > 650px )
+      margin-bottom: 20px
 
   .quote
     font-style: normal
@@ -158,5 +162,11 @@
     font-size: 16px
     line-height: 130%
     text-align: center
+    color: var(--LIGHT-BLACK)
+    @media( width > 650px )
+      font-size: 19px
+      max-width: 630px
+      margin-bottom: 20px
+
 
 </style>

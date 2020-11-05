@@ -195,4 +195,20 @@ export const MEDICAL_PAGE = gql`
     }
   `;
 
-
+export const INDEX_CLINICS = gql`
+  query($first: Int!){
+    allClinics (first: $first) {
+      id
+      name_ru
+      full_name_ru
+      country {
+        id
+        name
+      }
+      head_img {
+        id
+        publicUrl
+      }
+    }
+  }
+`;

@@ -42,8 +42,9 @@ Branches
 
 <style lang='postcss'>
 .head
+  margin-bottom: 100px
   @media (width > 650px)
-    margin-bottom: 30px
+    margin-bottom: 120px
   @media (width > 900px)
     margin-bottom: 60px
 
@@ -58,11 +59,15 @@ Branches
     display: none
 
 .nav
-  display: flex
   flex-wrap: wrap
+  display: flex
   justify-content: center
+  padding: 10px
   @media(width < 900px)
-    padding: 10px
+    position: fixed
+    width: 100%
+    top: 0
+    z-index: 2
 
 .slider-wrap
   position: relative
@@ -73,13 +78,8 @@ Branches
       top: 10px
       bottom: 10px
     border-radius: 16px
-    background:
-      linear-gradient(
-        90deg,
-        #E6EBFF -2.82%,
-        #E6EBFF 74.45%,
-        #BFCDFF 102.11%
-      )
+    backdrop-filter: blur(17px)
+    background-color: #ced8ff94
 
 
 .slider

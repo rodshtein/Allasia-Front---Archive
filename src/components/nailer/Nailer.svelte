@@ -69,8 +69,28 @@
     @media(width < 800px)
       display: none
 
+    /* &::after
+      content: ''
+      pointer-events: none
+      position: absolute
+      display: block
+      width: 62px
+      top: 15px
+      height: calc(100% - 30px)
+      background-blend-mode: multiply */
+
+
   .left-side
     left: 0
+
+    /* &::after
+      right: -62px
+      background:
+        linear-gradient(
+          90deg,
+          rgba(85, 142, 213, 0.42) 0%,
+          rgba(245, 247, 255, 0) 100%) */
+
     & button
       right: 0
       &:after
@@ -78,6 +98,15 @@
 
   .right-side
     right: 0
+
+    /* &::after
+      right: 0
+      background:
+        linear-gradient(
+          270deg,
+          rgba(85, 142, 213, 0.42) 0%,
+          rgba(245, 247, 255, 0) 100%) */
+
     & button
       left: 0
       &:after
