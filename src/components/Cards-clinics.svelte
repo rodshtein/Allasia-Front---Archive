@@ -36,7 +36,7 @@ mixin body
 CardWrapper
   CardHeader(header!='{data.length > 1 ? "Клиники" : "Клиника" }')
   Nailer
-    +each('data as el (el.id)')
+    +each('data as el (el.id + data.length)')
       +if('el.head_img && el.head_img.publicUrl')
         .slider-item.with-img(
             class!='{cls("slider-item")}'

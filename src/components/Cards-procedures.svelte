@@ -35,7 +35,7 @@
   CardWrapper
     CardHeader(header='Процедуры' subHeader='Стоимость, особенности, сроки')
     Nailer
-      +each('data as el (el.id)')
+      +each('data as el (el.id + data.length)')
         .div( class!='{cls("procedure-item")}' )
           .header-wrap
             h3.h3 {el.name}

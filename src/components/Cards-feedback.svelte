@@ -29,7 +29,7 @@
 CardWrapper
   CardHeader(header!='{data.length > 1 ? "Отзывы" : "Отзыв" }')
   Nailer
-    +each('data as el (el.id)')
+    +each('data as el (el.id + data.length)')
       .slider-item( class!='{cls("slider-item")}' )
         .head
           h3.h4 {el.header}
