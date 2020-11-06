@@ -3,9 +3,8 @@
   import { client } from '../../utils';
   import { getBranchPath } from '../../helpers';
   import { MEDICAL_PAGE } from '../../queries';
-  import { backPointId } from '../../components/Store-search';
-  import { showMenu } from '../../components/Store-branches';
-
+  import { searchString } from '../../components/Store-search';
+  import { branchId, showMenu } from '../../components/Store-branches';
 
   export async function preload(page) {
 
@@ -67,18 +66,16 @@
     return haveUniqName || haveAdName || haveMoreThanOneDisease
   };
 
-  import { branchId } from '../../components/Store-branches.js';
+
 
   function backHandler(){
-    if($backPointId === Q.id) {
-      branchId.set(null)
+    if($searchString) {
       showMenu.set(true)
     } else {
       branchId.set(Q.branch.id)
       showMenu.set(true)
     }
 	}
-
 
 </script>
 
@@ -96,13 +93,9 @@
 
     +if('branch')
       Button(
-        size="mini",
+        size='mini',
         iconL='arrow-l'
-        text=`{
-            $backPointId === Q.id
-            ? 'Результаты поиска'
-            : Q.branch.name
-          }`
+        text=`{$searchString ? 'Результаты поиска' : Q.branch.name}`
         on:click!='{backHandler}'
       )
 

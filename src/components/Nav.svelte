@@ -1,9 +1,19 @@
 <script>
   import Branches from './Nav-branches.svelte';
   import Button from './Button.svelte';
-  import { showMenu } from './Store-branches.js';
+  import { branchId, showMenu } from './Store-branches.js';
+  import { searchString } from './Store-search';
 
   export let segment;
+
+function searchHandler(){
+   if($searchString) {
+      showMenu.set(true)
+    } else {
+      branchId.set(null)
+      showMenu.set(true)
+    }
+  }
 </script>
 
 
@@ -23,7 +33,7 @@
             img.logo(alt="logo" src="icons/special/logo--short.svg")
         li
           Button(invert iconR='search' text='Поиск лечения'
-            on:click!='{() => $showMenu = true }')
+            on:click!='{searchHandler}')
         li
           Button(invert iconR='chat' text='Задать вопрос')
         li
