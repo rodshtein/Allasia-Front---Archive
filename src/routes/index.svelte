@@ -112,16 +112,12 @@ CardWrapper
   .about_block
     h2.h2-I О компании
     .subheader-h2-I Рассказываем о нашей работе
+    .subheader-full Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
+    .video_placeholder
 
-    .middle-wrap
-      .subheader-full Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
-      .video_placeholder
-        img.cover(alt="Видео о компании" src="video-cover.jpg")
-        img.play-btn(alt="Видео о компании" src="icons/special/play.svg")
-
-      .KTO-wrapper
-        img(alt="Чат" src="illustration/kto-logotype.svg")
-        p Сотрудничаем с Южнокорейской организацией по туризму
+    .KTO-wrapper
+      img(alt="Чат" src="illustration/kto-logotype.svg")
+      p Сотрудничаем с Южнокорейской организацией по туризму
 
 Quote
 
@@ -479,38 +475,19 @@ CardWrapper
       color: var(--color--p-I)
 
 
-.white_card
-  display: flex
-  flex-direction: column
-  align-items: center
-  padding: 30px 15px 50px
-
-  @media( width < 800px )
-    @mixin cards_decor__withe
-
-  img
-    margin-bottom: 20px
-  .h2-I
-    margin-bottom: 10px
-  .p-I
-    margin-left: 15px
-    margin-right: 15px
-    margin-bottom: 30px
-    max-width: 400px
-    text-align: center
-
-
 .about_block
   display: grid
-  grid-auto-flow: row
+  grid-template: 4fr / 1fr
   justify-items: center
   padding:
-    padding-top: 50px
-    padding-right: 15px
-    padding-bottom: 30px
-    padding-left: 15px
+    top: 50px
+    right: 15px
+    bottom: 30px
+    left: 15px
 
   @media( width > 650px )
+    grid-template: 1fr / auto 240px
+    grid-column-gap: 40px
     justify-items: start
 
   @media( width > 800px )
@@ -520,6 +497,7 @@ CardWrapper
 
   .h2-I
     @media( width > 650px )
+      grid-area: 1 / span 2
       font-size: 38px
       line-height: 38px
       margin-bottom: 15px
@@ -529,51 +507,47 @@ CardWrapper
     @media( width > 650px )
       display: none
 
-  .middle-wrap
-    width: 80%
+  .subheader-full
+    flex: 1 1 auto
+    max-width: 380px
+    margin-right: 50px
+    margin-bottom: 15px
+    font-size: 17px
+    line-height: 22px
+    text-align: left
+    color: var(--color--p-I)
+    @media( width <= 650px )
+      display: none
+
+  .video_placeholder
+    position: relative
+    border-radius: 22px
+    max-width: 360px
+    width: 100%
+    height: calc( 360px / 2 )
+    margin-bottom: 50px
+    background-position: center
+    background-repeat: no-repeat
+    background-size: cover
+    background-image: url('/video-cover.jpg')
+
     @media( width > 650px )
-      grid-template: 2fr / 2fr
-      grid-row-gap: 15px
-      grid-column-gap: 30px
-      display: grid
-      width: 100%
-
-    .subheader-full
-      flex: 1 1 auto
-      margin-right: 50px
+      min-width: 210px
+      min-height: 130px
+      height: calc( 210px / 2 )
+      grid-area: span 2/2
       margin-bottom: 0
-      font-size: 17px
-      line-height: 22px
-      text-align: left
-      color: var(--color--p-I)
-      @media( width < 650px )
-        display: none
-
-    .video_placeholder
-      position: relative
-      display: flex
-      border-radius: 22px
-      overflow: hidden
-      width: 100%
-      align-self: center
-      margin-bottom: 50px
-      @media( width > 650px )
-        grid-area: span 2/2
-        align-self: start
-        margin-bottom: 0
+      justify-self: stretch
+      align-self: flex-start
 
 
-      .cover
-        width: 100%
-
-      .play-btn
-        position: absolute
-        top: calc(50% - 25px)
-        left: calc(50% - 25px)
-
+    &::after
+      content: url('/icons/special/play.svg')
+      position: absolute
+      top: calc(50% - 25px)
+      left: calc(50% - 25px)
 
   .KTO-wrapper
-    justify-self: left
     display: flex
     flex-direction: column
     align-items: center

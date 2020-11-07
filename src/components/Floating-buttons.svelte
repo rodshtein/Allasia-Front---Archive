@@ -19,7 +19,7 @@
   display: flex
   flex-direction: row
   justify-content: center
-  z-index: 2
+  z-index: 10
   padding-bottom: 10px
   width: 100%
 

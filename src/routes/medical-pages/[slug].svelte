@@ -168,6 +168,7 @@ header
   flex-direction: column
   align-items: center
   padding: 30px 15px 40px
+  margin-bottom: 20px
 
   @media (width > 800px)
     align-items: start
@@ -207,7 +208,6 @@ header
   display: grid
   grid-auto-flow: row
   grid-gap: 30px
-  margin-top: 20px
 
   @media( 700px > width > 550px )
     grid-gap: 50px

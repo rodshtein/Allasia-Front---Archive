@@ -234,7 +234,7 @@ input
   position: relative
   font-style: normal
   font-weight: normal
-  font-size: 15px
+  font-size: 16px
   line-height: 19px
 
   height: 35px
