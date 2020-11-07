@@ -4,6 +4,7 @@ import Button from './Button.svelte';
 import Header from './Popup-header.svelte';
 
 export let show = false;
+export let width = 600;
 export let header = false;
 export let header2 = false;
 export let imageURL = false;
@@ -109,7 +110,7 @@ function handleKeydown(e) {
     use:portalAction
     )
     .wrapper
-      .body
+      .body(style='max-width: {width}px')
         Header(
           bind:show='{show}'
           header='{header}'
@@ -186,7 +187,6 @@ function handleKeydown(e) {
   position: relative
   margin-bottom: 100px
   padding: 0
-  max-width: 800px
   overflow: hidden
 
   background: #ffffff

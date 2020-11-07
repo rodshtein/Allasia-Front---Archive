@@ -234,6 +234,7 @@ Popup(
   header="{ $branchId ? null : 'Разделы медицины' }"
   btnText='{ backButtonName() }'
   on:click='{ backHandler }'
+  width=800
 )
 
   //- If search is on we show search box only on top level

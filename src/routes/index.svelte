@@ -326,7 +326,8 @@ CardWrapper
       @media( width <= 650px )
         display: none
 
-    .btn-wrap:first-child,
+    .btn-wrap:first-child
+      margin-right: 20px
     .input-wrap
       margin-right: 10px
     .input-wrap
