@@ -151,11 +151,9 @@ CardWrapper
     right: 15px
 
   @media( width > 800px )
-    grid-auto-flow: column
-    grid-gap: 50px
+    grid-template-columns: calc(50% - 30px) calc(50% - 30px)
+    grid-gap: 60px
 
-  @media( width > 900px )
-    grid-gap: 80px
 
   .logotype
     display: block
@@ -388,15 +386,15 @@ CardWrapper
     @mixin cards_decor__withe
 
   @media( 650px < width < 800px )
-    grid-auto-flow: column
+    grid-template-columns: calc(40% - 20px) calc(60% - 20px)
     justify-items: left
-    grid-gap: 20px
+    grid-gap: 40px
     padding:
       top: 30px
       bottom: 30px
 
   @media( width > 800px )
-    grid-auto-flow: column
+    grid-template: 1fr / repeat(2, calc(50% - 30px))
     align-items: center
     grid-gap: 60px
     padding:
@@ -413,15 +411,15 @@ CardWrapper
     background-size: contain
     background-image: url('/illustration/wiki-s.svg')
 
-    @media( 650px < width < 800px )
-      background-position: top
+    @media( 650px < width < 1000px )
       height: 100%
-      width: 233px
+      width: 120%
+      margin-left: -7%
 
     @media( width > 1000px )
       background-image: url('/illustration/wiki.svg')
-      height: 239px
-      width: 370px
+      height: 130%
+      width: 110%
 
 
   .text-wrap
@@ -583,6 +581,7 @@ CardWrapper
   display: grid
   grid-auto-flow: row
   justify-items: center
+  overflow: hidden
   padding:
     top: 30px
     right: 30px
@@ -593,15 +592,15 @@ CardWrapper
     @mixin cards_decor__withe
 
   @media( 650px < width < 800px )
-    grid-auto-flow: column
+    grid-template-columns: calc(40% - 20px) calc(60% - 20px)
     justify-items: left
-    grid-gap: 20px
+    grid-gap: 40px
     padding:
       top: 30px
       bottom: 30px
 
   @media( width > 800px )
-    grid-auto-flow: column
+    grid-template: 1fr / repeat(2, calc(50% - 30px))
     align-items: center
     grid-gap: 60px
     padding:
@@ -618,14 +617,13 @@ CardWrapper
     background-size: contain
     background-image: url('/illustration/address.svg')
 
-    @media( 650px < width < 800px )
-      background-position: top
-      height: 100%
-      width: 233px
+    @media( width > 650px  )
+      background-position: left
+      height: 125%
+      width: 100%
 
-    @media( width > 1000px )
-      height: 239px
-      width: 370px
+    @media( width > 900px  )
+      background-position: center
 
 
   .text-wrap

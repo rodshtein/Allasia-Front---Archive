@@ -162,10 +162,12 @@ function handleKeydown(e) {
 .popup
   display: block
   position: absolute
-  top: 30vh
+  top: 0
   left: 0
   width: 100%
   height: 100%
+  @media( width < 650px )
+    top: 30vh
 
 .wrapper
   display: flex
