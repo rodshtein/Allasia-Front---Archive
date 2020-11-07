@@ -199,7 +199,8 @@ export function nailer(node, {
     // init styling
     node.style.cursor = 'grab'
     node.style.touchAction = 'pan-y'
-    node.style.willChange = 'transform'
+    // BUG node.style.willChange = 'transform'
+    // ↑ it causes a splash on mobile devices
     node.style.transform = 'translate(0)'
     // need to fix freeze over mouse move
     node.parentNode.style.zIndex = '1'

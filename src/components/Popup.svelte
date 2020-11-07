@@ -162,7 +162,7 @@ function handleKeydown(e) {
 .popup
   display: block
   position: absolute
-  top: 0
+  top: 30vh
   left: 0
   width: 100%
   height: 100%
