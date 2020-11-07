@@ -115,7 +115,10 @@ a
   /* overflow: hidden
   width: 100% */
 
-  transition: .2s
+  /* transition: transform .2s
+
+  BUG Transition on buttons cause flash with popups
+  */
   cursor: pointer
 
   &:hover
