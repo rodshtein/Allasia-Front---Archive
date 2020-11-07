@@ -48,6 +48,9 @@ h1, h2, h3, h4, h5, h6, p
 .h2-I
   font-size: 30px
   line-height: 100%
+  @media( width > 650px )
+    font-size: 38px
+    line-height: 38px
 
 .h2
   font-size: 24px
@@ -69,7 +72,12 @@ h1, h2, h3, h4, h5, h6, p
 
   &-h1-I
     font-size: 18px
-    line-height: 120%
+    line-height: 130%
+    font-style: normal
+    font-weight: 400
+    @media(width > 650px)
+      font-size: 19px
+      line-height: 130%
 
   &-h1
     font-size: 14px
@@ -100,8 +108,8 @@ h1, h2, h3, h4, h5, h6, p
   color: var(--color--p)
 
 .p-I
-  font-size: 16px
-  line-height: 120%
+  font-size: 17px
+  line-height: 22px
   color: var(--color--p-I)
 
 .p-note

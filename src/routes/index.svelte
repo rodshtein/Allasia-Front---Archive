@@ -55,7 +55,7 @@ svelte:head
 
   .text-block
     h1.h1-I Лечение<br>за рубежом
-    p.subheader Подбираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
+    p.subheader-h1-I Подбираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
     .tel_wrapper
       .info Единый, бесплатный номер в РФ
       .phone-number 8 800 250 82 97
@@ -64,10 +64,10 @@ svelte:head
 
 .find_block
   .head_wrapper
-    img(alt="Поиск клиники" src="illustration/find.svg")
+    .illustration
     .texts-wrap
       h2.h2-I Подбор лечения
-      .subheader-h2 Услуги, стоимость, акции, отзывы
+      p.subheader-h2-I Услуги, стоимость, акции, отзывы
       p.p-I Здесь мы собрали весь наш опыт по направлениям лечения и услугам. Клиники, врачи, стоимость, акции, особенности лечения, сроки прибывания, описание технологий и развёрнутые отзывы наших клиентов по конкретным направлениям.
 
   .action-wrap
@@ -103,20 +103,20 @@ CardWrapper
 CardWrapper
   .clinics_block
     .text-wrap
-      h2.h2 Клиники
-      .subheader Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
+      h2.h2-I Клиники
+      p.p-I Мы сотрудничаем со множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
       Button(size='regular' href='#' iconR='arrow-r' text="Все клиники")
     Clinics( data='{CLINICS}')
 
 CardWrapper
   .about_block
     h2.h2-I О компании
-    .subheader-h2-I Рассказываем о нашей работе
-    .subheader-full Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
+    p.subheader-h2-I Рассказываем о нашей работе
+    p.p-I Сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
     .video_placeholder
 
     .KTO-wrapper
-      img(alt="Чат" src="illustration/kto-logotype.svg")
+      .illustration
       p Сотрудничаем с Южнокорейской организацией по туризму
 
 Quote
@@ -192,13 +192,11 @@ CardWrapper
       @media( width > 800px )
         text-align: left
 
-    .subheader
-      font-size: 18px
-      line-height: 120%
+    .subheader-h1-I
       text-align: center
       max-width: 400px
       margin-bottom: 30px
-      color: var(--LIGHT-BLACK)
+      color: var(--color--p-I)
 
       @media( 600px > width > 800px )
         margin-bottom: 60px
@@ -257,32 +255,33 @@ CardWrapper
     bottom: 50px
 
   .head_wrapper
-    display: flex
-    flex-direction: column
-    align-items: center
-    padding:
-      left: 15px
-      right: 15px
+    display: grid
+    grid-template: auto auto / auto
+    justify-content: center
 
     @media( width > 800px )
-      flex-direction: row-reverse
-      justify-content: space-between
-      padding: 0
+      grid-template: auto / calc(65% - 30px) calc(35% - 30px)
+      grid-column-gap: 60px
+
+    .illustration
+      background-position: center
+      background-repeat: no-repeat
+      background-size: contain
+      background-image: url('/illustration/find.svg')
+      height: 140px
+      width: 100%
+      margin-bottom: 20px
+
+      @media( width > 800px )
+        grid-area: 1 / 2
+        align-self: stretch
+        justify-self: stretch
+        max-height: 170px
+        margin-bottom: 0
 
     .texts-wrap
-      max-width: 460px
 
-      h2
-        font-size: 30px
-        line-height: 100%
-
-        @media( width > 650px )
-          font-size: 38px
-
-        @media( width > 800px )
-          text-align: left
-
-      h2, .subheader-h2
+      .h2-I, .subheader-h2-I
         text-align: center
 
         @media( width > 800px )
@@ -296,14 +295,6 @@ CardWrapper
         @media( width < 800px )
           display: none
 
-    img
-      max-width: 179px
-      align-self: center
-      margin-bottom: 20px
-
-      @media( width > 900px )
-        max-width: 230px
-        flex: 1
 
   .action-wrap
     padding:
@@ -432,10 +423,12 @@ CardWrapper
 
     .h2-I
       margin-bottom: 10px
+      @media( width < 800px )
+        font-size: 30px
+        line-height: 30px
+
       @media( width > 800px )
         margin-bottom: 15px
-        font-size: 38px
-        line-height: 38px
 
     .p-I
       margin-bottom: 30px
@@ -460,18 +453,12 @@ CardWrapper
     justify-items: left
     margin-bottom: 40px
 
-    .h2
-      font-size: 38px
-      line-height: 38px
+    .h2-I
       margin-bottom: 15px
 
-    .subheader
-      font-size: 17px
-      line-height: 22px
+    .p-I
       text-align: left
       margin-bottom: 20px
-      color: var(--color--p-I)
-
 
 .about_block
   display: grid
@@ -505,15 +492,9 @@ CardWrapper
     @media( width > 650px )
       display: none
 
-  .subheader-full
-    flex: 1 1 auto
-    max-width: 380px
+  .p-I
     margin-right: 50px
     margin-bottom: 15px
-    font-size: 17px
-    line-height: 22px
-    text-align: left
-    color: var(--color--p-I)
     @media( width <= 650px )
       display: none
 
@@ -552,26 +533,33 @@ CardWrapper
     @media( width > 650px )
       flex-direction: row-reverse
 
-    img
+    .illustration
+      background-size: contain
+      background-repeat: no-repeat
+      background-position: center
+      background-image: url('/illustration/kto-logotype.svg')
       height: 95px
+      width: 100%
       margin-bottom: 10px
       @media( width > 650px )
-        height: 70px
+        width: 120px
         margin-bottom: 0
+        flex: 1
 
     p
       font-size: 14px
       text-align: center
       color: var(--LIGHT-BLACK)
       max-width: 250px
+
       @media( width < 650px )
         padding-bottom: 50px
         @mixin devider_border_bottom
 
       @media( width > 650px )
+        flex: 1
         text-align: left
         margin-right: 20px
-        padding-right: 20px
         padding-top: 10px
         padding-bottom: 10px
         max-width: 200px
@@ -636,10 +624,13 @@ CardWrapper
 
     .h2-I
       margin-bottom: 10px
+
+      @media( width < 800px )
+        font-size: 30px
+        line-height: 30px
+
       @media( width > 800px )
         margin-bottom: 15px
-        font-size: 38px
-        line-height: 38px
 
     .p-I
       margin-bottom: 30px
@@ -648,9 +639,5 @@ CardWrapper
       color: var(--color--p-I)
       @media( width > 650px )
         text-align: left
-      @media( width > 800px )
-        font-size: 17px
-        line-height: 22px
-
 
 </style>
