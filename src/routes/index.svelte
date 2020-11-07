@@ -71,17 +71,17 @@ svelte:head
       p.p-I Здесь мы собрали весь наш опыт по направлениям лечения и услугам. Клиники, врачи, стоимость, акции, особенности лечения, сроки прибывания, описание технологий и развёрнутые отзывы наших клиентов по конкретным направлениям.
 
   .action-wrap
-    .search-wrap
-      h3.h3 Поиск по разделам
-      .search-wrap2
+    h3.h3 Поиск по разделам
+    h3.h3.second Смотрите так же
+    .search
+      .input-wrap
         SearchBox
-        .btn-wrap
-          Button(size='mini' text="Найти")
-
-    .also
-      h3.h3 Смотрите так же
-      .wrap
+      .btn-wrap
+        Button(size='mini' text="Найти")
+    .buttons
+      .btn-wrap
         Button(size='mini' href='#' iconR='arrow-r' text="Акции")
+      .btn-wrap
         Button(size='mini' href='#' iconR='arrow-r' text="Клиники")
 
   BranchesMenu
@@ -112,7 +112,7 @@ CardWrapper
   .about_block
     h2.h2-I О компании
     p.subheader-h2-I Рассказываем о нашей работе
-    p.p-I Сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
+    p.p-I Мы работаем с 2013 года. За это время перевезли более пяти тысяч пациентов, перевели тысячи листов медицинской документации, провели сотни часов онлайн-консультаций. Мы знаем как подобрать клинику, врача, подготовить документы, забронировать удобную гостиницу и другие тонкости организации поездки.
     .video_placeholder
 
     .KTO-wrapper
@@ -274,13 +274,11 @@ CardWrapper
 
       @media( width > 800px )
         grid-area: 1 / 2
-        align-self: stretch
-        justify-self: stretch
-        max-height: 170px
+        align-self: center
+        height: 80%
         margin-bottom: 0
 
     .texts-wrap
-
       .h2-I, .subheader-h2-I
         text-align: center
 
@@ -303,55 +301,44 @@ CardWrapper
       bottom: 30px
       left: 15px
 
-    @media( width > 550px )
-      display: flex
+    @media( width > 650px )
+      display: grid
+      grid-template-columns: 1fr auto
+      grid-row-gap: 20px
+      grid-column-gap: 40px
       padding:
         top: 60px
         right: 0
-        bottom: 20px
+        bottom: 40px
         left: 0
 
-    @media( width > 800px )
+    @media( width > 900px )
       max-width: 80%
 
-    .search-wrap
-      @media( width > 550px )
-        flex: 1 1 auto
-        margin-right: 40px
+    .search,
+    .buttons
+      display: flex
+      align-items: center
 
-      .search-wrap2
-        display: grid
-        grid-template-columns: 1fr 0fr
-        grid-column-gap: 10px
-        align-items: center
-
-      .btn-wrap
-        @media( width <= 800px )
-          display: none
-
-    .h3
-      margin-bottom: 20px
-      @media( width <= 550px )
+    .h3,
+    .search .btn-wrap,
+    .buttons
+      @media( width <= 650px )
         display: none
 
-    .also
-      @media( width <= 550px )
-        display: none
+    .btn-wrap:first-child,
+    .input-wrap
+      margin-right: 10px
+    .input-wrap
+      width: 100%
 
-      .wrap
-        display: grid
-        grid-auto-flow: column
-        grid-gap: 20px
-        padding:
-          top: 2px
-          bottom: 2px
 
 .also_block
   display: flex
   flex-direction: column
   align-items: center
   padding: 0 15px 50px
-  @media( width > 550px )
+  @media( width > 650px )
     display: none
 
   h3
@@ -467,15 +454,26 @@ CardWrapper
   padding:
     top: 50px
     right: 15px
-    bottom: 30px
+    bottom: 0
     left: 15px
 
+  &::after
+    content: ''
+    margin-top: 50px
+    width: 70%
+    @mixin devider
+
   @media( width > 650px )
-    grid-template: 1fr / auto 240px
-    grid-column-gap: 40px
+    grid-template: 1fr / auto 30%
+    grid-column-gap: 80px
     justify-items: start
+    padding:
+      bottom: 50px
+    &::after
+      display: none
 
   @media( width > 800px )
+    grid-column-gap: 120px
     padding:
       top: 100px
       bottom: 50px
@@ -493,7 +491,6 @@ CardWrapper
       display: none
 
   .p-I
-    margin-right: 50px
     margin-bottom: 15px
     @media( width <= 650px )
       display: none
@@ -511,13 +508,9 @@ CardWrapper
     background-image: url('/video-cover.jpg')
 
     @media( width > 650px )
-      min-width: 210px
-      min-height: 130px
-      height: calc( 210px / 2 )
+      height: 130px
       grid-area: span 2/2
       margin-bottom: 0
-      justify-self: stretch
-      align-self: flex-start
 
 
     &::after
@@ -551,10 +544,6 @@ CardWrapper
       text-align: center
       color: var(--LIGHT-BLACK)
       max-width: 250px
-
-      @media( width < 650px )
-        padding-bottom: 50px
-        @mixin devider_border_bottom
 
       @media( width > 650px )
         flex: 1
