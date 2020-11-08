@@ -50,7 +50,7 @@
                     +if('el.country && el.country.name')
                       p.country {el.country.name}
                     +if('el.price')
-                      p.p.price {el.price}
+                      p.price {el.price}
 
                   +if('el.conditions')
                     p.conditions {el.conditions}
@@ -111,11 +111,12 @@
         display: flex
         justify-content: space-between
         flex-wrap: wrap
+        font-size: 14px
+        line-height: 130%
+        color: var(--color--p)
 
         .country
-          font-size: 14px
           font-weight: 700
-          line-height: 17px
           margin-bottom: 5px
           white-space: nowrap
           margin-right: 10px
@@ -151,14 +152,14 @@
       max-width: 80%
       .p-note
         display: flex
-        color: var(--LIGHT-BLUE)
+        color: var(--color--p)
         &:before
           content: url(/icons/micro/time.svg)
           display: inline-block
           margin-right: 10px
 
     .description
-      color: var(--LIGHT-BLUE)
+      color: var(--color--p)
 
   &--1
     width: 100%

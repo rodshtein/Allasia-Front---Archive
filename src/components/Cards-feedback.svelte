@@ -34,7 +34,7 @@ CardWrapper
         .head
           h3.h4 {el.header}
           p.p-note {el.name}, {el.age} {numDeclension(el.age)}
-        .content
+        .content.fixed_font_size
           +html('serialize(JSON.parse(el.review.document))')
 
         .btn-wrap

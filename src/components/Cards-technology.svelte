@@ -7,13 +7,14 @@
   import Button from './Button.svelte';
   import TechnologyPopup from './Popups-technology.svelte';
   import { tick } from 'svelte';
-  import { serialize } from '../helpers.js';
+  import { serialize } from '../helpers';
+  import { colorFilter } from '../color-filter';
 
   let showTechnology = false;
   let technology = false;
 
 	const toggle = async (el) => {
-		technology = el
+    technology = el
 		await tick();
 		showTechnology=!showTechnology
 	}
@@ -25,14 +26,15 @@
     if(data.length < 2) return `${name} ${name}--1`
     if(data.length < 3) return `${name} ${name}--2`
   };
+
 </script>
 
 <template lang='pug'>
 mixin body
-  .head
+  .head.fixed_font_size
     h3.h4.header {el.name}
   +if('el.description')
-    .content(class='{witheContent(el)}')
+    .content.fixed_font_size(class='{witheContent(el)}')
       +html('serialize(JSON.parse(el.description.document))')
 
   .btn-wrap
@@ -48,8 +50,8 @@ CardWrapper
     +each('data as el (el.id + data.length)')
       +if('el.head_img && el.head_img.publicUrl')
         .slider-item.with-img(
+          use:colorFilter='{el.head_img.publicUrl}'
           class!='{cls("slider-item")}'
-          style='background-image: url({el.head_img.publicUrl})'
           )
           +body
         +else
@@ -107,8 +109,7 @@ TechnologyPopup(
   &.with-img
     background-size: cover
     background-position: center
-    background-color: #6b6b6b94
-    background-blend-mode: multiply
+    background-color: var(--PURPLE)
     @mixin cards_decor__img
 
     & h3
@@ -120,6 +121,7 @@ TechnologyPopup(
 .content
   overflow: hidden
   position: relative
+  max-width: 70%
   mask-image:
     linear-gradient(
       to top,

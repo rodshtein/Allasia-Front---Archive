@@ -35,6 +35,6 @@
     bottom: 15px
   .wrap
     margin-right: 20px
-  .subheader-h2
-    margin-top: 10px
+  /* .subheader-h2
+    margin-top: 10px */
 </style>

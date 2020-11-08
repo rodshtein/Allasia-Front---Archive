@@ -41,7 +41,6 @@ h1, h2, h3, h4, h5, h6, p
 .h1
   font-size: 38px
   line-height: 100%
-
   @media( width > 650px )
     font-size: 50px
 
@@ -55,6 +54,9 @@ h1, h2, h3, h4, h5, h6, p
 .h2
   font-size: 24px
   line-height: 100%
+  @media( width > 650px )
+    font-size: 28px
+    line-height: 110%
 
 .h3
   font-size: 19px
@@ -95,6 +97,8 @@ h1, h2, h3, h4, h5, h6, p
     margin-top: 5px
     font-size: 14px
     line-height: 120%
+    @media( width > 650px )
+      font-size: 17px
 
   &-h3
     margin-top: 5px
@@ -104,8 +108,11 @@ h1, h2, h3, h4, h5, h6, p
 
 .p
   font-size: 14px
-  line-height: 130%
+  line-height: 140%
   color: var(--color--p)
+  @media( width > 450px )
+    font-size: 16px
+    line-height: 130%
 
 .p-I
   font-size: 17px
@@ -117,6 +124,30 @@ h1, h2, h3, h4, h5, h6, p
   font-style: normal
   font-weight: 400
   line-height: 16px
+
+
+
+.fixed_font_size
+  .h1
+    font-size: 38px
+    line-height: 100%
+
+  .h2
+    font-size: 24px
+    line-height: 100%
+
+  .h3
+    font-size: 19px
+    line-height: 115%
+
+  .h4
+    font-size: 16px
+    line-height: 115%
+
+  .p
+    font-size: 14px
+    line-height: 130%
+
 
 .content
   position: relative

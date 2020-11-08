@@ -8,12 +8,13 @@
 
   let headerClass = header && header.length > 28 ? 'h3':'h2';
   import Button from './Button.svelte'
+  import { colorFilter } from '../color-filter';
 </script>
 
 
 <template lang="pug" >
 +if('imageURL')
-  header.tall(style="background-image: url({imageURL})")
+  header.tall( use:colorFilter='{imageURL}')
     .wrapper
       +if('btnText')
         Button(size='mini' iconL='{btnIcon}' on:click text='{btnText}')
@@ -45,13 +46,16 @@ header
     height: 300px
     background-size: cover
     background-position: center
-    background-color: #6b6b6b94
-    background-blend-mode: multiply
+    background-color: var(--PURPLE)
     color: white
-    & h1, h2
+    .h1, .h2
       color: white
-    & h2
-      max-width: 50%
+
+    .h1
+      max-width: 80%
+      @media( width > 640)
+        font-size: 40px
+        max-width: 90%
 
     & .closeBtn:after
       content: url('/icons/25/x---w.svg')

@@ -4,6 +4,7 @@
   import Nailer from './nailer/Nailer.svelte';
   import CardHeader from './Card-header.svelte';
   import Button from './Button.svelte';
+  import { colorFilter } from '../color-filter';
 
   let cls = (name) => {
     if(data.length > 2) return name
@@ -35,7 +36,7 @@ Nailer
     +if('el.head_img && el.head_img.publicUrl')
       .slider-item.with-img(
           class!='{cls("slider-item")}'
-          style='background-image: url({el.head_img.publicUrl})'
+          use:colorFilter='{el.head_img.publicUrl}'
         )
         +body
       +else
@@ -89,8 +90,7 @@ Nailer
   &.with-img
     background-size: cover
     background-position: center
-    background-color: #6b6b6b94
-    background-blend-mode: multiply
+    background-color: var(--PURPLE)
     @mixin cards_decor__img
 
     & .h2, .p, .subheader-h3
