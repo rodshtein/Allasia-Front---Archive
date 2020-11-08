@@ -16,7 +16,7 @@
 
 <template lang='pug'>
 mixin body
-  .head
+  .head.fixed_font_size
     +if('el.country && el.country.name')
       p.subheader-h3 {el.country.name}
     +if('el.name_ru')

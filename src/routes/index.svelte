@@ -40,7 +40,7 @@
   import BranchesMenu from '../components/Branches-menu.svelte';
   import Quote from '../components/Quote.svelte';
   import CardWrapper from '../components/Card-wrapper.svelte';
-  import Clinics from '../components/Index-clinics.svelte';
+  import Clinics from '../components/Cards-clinics--Index.svelte';
   import CallToAction from '../components/Call-to-action.svelte';
 </script>
 
