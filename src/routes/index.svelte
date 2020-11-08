@@ -275,7 +275,7 @@ CardWrapper
       @media( width > 800px )
         grid-area: 1 / 2
         align-self: center
-        height: 80%
+        height: 160px
         margin-bottom: 0
 
     .texts-wrap
