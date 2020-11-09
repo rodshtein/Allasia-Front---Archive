@@ -140,12 +140,14 @@ function search () {
     branch.pages.forEach(page => {
 
       // basic search methods
-      let pageMatched = page.name.toLowerCase().includes(string);
-      let matchedDisease = page.diseases.find(diseas => {
-        return diseas.name.toLowerCase().includes(string)
+      let matchedPage = page.name.toLowerCase().includes(string);
+      let matchedDisease = page.diseases.find(disease => {
+        let matchName = disease.name.toLowerCase().includes(string);
+        let matchAdName = disease.ad_name ? disease.ad_name.toLowerCase().includes(string): false;
+        return matchName || matchAdName
       })
 
-      if(pageMatched || matchedDisease) {
+      if(matchedPage || matchedDisease ) {
         let rootBranch = getRootBranch(branch, 1);
         let alreadyBranch = foundPages.find(
             (item) => item.id === rootBranch.id

@@ -14,7 +14,7 @@
 
 <template lang='pug'>
 
-.diseases
+.diseases.fixed_font_size
   div
     +each('data as item, i' )
       +if('showItem(item, i)')
