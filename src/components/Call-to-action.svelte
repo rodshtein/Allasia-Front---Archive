@@ -91,7 +91,6 @@ CardWrapper
 
   .info
     font-style: normal
-    font-weight: normal
     text-align: left
     font-size: 13px
     line-height: 120%
@@ -110,7 +109,7 @@ CardWrapper
 
     .phone-number
       font-style: normal
-      font-weight: bold
+      font-weight: 700
       font-size: 33px
       line-height: 85%
       @media(width < 380px)

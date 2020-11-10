@@ -63,7 +63,7 @@ const date = d => {
 
 .person
   font-style: normal
-  font-weight: bold
+  font-weight: 700
   font-size: 17px
   margin-right: 20px
   margin-bottom: 5px

@@ -31,7 +31,6 @@
 
 .info
   font-style: normal
-  font-weight: normal
   font-size: 13px
   line-height: 120%
   color: var(--color--txt---light-blue)
@@ -49,7 +48,7 @@
 
   .phone-number
     font-style: normal
-    font-weight: bold
+    font-weight: 700
     font-size: 33px
     line-height: 85%
     margin-bottom: 20px

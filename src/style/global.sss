@@ -1,21 +1,27 @@
+@import "fonts.sss"
 @import "theme.sss"
 @import "nprogress.sss"
 @import "mixins.sss"
 
 html
   font-size: 10px
-  font-family: var(--font--main)
   padding-bottom: 100px
 
 body
   margin: 0
   background-color: var(--color--body---light-blue)
   scroll-behavior: smooth
+
 *
-  -moz-osx-font-smoothing: grayscale
+  font-feature-settings: "lnum" 1,"pnum" 1,"kern" 1,"liga" 1
+  -webkit-font-kerning: normal
+  font-kerning: normal
   -webkit-font-smoothing: antialiased
-  font-family: 'IBM Plex Sans', sans-serif
+  font-variant-ligatures: contextual
+  -moz-osx-font-smoothing: grayscale
+  font-family: var(--font--main)
   box-sizing: border-box
+  font-weight: 450
 
 // TODO Need to fix focus outline
 *:focus
@@ -29,10 +35,10 @@ a
 h1, h2, h3, h4, h5, h6, p
   margin: 0
 
-.h0, .h1, .h2, .h3, .h4, .h5
+.h0, .h1, .h1-I, .h2, .h2-I, .h3, .h4, .h5
   color: var(--color--txt-headers)
   font-style: normal
-  font-weight: bold
+  font-weight: 700
 
 .h1-I
   font-size: 50px
@@ -76,7 +82,6 @@ h1, h2, h3, h4, h5, h6, p
     font-size: 18px
     line-height: 130%
     font-style: normal
-    font-weight: 400
     @media(width > 650px)
       font-size: 19px
       line-height: 130%
@@ -122,7 +127,6 @@ h1, h2, h3, h4, h5, h6, p
 .p-note
   font-size: 13px
   font-style: normal
-  font-weight: 400
   line-height: 16px
 
 

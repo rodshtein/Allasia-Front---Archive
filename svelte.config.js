@@ -5,7 +5,7 @@ const nested = require('postcss-nested');
 const nestedProps = require('postcss-nested-props');
 const presetEnv = require('postcss-preset-env');
 const sugarss = require('sugarss');
-const { postcss } = require('postcss');
+const postcss = require('postcss');
 
 function getSP(isDev = false) {
 
@@ -15,7 +15,6 @@ function getSP(isDev = false) {
     nestedProps(),
     nested(),
     presetEnv({
-      browsers: "last 2 versions",
       stage: 0,
       features: {
         "nesting-rules": true,

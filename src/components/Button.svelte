@@ -102,8 +102,9 @@ a
   align-items: center
 
   color: var( --color--btn-txt---blue)
+  font-family: var(--font--main)
   font-style: normal
-  font-weight: normal
+  font-weight: 450
   text-align: center
   white-space: nowrap
 

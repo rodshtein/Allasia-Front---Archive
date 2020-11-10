@@ -4,7 +4,7 @@
   import { showMenu, branchId } from './Store-branches.js';
   import { client } from "../utils";
   import { BRANCHES } from '../queries';
-  import { sort } from "../helpers";
+  import { sort, columnMark } from "../helpers";
 
   import CardWrapper from './Card-wrapper.svelte';
 
@@ -33,78 +33,6 @@
       styleMapBranches = columnMark({L:menuBranches.length})
     }
   }
-
-  function columnMark(
-    {
-      L, // ← arr length
-      C = 3, // ← column count
-      f = 'first',
-      l = 'last',
-      m = 'middle',
-      o = 'only',
-      sep = '--',
-    }) {
-    // if(L == 0) return [o];
-
-    let map = [];
-    let col = {};
-
-    function mark(i, name){
-      map[i] = map[i] ? map[i]+' '+name : name;
-    }
-
-    for (let colCount = 1; colCount <= C; colCount++) {
-
-      // Actual
-      let rowsInCol = Math.ceil( L / colCount );
-      let currCol = 1;
-
-      // Store rows count in cur column conf
-      col[colCount] = rowsInCol;
-
-      // class names
-      let _f = colCount < 1 ? f : f+sep+colCount;
-      let _l = colCount < 1 ? l : l+sep+colCount;
-      let _o = colCount < 1 ? o : o+sep+colCount;
-
-      for (let i = 1; i <= L; i++) {
-        let x = i-1;
-        let colItemsSum = rowsInCol * currCol;
-        let isOnlyChild = L == i && L < colItemsSum;
-
-        // First column child
-        if(
-          i == colItemsSum - rowsInCol + 1 &&   // first in cur column
-          rowsInCol > 1 &&                      // ony if more than one row
-          !isOnlyChild                          // only if not only
-          ) mark(x, _f)
-
-
-        // last column child
-        if(
-          colItemsSum == i &&                   // last in curr col
-          rowsInCol > 1 ) mark(x, _l)           // ony if more than one row
-
-        if( i == L &&                           // last child
-          rowsInCol > 1 &&                      // ony if more than ome row
-          L != rowsInCol * (colCount - 1) + 1   // ony if not only one in col
-          ) mark(x, _l)
-
-        // only column child
-        if(
-          rowsInCol == 1 || isOnlyChild
-         ) mark(x, _o)
-
-        // Fill empty
-        if(!map[x]) map[x] = '';
-
-        // Define next column
-        if(i === rowsInCol * currCol) currCol++
-      }
-    }
-
-    return {map, col, L}
-}
 
   //Nailer
   let overflowL = false;
@@ -291,9 +219,10 @@
       min-height: 44px
       text-decoration: none
       color: var(--LIGHT-BLACK)
+      font-family: var(--font--main)
       font-style: normal
-      font-weight: normal
-      font-size: 14px
+      font-weight: 450
+      font-size: 15px
       line-height: 130%
       cursor: pointer
       background-color: #fff0

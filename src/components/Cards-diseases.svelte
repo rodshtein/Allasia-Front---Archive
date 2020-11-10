@@ -44,7 +44,7 @@
     h3
       font-family: IBM Plex Sans
       font-style: normal
-      font-weight: bold
+      font-weight: 700
       font-size: 15px
       line-height: 120%
       margin-bottom: 5px

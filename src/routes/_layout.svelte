@@ -19,7 +19,6 @@
         NProgress.done();
       }
     });
-
   });
 
   export let segment;
@@ -46,5 +45,4 @@ main
     padding: 0 15px
   @media(width < 500px)
     padding: 0
-
 </style>

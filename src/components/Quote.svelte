@@ -148,7 +148,6 @@
 
   .author
     font-style: normal
-    font-weight: normal
     font-size: 13px
     line-height: 130%
     text-align: center
@@ -158,7 +157,6 @@
 
   .quote
     font-style: normal
-    font-weight: normal
     font-size: 16px
     line-height: 130%
     text-align: center

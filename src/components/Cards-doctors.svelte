@@ -96,7 +96,6 @@ CardWrapper
 .specialty
   font-size: 12px
   font-style: normal
-  font-weight: 400
   line-height: 14px
   text-align: center
 

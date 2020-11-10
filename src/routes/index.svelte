@@ -31,7 +31,7 @@
       query: INDEX_CLINICS,
       data: DATA
     })
-    console.log(CLINICS)
+    // console.log(CLINICS)
   });
 
   // components

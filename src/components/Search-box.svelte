@@ -234,8 +234,9 @@ function keyHandler(e) {
 
 input
   position: relative
+  font-family: var(--font--main)
   font-style: normal
-  font-weight: normal
+  font-weight: 450
   font-size: 16px
   line-height: 19px
 

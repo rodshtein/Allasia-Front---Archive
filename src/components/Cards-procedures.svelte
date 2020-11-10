@@ -128,7 +128,6 @@
 
     .conditions
       font-size: 12px
-      font-weight: 400
       line-height: 14px
       text-align: right
       color: var(--LIGHT-BLUE)
