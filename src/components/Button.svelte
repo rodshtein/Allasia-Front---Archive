@@ -77,11 +77,16 @@
 
 @define-mixin icons--invert $size
   &.search
-    &:after, &:before
-      content: url('/icons/$(size)/search-w.svg')
+    &:before
+      content: url('/icons/$(size)/search-l-w.svg')
+    &:after
+      content: url('/icons/$(size)/search-r-w.svg')
   &.chat
-    &:after, &:before
-      content: url('/icons/$(size)/chat-w.svg')
+    &:before
+      content: url('/icons/$(size)/chat-l-w.svg')
+    &:after
+      content: url('/icons/$(size)/chat-r-w.svg')
+
 
 // ### Buttons @@@
 // reset
@@ -209,13 +214,6 @@ a
     &.invert
       background-color: var(--color--btn-bg---white)
       @mixin icons--invert 17
-
-      &.search
-        &:after, &:before
-          content: url('/icons/17/search-w.svg')
-      &.chat
-        &:after, &:before
-          content: url('/icons/17/chat-w.svg')
 
   &.small
     height: 21px
