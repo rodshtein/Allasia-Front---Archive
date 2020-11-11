@@ -212,3 +212,19 @@ export const INDEX_CLINICS = gql`
     }
   }
 `;
+
+export const CLINICS_COUNTRY_CLINICS = gql`
+  query {
+    allClinicCountries (sortBy: name_ASC){
+      id
+      name
+      clinics {
+        name_ru
+        id
+        head_img {
+          publicUrl
+        }
+      }
+    }
+  }
+`;

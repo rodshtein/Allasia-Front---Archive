@@ -36,24 +36,22 @@
     CardHeader(header='Процедуры' subHeader='Стоимость, особенности, сроки')
     Nailer
       +each('data as el (el.id + data.length)')
-        .div( class!='{cls("procedure-item")}' )
-          .header-wrap
-            h3.h3 {el.name}
-            +if('el.feature')
-              p.subheader-h3 {el.feature}
-
-          +if('el.price')
-            .price-wrap(class!='{el.price.length < 2 ? "price-wrap--one-item": ""}')
-              +each('el.price as el')
-                .price-item
-                  .first-line-wrap
-                    +if('el.country && el.country.name')
-                      p.country {el.country.name}
+        .div.fixed_font_size( class!='{cls("procedure-item")}' )
+          .wrap
+            .header-wrap
+              h3.h3 {el.name}
+              +if('el.feature')
+                p.subheader-h3 {el.feature}
+            +if('el.price')
+              .price( class!=`{ el.price.length < 2
+                  ? "price--one-item" : "" }`)
+                +each('el.price as el')
+                  p.p {el.country && el.country.name ? el.country.name : "" }
+                  .right-col
                     +if('el.price')
-                      p.price {el.price}
-
-                  +if('el.conditions')
-                    p.conditions {el.conditions}
+                      p.p {el.price}
+                    +if('el.conditions')
+                      p.conditions {el.conditions}
 
           +if('el.duration || el.description')
             .description-wrap(
@@ -73,6 +71,9 @@
   padding: 23px 19px
   position: relative
   user-select: none
+  display: flex
+  flex-direction: column
+  justify-content: space-between
   flex: 0 0 auto
   width: calc(83% / 2)
   margin-right: 15px
@@ -92,53 +93,26 @@
     padding-bottom: 15px
     @mixin devider_border_bottom
 
-    .h3
-      max-width: 80%
-      margin-bottom: 5px
     .subheader-h3
+      margin-top: 5px
       max-width: 80%
 
-  .price-wrap
-    display: block
-
-    .price-item
-      margin-bottom: 15px
-      break-inside: avoid
-      &:last-child
-        margin-bottom: 0px
-
-      .first-line-wrap
-        display: flex
-        justify-content: space-between
-        flex-wrap: wrap
-        font-size: 14px
-        line-height: 130%
-        color: var(--color--p)
-
-        .country
-          font-weight: 700
-          margin-bottom: 5px
-          white-space: nowrap
-          margin-right: 10px
-
-        .price
-          flex: 1
-          text-align: right
-          margin-bottom: 5px
+  .price
+    display: grid
+    grid-template-columns: repeat(2, auto)
+    grid-column-gap: 20px
+    grid-row-gap: 10px
 
     .conditions
-      font-size: 12px
-      line-height: 14px
-      text-align: right
+      font-size: 13px
+      line-height: 130%
       color: var(--LIGHT-BLUE)
-      margin-left: 20%
-      white-space: nowrap
 
   .description-wrap
     display: grid
     grid-auto-flow: row
     grid-gap: 5px
-    margin-top: 10px
+    margin-top: 15px
     padding-top: 15px
     @mixin devider_border_top
 
@@ -151,37 +125,24 @@
       max-width: 80%
       .p-note
         display: flex
-        color: var(--color--p)
         &:before
-          content: url(/icons/micro/time.svg)
+          content: url('/icons/micro/time.svg')
           display: inline-block
           margin-right: 10px
 
-    .description
-      color: var(--color--p)
-
   &--1
     width: 100%
-
-    @media(width > 380px)
-      .price-wrap:not(.price-wrap--one-item)
-        column-count: 2
-        column-gap: 70px
+    @media(width > 550px)
+      .price:not(.price--one-item)
+        grid-template-columns: repeat(4, auto)
+        .right-col
+          margin-right: 20px
 
         @media(width > 900px)
-          column-gap: 100px
+          grid-template-columns: repeat(6, auto)
+          .right-col
+            margin-right: 40px
 
-        @media(380px < width < 600px)
-
-          & .price-item .first-line-wrap
-            flex-direction: column
-
-          & .price-item .first-line-wrap .price
-            text-align: left
-
-          & .price-item .conditions
-            text-align: left
-            margin: 0
 
   &--2
     width: calc((100% - 15px) / 2)
