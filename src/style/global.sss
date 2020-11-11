@@ -6,6 +6,10 @@
 html
   font-size: 10px
   padding-bottom: 100px
+  font-weight: 400
+  @media( width < 850px )
+    font-weight: 450
+
 
 body
   margin: 0
@@ -21,7 +25,6 @@ body
   -moz-osx-font-smoothing: grayscale
   font-family: var(--font--main)
   box-sizing: border-box
-  font-weight: 450
 
 // TODO Need to fix focus outline
 *:focus
@@ -190,6 +193,7 @@ h1, h2, h3, h4, h5, h6, p
 
 .content-on-color *
   color: white
+  font-weight: 450
 
 .devider
   @mixin devider

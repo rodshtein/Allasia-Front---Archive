@@ -98,8 +98,11 @@ CardWrapper
     background-color: var(--PURPLE)
     @mixin cards_decor__img
 
-    h3, p
+    & .h2, .p, .subheader-h3
       color: white
+
+    & .p, .subheader-h3
+      font-weight: 450
 
 .head
   display: block

@@ -114,7 +114,6 @@ TechnologyPopup(
 
     & h3
       color: white
-
 .head
   margin-bottom: 13px
 

@@ -78,10 +78,10 @@
           +then ('result')
             +if('result && result.data.allFeedbackQuotes.length')
               div(class='{animateClass}' use:setParentHight)
-                .author
+                p.p-note.author
                   b {result.data.allFeedbackQuotes[0].feedback.name}
                   | , {result.data.allFeedbackQuotes[0].feedback.city.name}
-                .quote  {result.data.allFeedbackQuotes[0].quote}
+                p.quote  {result.data.allFeedbackQuotes[0].quote}
 
               +else
                 p Что-то пошло не так
@@ -147,9 +147,6 @@
   row-gap: 20px
 
   .author
-    font-style: normal
-    font-size: 13px
-    line-height: 130%
     text-align: center
     margin-bottom: 10px
     @media( width > 650px )

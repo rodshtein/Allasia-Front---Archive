@@ -104,7 +104,7 @@ a
   color: var( --color--btn-txt---blue)
   font-family: var(--font--main)
   font-style: normal
-  font-weight: 450
+  font-weight: 400
   text-align: center
   white-space: nowrap
 
@@ -162,16 +162,17 @@ a
       margin-left: -8px
       margin-right: -8px
 
+    & span
+      margin-bottom: 2px
+
     &.showIconL span
       margin-left: 12px
-      // visual compensation
-      margin-bottom: 0
-
 
     &.showIconR span
       margin-right: 16px
 
     &.base-color
+      font-weight: 450
       background-color: var(--color--btn-bg---light-blue)
       @mixin icons--base 23
 
@@ -188,6 +189,7 @@ a
 
     font-size: 14px
     line-height: 1.2
+    font-weight: 450
 
     &.showIconL span
       margin-left: 12px
@@ -220,7 +222,8 @@ a
     padding: 0 8px
     padding-bottom: 1px
 
-    font-size: 11px
+    font-size: 12px
+    font-weight: 450
     line-height: 14px
     letter-spacing: .3px
 

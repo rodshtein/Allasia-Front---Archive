@@ -14,18 +14,18 @@
 
 <template lang='pug'>
 
-.diseases.fixed_font_size
+.diseases
   div
     +each('data as item, i' )
       +if('showItem(item, i)')
         .item
           +if('showAdHeader(item)')
-            h3 {item.name}
+            h3.p {item.name}
           +if('item.ad_name')
             +each('JSON.parse(item.ad_name) as item' )
               +if('item')
-                p.p {item}
-  p.p-note Группы болезней попадающих под описываемые услуги
+                p.p-note {item}
+  p.p-note.info Группы болезней попадающих под описываемые услуги
 
 </template>
 
@@ -42,10 +42,9 @@
 
   .item
     h3
-      font-family: IBM Plex Sans
       font-style: normal
-      font-weight: 700
       font-size: 15px
+      font-weight: 400
       line-height: 120%
       margin-bottom: 5px
 
@@ -58,6 +57,9 @@
       display: none
 
   .p-note
+    color: var(--LIGHT-BLUE)
+
+  .info
     justify-self: end
     color: var(--LIGHT-BLUE)
     margin-top: 15px

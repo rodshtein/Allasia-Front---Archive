@@ -96,6 +96,9 @@ Nailer
     & .h2, .p, .subheader-h3
       color: white
 
+    & .p, .subheader-h3
+      font-weight: 450
+
 .head
   display: block
   margin-bottom: 25px
