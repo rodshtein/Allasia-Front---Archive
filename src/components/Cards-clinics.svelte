@@ -101,7 +101,7 @@ CardWrapper
     & .h2, .p, .subheader-h3
       color: white
 
-    & .p, .subheader-h3
+    & .p
       font-weight: 450
 
 .head
