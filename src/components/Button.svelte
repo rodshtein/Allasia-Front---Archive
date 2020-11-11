@@ -187,7 +187,7 @@ a
     padding: 0 12px
     padding-bottom: 1px
 
-    font-size: 14px
+    font-size: 15px
     line-height: 1.2
     font-weight: 450
 
