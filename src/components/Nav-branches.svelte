@@ -3,9 +3,6 @@ import { client } from "../utils";
 import { sort, numDeclension, columnMark } from "../helpers";
 import { BRANCHES } from '../queries';
 
-import { slide } from 'svelte/transition';
-import { quadInOut, quadIn, quadOut } from 'svelte/easing';
-
 import { showMenu, branchId } from './Store-branches.js';
 import { searchInProgress, searchString, backPointId,
   prevSearchString, searchResult } from './Store-search.js';
@@ -184,9 +181,9 @@ Popup(
         +each('$searchResult.pages as branch')
           .single-folder-wrap
             +if('branch.name')
-              h4.folder-header { branch.name }
+              h4.p-note.folder-header { branch.name }
               +else
-                h4.folder-header Корневой раздел
+                h4.p-note.folder-header Корневой раздел
             ul.single-folder
               +each('branch.pages as page')
                 li.item-col.item.page
@@ -205,9 +202,9 @@ Popup(
         +each('$searchResult.branches as branch')
           .single-folder-wrap
             +if('branch.name')
-              h4.folder-header { branch.name }
+              h4.p-note.folder-header { branch.name }
               +else
-                h4.folder-header Корневые разделы
+                h4.p-note.folder-header Корневые разделы
             ul.single-folder
               +each('branch.branches as branch')
                 li.item-col.item.branch
@@ -268,14 +265,6 @@ Popup(
   margin-bottom: 20px
 
 .folder-header
-  font-family: var(--font--main)
-  font-size: 11px
-  font-style: normal
-  font-weight: 450
-  line-height: 12px
-  letter-spacing: 0px
-  text-align: left
-  color: var(--color--btn-txt---blue)
   margin-bottom: 8px
 
 /* Folder mixins */

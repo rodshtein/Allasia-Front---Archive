@@ -12,13 +12,27 @@
   function remEmptyData(data){
     if(!data) return null
     let arr = [];
+
     data.forEach(item => {
       if(item.duration || item.description || item.price.length) {
-        arr.push(item)
+
+        // Sort item price by country name
+        if(item.price.length > 1){
+          let price = item.price.slice().sort((a, b) => {
+            a = a.country.name ? a.country.name : '';
+            b = b.country.name ? b.country.name : '';
+            return a.localeCompare(b)
+          });
+          arr.push(Object.assign({}, item, { price }))
+        } else {
+          arr.push(item)
+        }
+
       }
     });
     return arr
   }
+
 
   let length = (data, i) => data.length > i;
   let cls = (name) => {
@@ -46,12 +60,13 @@
               .price( class!=`{ el.price.length < 2
                   ? "price--one-item" : "" }`)
                 +each('el.price as el')
-                  p.p {el.country && el.country.name ? el.country.name : "" }
-                  .right-col
-                    +if('el.price')
-                      p.p {el.price}
-                    +if('el.conditions')
-                      p.conditions {el.conditions}
+                  +if('el.country && el.country.name && el.price')
+                    h4.country {el.country.name}
+                    .right-col
+                      +if('el.price')
+                        p.p {el.price}
+                      +if('el.conditions')
+                        p.conditions {el.conditions}
 
           +if('el.duration || el.description')
             .description-wrap(
@@ -103,6 +118,12 @@
     grid-column-gap: 20px
     grid-row-gap: 10px
 
+    .country
+      font-weight: 700
+      font-size: 14px
+      line-height: 140%
+      color: var(--LIGHT-BLUE)
+
     .conditions
       font-size: 13px
       line-height: 130%
@@ -112,7 +133,7 @@
     display: grid
     grid-auto-flow: row
     grid-gap: 5px
-    margin-top: 15px
+    margin-top: 10px
     padding-top: 15px
     @mixin devider_border_top
 
