@@ -14,20 +14,19 @@
     let arr = [];
 
     data.forEach(item => {
-      if(item.duration || item.description || item.price.length) {
-
-        // Sort item price by country name
-        if(item.price.length > 1){
-          let price = item.price.slice().sort((a, b) => {
-            a = a.country.name ? a.country.name : '';
-            b = b.country.name ? b.country.name : '';
-            return a.localeCompare(b)
-          });
-          arr.push(Object.assign({}, item, { price }))
-        } else {
-          arr.push(item)
-        }
-
+      // paint only if there is at least one contry + price
+      if(item.price && item.price[0].country && item.price[0].price) {
+          // Sort item price by country name
+          if(item.price.length > 1){
+            let price = item.price.slice().sort((a, b) => {
+              a = a.country.name ? a.country.name : '';
+              b = b.country.name ? b.country.name : '';
+              return a.localeCompare(b)
+            });
+            arr.push(Object.assign({}, item, { price }))
+          } else {
+            arr.push(item)
+          }
       }
     });
     return arr
@@ -122,12 +121,13 @@
       font-weight: 700
       font-size: 14px
       line-height: 140%
-      color: var(--LIGHT-BLUE)
+      color: var( --LIGHT-BLACK )
+
 
     .conditions
       font-size: 13px
       line-height: 130%
-      color: var(--LIGHT-BLUE)
+      color: var( --LIGHT-BLUE )
 
   .description-wrap
     display: grid
