@@ -2,8 +2,6 @@
   export let data;
 
   import Nailer from './nailer/Nailer.svelte';
-  import CardWrapper from './Card-wrapper.svelte';
-  import CardHeader from './Card-header.svelte';
   import Button from './Button.svelte';
   import TechnologyPopup from './Popups-technology.svelte';
   import { tick } from 'svelte';
@@ -44,21 +42,19 @@ mixin body
       on:click!='{() => toggle(el) }'
     )
 
-CardWrapper
-  CardHeader(header='Технологии')
-  Nailer
-    +each('data as el (el.id + data.length)')
-      +if('el.head_img && el.head_img.publicUrl')
-        .slider-item.with-img(
-          use:colorFilter='{el.head_img.publicUrl}'
-          class!='{cls("slider-item")}'
-          )
+Nailer
+  +each('data as el (el.id + data.length)')
+    +if('el.head_img && el.head_img.publicUrl')
+      .slider-item.with-img(
+        use:colorFilter='{el.head_img.publicUrl}'
+        class!='{cls("slider-item")}'
+        )
+        +body
+      +else
+        .slider-item.without-img(
+            class!='{cls("slider-item")}'
+            )
           +body
-        +else
-          .slider-item.without-img(
-              class!='{cls("slider-item")}'
-              )
-            +body
 
 TechnologyPopup(
   data='{technology}'

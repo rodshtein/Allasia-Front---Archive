@@ -2,9 +2,6 @@
   export let data;
 
   import Nailer from './nailer/Nailer.svelte';
-  import CardWrapper from './Card-wrapper.svelte';
-  import CardHeader from './Card-header.svelte';
-
 
   function makeSpecialty(arr){
     let stop = false;
@@ -34,21 +31,18 @@
 </script>
 
 <template lang='pug'>
-
-CardWrapper
-  CardHeader(header='Врачи')
-  Nailer
-    +each('data as el (el.id)')
-      a.slider-item(alt='Страница врача' href='.' rel='prefetch')
-        +if('el.avatar && el.avatar.publicUrl')
-          .avatar(
-            style='background-image: url({el.avatar.publicUrl})'
-            )
-          +else
-            .avatar
-        h3.name {el.name}
-        +if('el.specialty[0]')
-          p.specialty {makeSpecialty(el.specialty)}
+Nailer
+  +each('data as el (el.id)')
+    a.slider-item(alt='Страница врача' href='.' rel='prefetch')
+      +if('el.avatar && el.avatar.publicUrl')
+        .avatar(
+          style='background-image: url({el.avatar.publicUrl})'
+          )
+        +else
+          .avatar
+      h3.name {el.name}
+      +if('el.specialty[0]')
+        p.specialty {makeSpecialty(el.specialty)}
 
 </template>
 

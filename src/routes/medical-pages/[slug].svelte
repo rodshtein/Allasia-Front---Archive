@@ -121,9 +121,11 @@
             )
 
 +if('Q.procedures && Q.procedures[0]')
-  Procedures(
-    data='{Q.procedures}'
-  )
+  CardWrapper
+    CardHeader(header='Процедуры' subHeader='Стоимость, особенности, сроки')
+    Procedures(
+      data='{Q.procedures}'
+    )
 
 CallToAction(
   header='Не нашли нужную услугу?'
@@ -133,27 +135,32 @@ CallToAction(
 )
 
 +if('Q.feedback && Q.feedback[0]')
-  Feedback(
-    data='{Q.feedback}'
-  )
+  CardWrapper
+    CardHeader(header!='{Q.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
+    Feedback(
+      data='{Q.feedback}'
+    )
 
 +if('Q.clinics && Q.clinics[0]')
-  Clinics(
-    data='{Q.clinics}'
-  )
+  CardWrapper
+    CardHeader(header!='{Q.clinics.length > 1 ? "Клиники" : "Клиника" }')
+    Clinics(
+      data='{Q.clinics}'
+    )
 
 +if('Q.doctors && Q.doctors[0]')
-  Doctors(
-    data='{Q.doctors}'
-  )
+  CardWrapper
+    CardHeader(header!='{Q.doctors.length > 1 ? "Врачи" : "Врач" }')
+    Doctors(
+      data='{Q.doctors}'
+    )
 
 +if('Q.technology && Q.technology[0]')
-  Technology(
-    data='{Q.technology}'
-  )
-
-
-
+  CardWrapper
+    CardHeader(header='Технологии')
+    Technology(
+      data='{Q.technology}'
+    )
 
 
 </template>

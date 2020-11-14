@@ -2,8 +2,6 @@
   export let data;
 
   import Nailer from './nailer/Nailer.svelte';
-  import CardWrapper from './Card-wrapper.svelte';
-  import CardHeader from './Card-header.svelte';
   import Button from './Button.svelte';
   import FeedbackPopup from './Popups-feedback.svelte';
   import { tick } from 'svelte';
@@ -26,23 +24,21 @@
 </script>
 
 <template lang='pug'>
-CardWrapper
-  CardHeader(header!='{data.length > 1 ? "Отзывы" : "Отзыв" }')
-  Nailer
-    +each('data as el (el.id + data.length)')
-      .slider-item( class!='{cls("slider-item")}' )
-        .head
-          h3.h4 {el.header}
-          p.p-note {el.name}, {el.age} {numDeclension(el.age)}
-        .content.fixed_font_size
-          +html('serialize(JSON.parse(el.review.document))')
+Nailer
+  +each('data as el (el.id + data.length)')
+    .slider-item( class!='{cls("slider-item")}' )
+      .head
+        h3.h4 {el.header}
+        p.p-note {el.name}, {el.age} {numDeclension(el.age)}
+      .content.fixed_font_size
+        +html('serialize(JSON.parse(el.review.document))')
 
-        .btn-wrap
-          Button(
-            size='small'
-            text='Полный отзыв'
-            on:click!='{() => toggle(el) }'
-          )
+      .btn-wrap
+        Button(
+          size='small'
+          text='Полный отзыв'
+          on:click!='{() => toggle(el) }'
+        )
 
 FeedbackPopup(
   data='{feedback}'

@@ -45,37 +45,36 @@
 <template lang='pug'>
 
 +if('data && data[0]')
-  CardWrapper
-    CardHeader(header='Процедуры' subHeader='Стоимость, особенности, сроки')
-    Nailer
-      +each('data as el (el.id + data.length)')
-        .div.fixed_font_size( class!='{cls("procedure-item")}' )
-          .wrap
-            .header-wrap
-              h3.h3 {el.name}
-              +if('el.feature')
-                p.subheader-h3 {el.feature}
-            +if('el.price')
-              .price( class!=`{ el.price.length < 2
-                  ? "price--one-item" : "" }`)
-                +each('el.price as el')
-                  +if('el.country && el.country.name && el.price')
-                    h4.country {el.country.name}
-                    .right-col
-                      +if('el.price')
-                        p.p {el.price}
-                      +if('el.conditions')
-                        p.conditions {el.conditions}
+  Nailer
+    +each('data as el (el.id + data.length)')
+      .div.fixed_font_size( class!='{cls("procedure-item")}' )
+        .wrap
+          .header-wrap
+            h3.h3 {el.name}
+            +if('el.feature')
+              p.subheader-h3 {el.feature}
+          +if('el.price')
+            .price( class!=`{ el.price.length < 2
+                ? "price--one-item" : "" }`)
+              +each('el.price as el')
+                +if('el.country && el.country.name && el.price')
+                  h4.country {el.country.name}
+                  .right-col
+                    +if('el.price')
+                      p.p {el.price}
+                    +if('el.conditions')
+                      p.conditions {el.conditions}
 
-          +if('el.duration || el.description')
-            .description-wrap(
-              class!='{cls("description-wrap")}'
-            )
-              +if('el.duration')
-                .duration
-                  p.p-note {el.duration}
-              +if('el.description')
-                p.p-note.description {el.description}
+        +if('el.duration || el.description')
+          .description-wrap(
+            class!='{cls("description-wrap")}'
+          )
+            +if('el.duration')
+              .duration
+                p.p-note {el.duration}
+            +if('el.description')
+              p.p-note.description {el.description}
+
 </template>
 
 <style lang='postcss'>

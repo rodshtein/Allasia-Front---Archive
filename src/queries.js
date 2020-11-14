@@ -222,7 +222,12 @@ export const CLINICS_COUNTRY_CLINICS = gql`
         name_ru
         id
         head_img {
+          id
           publicUrl
+        }
+        country {
+          id
+          name
         }
       }
     }

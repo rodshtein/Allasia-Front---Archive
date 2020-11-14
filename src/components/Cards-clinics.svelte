@@ -2,8 +2,6 @@
   export let data;
 
   import Nailer from './nailer/Nailer.svelte';
-  import CardWrapper from './Card-wrapper.svelte';
-  import CardHeader from './Card-header.svelte';
   import Button from './Button.svelte';
   import { colorFilter } from '../color-filter';
 
@@ -33,22 +31,19 @@ mixin body
       href='#'
     )
 
-
-CardWrapper
-  CardHeader(header!='{data.length > 1 ? "Клиники" : "Клиника" }')
-  Nailer
-    +each('data as el (el.id + data.length)')
-      +if('el.head_img && el.head_img.publicUrl')
-        .slider-item.with-img(
+Nailer
+  +each('data as el (el.id + data.length)')
+    +if('el.head_img && el.head_img.publicUrl')
+      .slider-item.with-img(
+          class!='{cls("slider-item")}'
+          use:colorFilter='{el.head_img.publicUrl}'
+        )
+        +body
+      +else
+        .slider-item.without-img(
             class!='{cls("slider-item")}'
-            use:colorFilter='{el.head_img.publicUrl}'
           )
           +body
-        +else
-          .slider-item.without-img(
-              class!='{cls("slider-item")}'
-            )
-            +body
 
 </template>
 

@@ -40,7 +40,7 @@
   import BranchesMenu from '../components/Branches-menu.svelte';
   import Quote from '../components/Quote.svelte';
   import CardWrapper from '../components/Card-wrapper.svelte';
-  import Clinics from '../components/Cards-clinics--Index.svelte';
+  import Clinics from '../components/Cards-clinics.svelte';
   import CallToAction from '../components/Call-to-action.svelte';
 </script>
 
@@ -100,8 +100,8 @@ CardWrapper
       p.p-I Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
       Button(size='regular' href='#' iconR='arrow-r' text="Вопрос-ответ")
 
-CardWrapper
-  .clinics_block
+.clinics_block
+  CardWrapper
     .text-wrap
       h2.h2-I Клиники
       p.p-I Мы сотрудничаем со множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
