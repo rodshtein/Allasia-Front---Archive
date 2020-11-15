@@ -121,12 +121,13 @@ CardWrapper
 
 Quote
 
-CallToAction(
-  header='Консультируем онлайн'
-  text='Напишите или позвоните. Расскажите о вашей проблеме, опишите диагноз, задайте вопросы, узнайте условия, сроки и стоимость'
-  btnText='Заполнить заявку'
-  tel
-)
+CardWrapper
+  CallToAction(
+    header='Консультируем онлайн'
+    text='Напишите или позвоните. Расскажите о вашей проблеме, опишите диагноз, задайте вопросы, узнайте условия, сроки и стоимость'
+    btnText='Заполнить заявку'
+    tel
+  )
 
 CardWrapper
   .address_card
@@ -422,10 +423,6 @@ CardWrapper
       color: var(--color--txt-p-I)
       @media( width > 650px )
         text-align: left
-      @media( width > 800px )
-        font-size: 17px
-        line-height: 22px
-
 
 .clinics_block
   @media( width < 800px )
