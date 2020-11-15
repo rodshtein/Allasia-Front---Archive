@@ -36,7 +36,7 @@ const date = d => {
               span , {data.age} {declOfNum(data.age)}
 
         +if('data.country || data.city')
-          p.p-note.location
+          p.p-small.location
             +if('data.country')
               span {data.country.name}
             +if('data.city')
@@ -45,7 +45,7 @@ const date = d => {
       .content
         +html('serialize(JSON.parse(data.review.document))')
       +if('data.date')
-        p.p-note {date(data.date)}
+        p.p-small {date(data.date)}
 
 </template>
 
@@ -68,7 +68,7 @@ const date = d => {
   margin-right: 20px
   margin-bottom: 5px
 
-.p-note
+.p-small
   color: var(--LIGHT-BLUE)
 
 .devider

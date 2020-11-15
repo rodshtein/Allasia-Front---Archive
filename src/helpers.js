@@ -1,7 +1,9 @@
 import escapeHtml from 'escape-html'
 
-export function serialize (data) {
-  // prefixClass = prefix ? `class="${prefix}"` : '';
+export function serialize (data, {
+  p = 'p',
+  h2 = 'h4'
+}={}) {
 
   const serialize = (data, length) => {
     // import { Text } from 'slate'
@@ -35,17 +37,17 @@ export function serialize (data) {
 
     switch (data.type) {
       case 'heading':
-        return `<h2 class="h4">${children}</h2>`
+        return `<h2 class='${h2}'>${children}</h2>`
       case 'paragraph':
-        return `<p class='p'>${children}</p>`
+        return `<p class='${p}'>${children}</p>`
       case 'list-item':
-        return `<li class='p'>${children}</li>`
+        return `<li class='${p}'>${children}</li>`
       case 'unordered-list':
         return `<ul>${children}</ul>`
       case 'blockquote':
-        return `<blockquote>${children}</blockquote>`
+        return `<blockquote class='${p}' >${children}</blockquote>`
       case 'link':
-        return `<a href="${data.data.href}">${children}</a>`
+        return `<a class='${p}' href="${data.data.href}">${children}</a>`
       default:
         return `${children}`
     }

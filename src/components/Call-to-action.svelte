@@ -11,30 +11,30 @@
 </script>
 
 <template lang='pug'>
-CardWrapper
-  .card
-    .header
-      h2.h2 {header}
-      .text-wrap
-        +if('text')
-          p.p {text}
-        +if('btnText')
+
+.card.cards_decor--white
+  .header
+    h2.h2 {header}
+    .text-wrap
+      +if('text')
+        p.p {text}
+      +if('btnText')
+        .button-wrap
+          Button(
+            size='mini'
+            invert iconR='chat'
+            text='{btnText}')
+  +if('tel')
+    .tel-wrap
+      .block
+        p.p-small Единый, бесплатный номер в РФ
+        .number-wrap
+          p.phone-number 8 800 250 82 97
           .button-wrap
             Button(
               size='mini'
-              invert iconR='chat'
-              text='{btnText}')
-    +if('tel')
-      .tel-wrap
-        .block
-          .info Единый, бесплатный номер в РФ
-          .number-wrap
-            .phone-number 8 800 250 82 97
-            .button-wrap
-              Button(
-                size='mini'
-                iconR='short_arrow-b'
-                text="Номера представительств")
+              iconR='short_arrow-b'
+              text="Номера представительств")
 
 </template>
 
@@ -45,7 +45,6 @@ CardWrapper
   padding: 20px
   width: 100%
   position: relative
-  @mixin cards_decor__withe
 
 .header
   display: flex
@@ -89,12 +88,8 @@ CardWrapper
     padding: 0
     width: 100%
 
-  .info
-    font-style: normal
+  .p-small
     text-align: left
-    font-size: 13px
-    line-height: 120%
-    color: var(--color--txt---light-blue)
     margin-bottom: 10px
     padding-bottom: 7px
     @mixin devider_border_bottom

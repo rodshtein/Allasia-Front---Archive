@@ -25,33 +25,34 @@
     if(data.length < 3) return `${name} ${name}--2`
   };
 
+  let classConfig = { p: "p-mini" }
 </script>
 
 <template lang='pug'>
 mixin body
   .head.fixed_font_size
-    h3.h4.header {el.name}
+    h3.h3.header {el.name}
   +if('el.description')
     .content.fixed_font_size(class='{witheContent(el)}')
-      +html('serialize(JSON.parse(el.description.document))')
+      +html(`serialize(JSON.parse(el.description.document), classConfig )`)
 
   .btn-wrap
     Button(
       size='small'
       text='Подробнее'
-      on:click!='{() => toggle(el) }'
+      on:click!='{ () => toggle(el) }'
     )
 
 Nailer
   +each('data as el (el.id + data.length)')
     +if('el.head_img && el.head_img.publicUrl')
-      .slider-item.with-img(
-        use:colorFilter='{el.head_img.publicUrl}'
+      .slider-item.cards_decor--img(
+        use:colorFilter='{el.head_img}'
         class!='{cls("slider-item")}'
         )
         +body
       +else
-        .slider-item.without-img(
+        .slider-item.cards_decor--white(
             class!='{cls("slider-item")}'
             )
           +body
@@ -99,14 +100,10 @@ TechnologyPopup(
   &:last-child
     margin-right: 0
 
-  &.without-img
-    @mixin cards_decor__withe
-
-  &.with-img
+  &.cards_decor--img
     background-size: cover
     background-position: center
     background-color: var(--PURPLE)
-    @mixin cards_decor__img
 
     & h3
       color: white
@@ -116,7 +113,9 @@ TechnologyPopup(
 .content
   overflow: hidden
   position: relative
-  max-width: 70%
+  max-width: 100%
+  @media( width > 450px )
+    max-width: 70%
   mask-image:
     linear-gradient(
       to top,

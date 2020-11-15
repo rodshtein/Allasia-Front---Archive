@@ -15,13 +15,13 @@
 
 <template lang='pug'>
 mixin body
-  .head.fixed_font_size
+  .head
     +if('el.country && el.country.name')
       p.subheader-h3 {el.country.name}
     +if('el.name_ru')
-      h3.h2 {el.name_ru}
+      h3.h3 {el.name_ru}
     +if('el.full_name_ru && el.name_ru && el.name_ru !== el.full_name_ru')
-      p.p {el.full_name_ru}
+      p.p-mini {el.full_name_ru}
 
 
   .btn-wrap
@@ -34,16 +34,17 @@ mixin body
 Nailer
   +each('data as el (el.id + data.length)')
     +if('el.head_img && el.head_img.publicUrl')
-      .slider-item.with-img(
+      .slider-item.cards_decor--img(
           class!='{cls("slider-item")}'
-          use:colorFilter='{el.head_img.publicUrl}'
-        )
+          use:colorFilter='{el.head_img}'
+      )
         +body
       +else
-        .slider-item.without-img(
+        .slider-item.cards_decor--white(
             class!='{cls("slider-item")}'
           )
           +body
+
 
 </template>
 
@@ -65,7 +66,6 @@ Nailer
   align-items: start
   justify-content: space-between
   margin-right: 15px
-  @mixin cards_decor__withe
 
   @media(width < 650px)
     width: calc(83%)
@@ -84,19 +84,15 @@ Nailer
     @media(width < 650px)
       width: calc((83% - 15px))
 
-  &.without-img
-    @mixin cards_decor__withe
-
-  &.with-img
+  &.cards_decor--img
     background-size: cover
     background-position: center
     background-color: var(--PURPLE)
-    @mixin cards_decor__img
 
-    & .h2, .p, .subheader-h3
+    & .h3, .p-mini, .subheader-h3
       color: white
 
-    & .p
+    & .p-mini
       font-weight: 450
 
 .head
@@ -107,7 +103,7 @@ Nailer
     margin-top: 0
     margin-bottom: 10px
 
-  & .h2
+  & .h3
     margin-bottom: 5px
 
 </style>

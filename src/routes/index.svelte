@@ -55,8 +55,8 @@ svelte:head
 
   .text-block
     h1.h1-I Лечение<br>за рубежом
-    p.subheader-h1-I Подбираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
-    .tel_wrapper
+    p.p-large Подбираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
+    .tel_wrapper.cards_decor--white
       .info Единый, бесплатный номер в РФ
       .phone-number 8 800 250 82 97
       .button-wrap
@@ -68,7 +68,7 @@ svelte:head
     .texts-wrap
       h2.h2-I Подбор лечения
       p.subheader-h2-I Услуги, стоимость, акции, отзывы
-      p.p-I Здесь мы собрали весь наш опыт по направлениям лечения и услугам. Клиники, врачи, стоимость, акции, особенности лечения, сроки прибывания, описание технологий и развёрнутые отзывы наших клиентов по конкретным направлениям.
+      p.p Здесь мы собрали весь наш опыт по направлениям лечения и услугам. Клиники, врачи, стоимость, акции, особенности лечения, сроки прибывания, описание технологий и развёрнутые отзывы наших клиентов по конкретным направлениям.
 
   .action-wrap
     h3.h3 Поиск по разделам
@@ -97,22 +97,22 @@ CardWrapper
     .illustration
     .text-wrap
       h2.h2-I Вопрос — ответ
-      p.p-I Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
+      p.p Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
       Button(size='regular' href='#' iconR='arrow-r' text="Вопрос-ответ")
 
 .clinics_block
   CardWrapper
     .text-wrap
       h2.h2-I Клиники
-      p.p-I Мы сотрудничаем со множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
-      Button(size='regular' href='#' iconR='arrow-r' text="Все клиники")
+      p.p Мы сотрудничаем со множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
+      Button(size='regular' href='/clinics' iconR='arrow-r' text="Все клиники")
     Clinics( data='{CLINICS}')
 
 CardWrapper
   .about_block
     h2.h2-I О компании
     p.subheader-h2-I Рассказываем о нашей работе
-    p.p-I Мы работаем с 2013 года. За это время перевезли более пяти тысяч пациентов, перевели тысячи листов медицинской документации, провели сотни часов онлайн-консультаций. Мы знаем как подобрать клинику, врача, подготовить документы, забронировать удобную гостиницу и другие тонкости организации поездки.
+    p.p Мы работаем с 2013 года. За это время перевезли более пяти тысяч пациентов, перевели тысячи листов медицинской документации, провели сотни часов онлайн-консультаций. Мы знаем как подобрать клинику, врача, подготовить документы, забронировать удобную гостиницу и другие тонкости организации поездки.
     .video_placeholder
 
     .KTO-wrapper
@@ -133,7 +133,7 @@ CardWrapper
     .illustration
     .text-wrap
       h2.h2-I Контакты
-      p.p-I Организуем лечение из любого города России, Казахстана или Кыргызстана
+      p.p Организуем лечение из любого города России, Казахстана или Кыргызстана
       Button(size='regular' href='#' iconR='arrow-r' text="Контакты")
 
 </template>
@@ -192,11 +192,10 @@ CardWrapper
       @media( width > 800px )
         text-align: left
 
-    .subheader-h1-I
+    .p-large
       text-align: center
       max-width: 400px
       margin-bottom: 30px
-      color: var(--color--p-I)
 
       @media( 600px > width > 800px )
         margin-bottom: 60px
@@ -208,8 +207,6 @@ CardWrapper
       display: flex
       flex-direction: column
       padding: 15px 40px
-
-      @mixin cards_decor__withe
       align-items: center
 
       @media( width > 800px )
@@ -285,7 +282,7 @@ CardWrapper
         @media( width > 800px )
           text-align: left
 
-      .p-I
+      .p
         margin:
           top: 20px
           right: 60px
@@ -362,7 +359,7 @@ CardWrapper
     left: 30px
 
   @media( width < 800px )
-    @mixin cards_decor__withe
+    @mixin cards_decor__white
 
   @media( 650px < width < 800px )
     grid-template-columns: calc(40% - 20px) calc(60% - 20px)
@@ -418,11 +415,11 @@ CardWrapper
       @media( width > 800px )
         margin-bottom: 15px
 
-    .p-I
+    .p
       margin-bottom: 30px
       max-width: 400px
       text-align: center
-      color: var(--color--p-I)
+      color: var(--color--txt-p-I)
       @media( width > 650px )
         text-align: left
       @media( width > 800px )
@@ -444,7 +441,7 @@ CardWrapper
     .h2-I
       margin-bottom: 15px
 
-    .p-I
+    .p
       text-align: left
       margin-bottom: 20px
 
@@ -491,7 +488,7 @@ CardWrapper
     @media( width > 650px )
       display: none
 
-  .p-I
+  .p
     margin-bottom: 15px
     @media( width <= 650px )
       display: none
@@ -567,7 +564,7 @@ CardWrapper
     left: 30px
 
   @media( width < 800px )
-    @mixin cards_decor__withe
+    @mixin cards_decor__white
 
   @media( 650px < width < 800px )
     grid-template-columns: calc(40% - 20px) calc(60% - 20px)
@@ -622,11 +619,11 @@ CardWrapper
       @media( width > 800px )
         margin-bottom: 15px
 
-    .p-I
+    .p
       margin-bottom: 30px
       max-width: 400px
       text-align: center
-      color: var(--color--p-I)
+      color: var(--color--txt-p-I)
       @media( width > 650px )
         text-align: left
 

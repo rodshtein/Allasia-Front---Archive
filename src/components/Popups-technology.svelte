@@ -16,7 +16,7 @@ export let showTechnology;
       bind:show!='{showTechnology}'
       header='Технологии'
       header2='{data.name}'
-      imageURL='{data.head_img.publicUrl}'
+      imageData='{data.head_img}'
     )
       .content
         +html('serialize(JSON.parse(data.description.document))')

@@ -181,12 +181,12 @@ Popup(
         +each('$searchResult.pages as branch')
           .single-folder-wrap
             +if('branch.name')
-              h4.p-note.folder-header { branch.name }
+              h4.p-small.folder-header { branch.name }
               +else
-                h4.p-note.folder-header Корневой раздел
+                h4.p-small.folder-header Корневой раздел
             ul.single-folder
               +each('branch.pages as page')
-                li.item-col.item.page
+                li.item-col.item.light_shadow.page
                   a(
                     rel=prefetch
                     href=`/medical-pages/{page.id}`
@@ -202,12 +202,12 @@ Popup(
         +each('$searchResult.branches as branch')
           .single-folder-wrap
             +if('branch.name')
-              h4.p-note.folder-header { branch.name }
+              h4.p-small.folder-header { branch.name }
               +else
-                h4.p-note.folder-header Корневые разделы
+                h4.p-small.folder-header Корневые разделы
             ul.single-folder
               +each('branch.branches as branch')
-                li.item-col.item.branch
+                li.item-col.item.light_shadow.branch
                   button( on:click!=`{() => {
                       branchId.set(branch.id)
                       backPointId.set(branch.id)
@@ -224,7 +224,7 @@ Popup(
         --columns--2:{styleMapPages.col[2]};
         --columns--3:{styleMapPages.col[3]};`)
         +each('menuPages as page, i')
-          li.item-grid.item.page(class='{styleMapPages.map[i]}')
+          li.item-grid.item.light_shadow.page(class='{styleMapPages.map[i]}')
             a(
               rel=prefetch
               href=`/medical-pages/{page.id}`
@@ -240,7 +240,7 @@ Popup(
         --columns--2:{styleMapBranches.col[2]};
         --columns--3:{styleMapBranches.col[3]};`)
         +each('menuBranches as branch, i')
-          li.item-grid.item.branch(class='{styleMapBranches.map[i]}')
+          li.item-grid.item.light_shadow.branch(class='{styleMapBranches.map[i]}')
             button( on:click!=`{() => {
                 branchId.set(branch.id)
                 searchCleaner()
@@ -367,7 +367,6 @@ Popup(
     var(--color--borders---card-white)
   background-color:
     var(--color--bg--card)
-  @mixin shadow
 
   & a, & button
     display: flex
@@ -387,11 +386,13 @@ Popup(
 
   &.branch button:after
     content: url("/icons/25/arrow-r.svg")
+    height: 25px
     align-self: flex-start
     margin-left: 12px
 
   &.page a:after
     content: url("/icons/25/new-page.svg")
+    height: 25px
     align-self: flex-start
     margin-left: 12px
 

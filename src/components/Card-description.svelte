@@ -56,7 +56,9 @@
     border-radius: var(--radius--block)
     border: solid 1px var(--color--borders---card-white)
     background-color: var(--color--bg--card)
-    box-shadow: 0px 3px 2px rgba(165, 184, 253, 0.61)
+    box-shadow:
+      6px 10px 6px -7px rgb(165 184 253 / 35%)
+
     &:before
       content: url('/icons/special/clip.svg')
       position: absolute
@@ -87,7 +89,8 @@
     border-radius: var(--radius--block)
     border: solid 1px var(--color--borders---card-white)
     background-color: var(--color--bg--card)
-    box-shadow: 0px 3px 2px rgba(165, 184, 253, 0.61)
+    box-shadow:
+      6px 10px 6px -6px rgb(165 184 253 / 35%)
 
   .list-3
     position: absolute
@@ -99,10 +102,9 @@
     border-radius: var(--radius--block)
     border: solid 1px var(--color--borders---card-white)
     background-color: var(--color--bg--card)
-    @mixin shadow
-
-.popup-devider
-  margin-bottom: 15px
+    box-shadow:
+      0px 3px 8px rgb(165 184 253 / 0.2),
+      0px 3px 1px rgb(165 184 253 / 0.05)
 
 .medical-page-description
   position: relative

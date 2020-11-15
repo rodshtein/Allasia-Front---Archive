@@ -21,17 +21,19 @@
     if(data.length < 2) return `${name} ${name}--1`
     if(data.length < 3) return `${name} ${name}--2`
   };
+
+  let classConfig = { p: "p-mini" }
 </script>
 
 <template lang='pug'>
 Nailer
   +each('data as el (el.id + data.length)')
-    .slider-item( class!='{cls("slider-item")}' )
+    .slider-item.cards_decor--white( class!='{cls("slider-item")}' )
       .head
         h3.h4 {el.header}
-        p.p-note {el.name}, {el.age} {numDeclension(el.age)}
+        p.p-small {el.name}, {el.age} {numDeclension(el.age)}
       .content.fixed_font_size
-        +html('serialize(JSON.parse(el.review.document))')
+        +html('serialize(JSON.parse(el.review.document), classConfig)')
 
       .btn-wrap
         Button(
@@ -62,7 +64,6 @@ FeedbackPopup(
   max-height: 260px
   padding-bottom: 50px
   margin-right: 15px
-  @mixin cards_decor__withe
 
   @media(width < 650px)
     width: calc(83%)
@@ -87,7 +88,7 @@ FeedbackPopup(
     row-gap: 7px
     margin-bottom: 13px
 
-    .p-note
+    .p-small
       color: var(--LIGHT-BLUE)
 
   .content

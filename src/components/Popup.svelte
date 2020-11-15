@@ -7,7 +7,7 @@ export let show = false;
 export let width = 600;
 export let header = false;
 export let header2 = false;
-export let imageURL = false;
+export let imageData = false;
 export let btnText = false;
 
 let isMounted = false;
@@ -115,7 +115,7 @@ function handleKeydown(e) {
           bind:show='{show}'
           header='{header}'
           header2='{header2}'
-          imageURL='{imageURL}'
+          imageData='{imageData}'
           btnText='{btnText}'
           on:click
         )

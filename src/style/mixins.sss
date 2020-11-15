@@ -5,8 +5,18 @@
 
 @define-mixin dark_shadow
   box-shadow:
-    0px 3px 6px rgb(159 167 197),
-    0px 8px 13px rgb(193 196 210)
+    0px 3px 6px rgb(165 177 220 / 72%),
+    0px 8px 13px rgb(198 206 234 / 58%)
+
+@define-mixin small_shadow
+  box-shadow:
+    0px 3px 8px rgb(165 184 253 / 25%),
+    0px 3px 1px rgb(165 184 253 / 8%)
+
+@define-mixin light_shadow
+  box-shadow:
+    0px 3px 8px rgb(165 184 253 / 12%),
+    0px 3px 1px rgb(165 184 253 / 4%)
 
 @define-mixin popup_shadow
   box-shadow:
@@ -17,16 +27,16 @@
     0px 4.25607px 19.2411px rgba(92, 92, 249, 0.0253196),
     0px 1.77104px 8.88643px rgba(92, 92, 249, 0.013597)
 
-@define-mixin cards_decor__withe
+@define-mixin cards_decor__white
   border-radius: var(--radius--block)
   border: solid 1px var(--color--borders---card-white)
   background-color: var(--color--bg--card)
-  @mixin shadow
+  @mixin light_shadow
 
 @define-mixin cards_decor__img
   border-radius: var(--radius--block)
   border: solid 1px var(--color--borders---card-img)
-  @mixin dark_shadow
+  @mixin light_shadow
 
 @define-mixin devider
   display: block

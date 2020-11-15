@@ -70,28 +70,25 @@ h1, h2, h3, h4, h5, h6, p
 .h3
   font-size: 19px
   line-height: 115%
+  @media( width > 650px )
+    font-size: 22px
+    line-height: 110%
 
 .h4
   font-size: 16px
   line-height: 115%
-
+  @media( width > 650px )
+    font-size: 18px
+    line-height: 110%
 
 .subheader
-  &-h1-I, &-h1, &-h2-I, &-h2, &-h3
+  &-h1, &-h2-I, &-h2, &-h3
     color: var(--color--txt-subheaders)
     font-style: normal
-
-  &-h1-I
-    font-size: 18px
-    line-height: 130%
-    @media(width > 650px)
-      font-size: 19px
-      line-height: 130%
 
   &-h1
     font-size: 14px
     line-height: 120%
-
     @media(width > 650px)
       font-size: 19px
 
@@ -113,50 +110,38 @@ h1, h2, h3, h4, h5, h6, p
     font-weight: 450
     line-height: 130%
 
+.p-large
+  color: var(--color--txt-p-I)
+  font-style: normal
+  font-size: 18px
+  line-height: 130%
+  @media(width > 650px)
+    font-size: 19px
+
 .p
-  font-size: 14px
-  line-height: 140%
-  color: var(--color--p)
+  font-size: 15px
+  line-height: 130%
+  color: var(--color--txt-p)
   @media( width > 450px )
-    font-size: 16px
+    font-size: 17px
+    line-height: 120%
+
+.p-mini
+  font-size: 14px
+  line-height: 150%
+  color: var(--color--txt-p)
+  @media( width > 450px )
+    font-size: 15px
     line-height: 130%
 
-.p-I
-  font-size: 17px
-  line-height: 22px
-  color: var(--color--p-I)
-
-.p-note
+.p-small
   font-size: 13px
   font-style: normal
   line-height: 130%
   font-weight: 400
-  color: var(--color--txt-note)
+  color: var(--color--txt-small)
   @media( width < 850px )
     font-weight: 450
-
-
-
-.fixed_font_size
-  .h1
-    font-size: 38px
-    line-height: 100%
-
-  .h2
-    font-size: 24px
-    line-height: 100%
-
-  .h3
-    font-size: 19px
-    line-height: 115%
-
-  .h4
-    font-size: 16px
-    line-height: 115%
-
-  .p
-    font-size: 14px
-    line-height: 130%
 
 
 .content
@@ -164,7 +149,7 @@ h1, h2, h3, h4, h5, h6, p
   & h2
     margin-top: 10px
     margin-bottom: 5px
-    color: var(--color--p)
+    color: var(--color--txt-p)
 
   & p
     margin-bottom: 14px
@@ -200,3 +185,17 @@ h1, h2, h3, h4, h5, h6, p
 
 .devider
   @mixin devider
+
+.light_shadow
+  @mixin light_shadow
+
+.cards_decor--white
+  border-radius: var(--radius--block)
+  border: solid 1px var(--color--borders---card-white)
+  background-color: var(--color--bg--card)
+  @mixin light_shadow
+
+.cards_decor--img
+  border-radius: var(--radius--block)
+  border: solid 1px var(--color--borders---card-img)
+  @mixin light_shadow

@@ -78,7 +78,7 @@
           +then ('result')
             +if('result && result.data.allFeedbackQuotes.length')
               div(class='{animateClass}' use:setParentHight)
-                p.p-note.author
+                p.p-small.author
                   b {result.data.allFeedbackQuotes[0].feedback.name}
                   | , {result.data.allFeedbackQuotes[0].feedback.city.name}
                 p.quote  {result.data.allFeedbackQuotes[0].quote}

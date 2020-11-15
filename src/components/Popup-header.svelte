@@ -2,10 +2,9 @@
   export let show;
   export let header = 'Header'
   export let header2 = false
-  export let imageURL = false
+  export let imageData = false
   export let btnText = false
   export let btnIcon = 'arrow-l'
-
   let headerClass = header && header.length > 28 ? 'h3':'h2';
   import Button from './Button.svelte'
   import { colorFilter } from '../color-filter';
@@ -13,8 +12,8 @@
 
 
 <template lang="pug" >
-+if('imageURL')
-  header.tall( use:colorFilter='{imageURL}')
++if('imageData.publicUrl')
+  header.tall( use:colorFilter='{imageData}')
     .wrapper
       +if('btnText')
         Button(size='mini' iconL='{btnIcon}' on:click text='{btnText}')

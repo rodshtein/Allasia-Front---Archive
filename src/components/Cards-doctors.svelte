@@ -71,6 +71,7 @@ Nailer
   border-radius: 50%
   background-size: cover
   margin-bottom: 20px
+  @mixin light_shadow
   &:after
     content: ''
     position: absolute

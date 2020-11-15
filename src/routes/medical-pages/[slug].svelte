@@ -32,16 +32,18 @@
   // components
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
-  import Button from '../../components/Button.svelte';
-  import Popup from '../../components/Popup.svelte';
-  import Description from '../../components/Cards-description.svelte';
-  import Diseases from '../../components/Cards-diseases.svelte';
+  import Description from '../../components/Card-description.svelte';
+  import Diseases from '../../components/Card-diseases.svelte';
+
   import Procedures from '../../components/Cards-procedures.svelte';
   import Feedback from '../../components/Cards-feedback.svelte';
   import Clinics from '../../components/Cards-clinics.svelte';
   import Doctors from '../../components/Cards-doctors.svelte';
   import Technology from '../../components/Cards-technology.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
+
+  import Button from '../../components/Button.svelte';
+  import Popup from '../../components/Popup.svelte';
 
   // set preloaded data to chache
   onMount(()=> {
@@ -66,8 +68,6 @@
     return haveUniqName || haveAdName || haveMoreThanOneDisease
   };
 
-
-
   function backHandler(){
     if($searchString) {
       showMenu.set(true)
@@ -75,7 +75,7 @@
       branchId.set(Q.branch.id)
       showMenu.set(true)
     }
-	}
+  }
 
 </script>
 
@@ -127,12 +127,13 @@
       data='{Q.procedures}'
     )
 
-CallToAction(
-  header='Не нашли нужную услугу?'
-  text='Напишите или позвоните, расскажите какая услуга вас интересует. Мы подберём для вас варианты и посчитаем стоимость.'
-  btnText='Открыть чат'
-  tel
-)
+CardWrapper
+  CallToAction(
+    header='Не нашли нужную услугу?'
+    text='Напишите или позвоните, расскажите какая услуга вас интересует. Мы подберём для вас варианты и посчитаем стоимость.'
+    btnText='Открыть чат'
+    tel
+  )
 
 +if('Q.feedback && Q.feedback[0]')
   CardWrapper

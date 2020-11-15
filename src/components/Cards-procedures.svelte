@@ -47,10 +47,10 @@
 +if('data && data[0]')
   Nailer
     +each('data as el (el.id + data.length)')
-      .div.fixed_font_size( class!='{cls("procedure-item")}' )
+      .cards_decor--white( class!='{cls("procedure-item")}' )
         .wrap
           .header-wrap
-            h3.h3 {el.name}
+            h3.h4 {el.name}
             +if('el.feature')
               p.subheader-h3 {el.feature}
           +if('el.price')
@@ -58,12 +58,12 @@
                 ? "price--one-item" : "" }`)
               +each('el.price as el')
                 +if('el.country && el.country.name && el.price')
-                  h4.country {el.country.name}
+                  h4.p-mini.country {el.country.name}
                   .right-col
                     +if('el.price')
-                      p.p {el.price}
+                      p.p-mini {el.price}
                     +if('el.conditions')
-                      p.conditions {el.conditions}
+                      p.p-small.conditions {el.conditions}
 
         +if('el.duration || el.description')
           .description-wrap(
@@ -71,9 +71,9 @@
           )
             +if('el.duration')
               .duration
-                p.p-note {el.duration}
+                p.p-small {el.duration}
             +if('el.description')
-              p.p-note.description {el.description}
+              p.p-small.description {el.description}
 
 </template>
 
@@ -90,7 +90,6 @@
   flex: 0 0 auto
   width: calc(83% / 2)
   margin-right: 15px
-  @mixin cards_decor__withe
 
   @media(width < 650px)
     width: calc(83%)
@@ -118,14 +117,9 @@
 
     .country
       font-weight: 700
-      font-size: 14px
-      line-height: 140%
       color: var( --LIGHT-BLACK )
 
-
     .conditions
-      font-size: 13px
-      line-height: 130%
       color: var( --LIGHT-BLUE )
 
   .description-wrap
@@ -143,7 +137,7 @@
 
     .duration
       max-width: 80%
-      .p-note
+      .p-small
         display: flex
         &:before
           content: url('/icons/micro/time.svg')

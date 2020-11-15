@@ -6,8 +6,6 @@
   import { BRANCHES } from '../queries';
   import { sort, columnMark } from "../helpers";
 
-  import CardWrapper from './Card-wrapper.svelte';
-
   let styleMapBranches = {};
   let menuBranches;
 
@@ -77,12 +75,12 @@
         style=`--columns--3:{styleMapBranches.col[3]};`
         )
         +each('menuBranches as branch, i')
-          li.item-grid.item.branch(class='{styleMapBranches.map[i]}')
+          li.item-grid.item.light_shadow.branch(class='{styleMapBranches.map[i]}')
             button( on:click!=`{() => {
                 showMenu.set(true)
                 branchId.set(branch.id)
               }}`)
-              span.ellipsis {branch.name}
+              span {branch.name}
 
 </template>
 
@@ -140,7 +138,8 @@
     width: 67px
     padding: 15px
     cursor: pointer
-    &:after
+
+    &::after
       content: ''
       display: block
       background-position: center
@@ -150,7 +149,7 @@
       height: 37px
       transition: all .3s ease-out
 
-    &:hover:after
+    &:hover::after
       background-color: var(--LIGHT-PURPLE)
 
 
@@ -190,8 +189,6 @@
   @media( width > 900px)
     grid-auto-columns: calc((100% - 30px) / 3)
 
-
-
   .item
     position: relative
     user-select: none
@@ -203,7 +200,6 @@
       var(--color--borders---card-white)
     background-color:
       var(--color--bg--card)
-    @mixin shadow
 
     &:hover
       border-color: var(--color--btn-border---active)
@@ -211,7 +207,9 @@
     &:active
       transform: translateY(-2px)
 
-    a, & button
+
+
+    button
       display: flex
       justify-content: space-between
       align-items: center
@@ -229,22 +227,14 @@
       border: none
       width: 100%
 
-    .branch button:after
-      content: url("/icons/25/arrow-r.svg")
-      align-self: flex-start
-      margin-left: 12px
+      &::after
+        content: url("/icons/25/arrow-r.svg")
+        height: 25px
+        margin-left: 12px
 
-    .page a:after
-      content: url("/icons/25/new-page.svg")
-      align-self: flex-start
-      margin-left: 12px
-
-
-    span
-      display: block
-      text-align: left
-
-      &.ellipsis
+      span
+        display: block
+        text-align: left
         overflow: hidden
         white-space: nowrap
         text-overflow: ellipsis

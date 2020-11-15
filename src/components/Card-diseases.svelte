@@ -14,18 +14,18 @@
 
 <template lang='pug'>
 
-.diseases
+.diseases.cards_decor--white
   div
     +each('data as item, i' )
       +if('showItem(item, i)')
         .item
           +if('showAdHeader(item)')
-            h3.p {item.name}
+            h3.p-mini {item.name}
           +if('item.ad_name')
             +each('JSON.parse(item.ad_name) as item' )
               +if('item')
-                p.p-note {item}
-  p.p-note.info Группы болезней попадающих под описываемые услуги
+                p.p-small {item}
+  p.p-small.info Группы болезней попадающих под описываемые услуги
 
 </template>
 
@@ -38,14 +38,9 @@
   display: flex
   flex-direction: column
   justify-content: space-between
-  @mixin cards_decor__withe
 
   .item
     h3
-      font-style: normal
-      font-size: 15px
-      font-weight: 400
-      line-height: 120%
       margin-bottom: 5px
 
     &:after
@@ -56,7 +51,7 @@
     &:last-child:after
       display: none
 
-  .p-note
+  .p-small
     color: var(--LIGHT-BLUE)
 
   .info
