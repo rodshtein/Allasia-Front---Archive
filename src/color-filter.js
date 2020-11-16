@@ -62,15 +62,14 @@ const hslToRgb = (h,s,l) => {
 
 
 export function colorFilter(node, data){
+  const publicUrl = data.publicUrl;
+  const microImgUrl = getMicroImgUrl(publicUrl);
 
-  const storedImage = getImage(data.id);
   const colorThief = new ColorThief();
   const img = new Image();
   img.crossOrigin = 'Anonymous'
 
   img.addEventListener('load', () => {
-    let dataURL = storedImage ? storedImage : getDataURL(img);
-
     // color functions
     let [r,g,b] = colorThief.getColor(img);
     let hue = rgbToHue(r / 255, g / 255, b / 255);
@@ -89,43 +88,15 @@ export function colorFilter(node, data){
         rgba(${[r,g,b]}, 0.5) 60%,
         rgba(${[r,g,b]}, 0) 108.76%
       ),
-      url(${dataURL})`
+      url(${publicUrl})`
 
-    // store image
-    if(!storedImage) storeImage(data.id, dataURL);
   })
 
-  img.src = storedImage ? storedImage : data.publicUrl
+  img.src = microImgUrl
+  node.style.backgroundImage = `url(${publicUrl})`
 }
 
-// https://developer.mozilla.org/ru/docs/Web/HTML/CORS_enabled_image
-
-function getDataURL(img) {
-  let canvas = document.createElement("canvas");
-  let context = canvas.getContext("2d");
-
-  canvas.width = img.width
-  canvas.height = img.height
-
-  context.drawImage(img, 0, 0)
-
-  return canvas.toDataURL('image/jpeg', 0.83);
-}
-
-function getImage(id) {
-  try {
-    return localStorage.getItem(id)
-  }
-  catch(err) {
-    console.log("Color-filter error: " + err);
-  }
-}
-
-function storeImage(id, dataURL) {
-  try {
-    localStorage.setItem(id, dataURL);
-  }
-  catch(err) {
-    console.log("Color-filter error: " + err);
-  }
+function getMicroImgUrl(url){
+  let cord = url.indexOf("upload") + 7;
+  return url.slice(0, cord) + 'c_limit,e_blur:300,w_30/' + url.slice(cord)
 }
