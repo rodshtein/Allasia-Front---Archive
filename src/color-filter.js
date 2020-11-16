@@ -93,7 +93,6 @@ export function colorFilter(node, data){
   })
 
   img.src = microImgUrl
-  node.style.backgroundImage = `url(${publicUrl})`
 }
 
 function getMicroImgUrl(url){
