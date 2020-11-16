@@ -25,19 +25,8 @@ jobs:
       - run: mkdir "$HOME/.ssh"
       - run: echo "${{ secrets.DEV_KEY }}" > "$HOME/.ssh/DEV_KEY"
       - run: chmod 600 "$HOME/.ssh/DEV_KEY"
-      # remove old build
-      - name: git pull on sever
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          command: |
-            cd /var/www/front
-            pm2 stop Public\ App
-            rm -rf __sapper__/*
-          host: 84.38.182.174
-          username: admin
-          privateKey: ${{ secrets.DEV_KEY }}
       # Deploy bild
-      - run: cd __sapper__&& rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__
+      - run: cd __sapper__/build && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__/build/
       # Git pull and restart app
       - name: git pull on sever
         uses: garygrossgarten/github-action-ssh@release
@@ -45,7 +34,7 @@ jobs:
           command: |
             cd /var/www/front
             git pull
-            pm2 start Public\ App
+            pm2 restart Public\ App
           host: 84.38.182.174
           username: admin
           privateKey: ${{ secrets.DEV_KEY }}

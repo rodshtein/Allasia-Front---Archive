@@ -92,10 +92,10 @@ export function colorFilter(node, data){
 
   })
 
-  img.src = microImgUrl
+  img.src = publicUrl
 }
 
 function getMicroImgUrl(url){
   let cord = url.indexOf("upload") + 7;
-  return url.slice(0, cord) + 'c_limit,e_blur:300,w_30/' + url.slice(cord)
+  return url.slice(0, cord) + 'c_limit,e_blur:100,w_70/' + url.slice(cord)
 }
