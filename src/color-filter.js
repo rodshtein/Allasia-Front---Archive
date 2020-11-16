@@ -63,7 +63,7 @@ const hslToRgb = (h,s,l) => {
 
 export function colorFilter(node, data){
   const publicUrl = data.publicUrl;
-  const microImgUrl = getMicroImgUrl(publicUrl);
+  // const microImgUrl = getMicroImgUrl(publicUrl);
 
   const colorThief = new ColorThief();
   const img = new Image();
@@ -89,7 +89,6 @@ export function colorFilter(node, data){
         rgba(${[r,g,b]}, 0) 108.76%
       ),
       url(${publicUrl})`
-
   })
 
   img.src = publicUrl
