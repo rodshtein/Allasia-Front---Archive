@@ -34,30 +34,36 @@
     })
   });
 
-  // $: Q = sortClinics(Q)
+  function sortClinics(data){
+    if(!data) return null
+    let sortedCountry = [];
 
-  // function sortClinics(data){
-  //   if(!data) return null
-  //   let arr = [];
+    data.forEach(country => {
+      if(country.clinics.length) {
 
-  //   data.forEach(item => {
-  //     // paint only if there is at least one contry + price
-  //     if(item.clinics && item.clinics[0].price) {
-  //         // Sort item price by country name
-  //         if(item.price.length > 1){
-  //           let price = item.price.slice().sort((a, b) => {
-  //             a = a.country.name ? a.country.name : '';
-  //             b = b.country.name ? b.country.name : '';
-  //             return a.localeCompare(b)
-  //           });
-  //           arr.push(Object.assign({}, item, { price }))
-  //         } else {
-  //           arr.push(item)
-  //         }
-  //     }
-  //   });
-  //   return arr
-  // }
+          // Sort clinics by country name
+          if(country.clinics.length > 1){
+            let clinics = country.clinics.slice().sort((a, b) => {
+              a = a.name_ru ? a.name_ru : '';
+              b = b.name_ru ? b.name_ru : '';
+              return a.localeCompare(b)
+            });
+            sortedCountry.push(Object.assign({}, country, { clinics }))
+          } else {
+            sortedCountry.push(Object.assign({}, country ))
+          }
+      }
+    });
+
+    // Sort country's with sorted clinics
+    sortedCountry.sort((a, b) => {
+      a = a.name ? a.name : '';
+      b = b.name ? b.name : '';
+      return a.localeCompare(b)
+    });
+
+    return sortedCountry
+  }
 </script>
 
 <template lang='pug'>
@@ -66,13 +72,12 @@ header
   p.p-large Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
   .illustration
 
-+each('Q as country')
-  +if('country.clinics.length')
-    CardWrapper
-      CardHeader(header!='{country.name}')
-      .clinics-container
-        +each('country.clinics as clinic')
-          Clinic(data='{clinic}')
++each('sortClinics(Q) as country')
+  CardWrapper
+    CardHeader(header!='{country.name}')
+    .clinics-container
+      +each('country.clinics as clinic')
+        Clinic(data='{clinic}')
 
 </template>
 
