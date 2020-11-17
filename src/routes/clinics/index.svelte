@@ -10,7 +10,6 @@
       });
 
     return {
-      PAGE: page,
       DATA: query.data,
       Q: query.data.allClinicCountries,
     };
@@ -19,9 +18,13 @@
 </script>
 
 <script>
-  export let PAGE;
   export let DATA;
   export let Q;
+
+  import CardWrapper from '../../components/Card-wrapper.svelte';
+  import CardHeader from '../../components/Card-header.svelte';
+  import Clinic from '../../components/Card-clinic.svelte';
+  import Clinics from '../../components/Slider-clinics.svelte';
 
   // set preloaded data to chache
   onMount(()=> {
@@ -31,6 +34,30 @@
     })
   });
 
+  // $: Q = sortClinics(Q)
+
+  // function sortClinics(data){
+  //   if(!data) return null
+  //   let arr = [];
+
+  //   data.forEach(item => {
+  //     // paint only if there is at least one contry + price
+  //     if(item.clinics && item.clinics[0].price) {
+  //         // Sort item price by country name
+  //         if(item.price.length > 1){
+  //           let price = item.price.slice().sort((a, b) => {
+  //             a = a.country.name ? a.country.name : '';
+  //             b = b.country.name ? b.country.name : '';
+  //             return a.localeCompare(b)
+  //           });
+  //           arr.push(Object.assign({}, item, { price }))
+  //         } else {
+  //           arr.push(item)
+  //         }
+  //     }
+  //   });
+  //   return arr
+  // }
 </script>
 
 <template lang='pug'>
@@ -39,12 +66,29 @@ header
   p.p-large Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
   .illustration
 
-pre {JSON.stringify(Q, 0, 2)}
++each('Q as country')
+  +if('country.clinics.length')
+    CardWrapper
+      CardHeader(header!='{country.name}')
+      .clinics-container
+        +each('country.clinics as clinic')
+          Clinic(data='{clinic}')
+
 </template>
 
 <style lang='postcss'>
-
 @import "../../style/mixins.sss"
+
+.clinics-container
+  display: grid
+  grid-template-columns: 1
+  grid-gap: 10px
+  @media( width > 450px )
+    grid-template-columns: repeat( 2, 1fr )
+    grid-gap: 20px 10px
+  @media( width > 850px )
+    grid-template-columns: repeat( 3, 1fr )
+
 
 header
   display: grid
@@ -79,9 +123,10 @@ header
     padding-bottom: 50px
     grid-row-gap: 15px
 
-  .subheader-h1-I
-    @media( width <= 450px )
-      display: none
+  .p-large
+    text-align: center
+    @media( width >= 450px )
+      text-align: left
 
   .illustration
     background-position: center

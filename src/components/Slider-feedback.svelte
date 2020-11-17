@@ -28,7 +28,7 @@
 <template lang='pug'>
 Nailer
   +each('data as el (el.id + data.length)')
-    .slider-item.cards_decor--white( class!='{cls("slider-item")}' )
+    .slider-item.card_decor__white( class!='{cls("slider-item")}' )
       .head
         h3.h4 {el.header}
         p.p-small {el.name}, {el.age} {numDeclension(el.age)}

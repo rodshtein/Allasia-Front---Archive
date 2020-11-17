@@ -220,14 +220,11 @@ export const CLINICS_COUNTRY_CLINICS = gql`
       name
       clinics {
         name_ru
+        full_name_ru
         id
         head_img {
           id
           publicUrl
-        }
-        country {
-          id
-          name
         }
       }
     }

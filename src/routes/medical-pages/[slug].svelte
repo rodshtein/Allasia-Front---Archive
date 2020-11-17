@@ -35,11 +35,11 @@
   import Description from '../../components/Card-description.svelte';
   import Diseases from '../../components/Card-diseases.svelte';
 
-  import Procedures from '../../components/Cards-procedures.svelte';
-  import Feedback from '../../components/Cards-feedback.svelte';
-  import Clinics from '../../components/Cards-clinics.svelte';
-  import Doctors from '../../components/Cards-doctors.svelte';
-  import Technology from '../../components/Cards-technology.svelte';
+  import Procedures from '../../components/Slider-procedures.svelte';
+  import Feedback from '../../components/Slider-feedback.svelte';
+  import Clinics from '../../components/Slider-clinics.svelte';
+  import Doctors from '../../components/Slider-doctors.svelte';
+  import Technology from '../../components/Slider-technology.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
 
   import Button from '../../components/Button.svelte';
@@ -123,9 +123,7 @@
 +if('Q.procedures && Q.procedures[0]')
   CardWrapper
     CardHeader(header='Процедуры' subHeader='Стоимость, особенности, сроки')
-    Procedures(
-      data='{Q.procedures}'
-    )
+    Procedures(data='{Q.procedures}')
 
 CardWrapper
   CallToAction(
@@ -138,30 +136,22 @@ CardWrapper
 +if('Q.feedback && Q.feedback[0]')
   CardWrapper
     CardHeader(header!='{Q.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
-    Feedback(
-      data='{Q.feedback}'
-    )
+    Feedback(data='{Q.feedback}')
 
 +if('Q.clinics && Q.clinics[0]')
   CardWrapper
     CardHeader(header!='{Q.clinics.length > 1 ? "Клиники" : "Клиника" }')
-    Clinics(
-      data='{Q.clinics}'
-    )
+    Clinics(data='{Q.clinics}')
 
 +if('Q.doctors && Q.doctors[0]')
   CardWrapper
     CardHeader(header!='{Q.doctors.length > 1 ? "Врачи" : "Врач" }')
-    Doctors(
-      data='{Q.doctors}'
-    )
+    Doctors(data='{Q.doctors}')
 
 +if('Q.technology && Q.technology[0]')
   CardWrapper
     CardHeader(header='Технологии')
-    Technology(
-      data='{Q.technology}'
-    )
+    Technology(data='{Q.technology}')
 
 
 </template>

@@ -14,7 +14,7 @@
 
 <template lang='pug'>
 
-.diseases.cards_decor--white
+.diseases.card_decor__white
   div
     +each('data as item, i' )
       +if('showItem(item, i)')

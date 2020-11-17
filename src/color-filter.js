@@ -62,6 +62,8 @@ const hslToRgb = (h,s,l) => {
 
 
 export function colorFilter(node, data){
+  if(data === null || data.publicUrl === null) return
+
   const publicUrl = data.publicUrl;
   // const microImgUrl = getMicroImgUrl(publicUrl);
 
@@ -75,7 +77,7 @@ export function colorFilter(node, data){
     let hue = rgbToHue(r / 255, g / 255, b / 255);
     hue = Math.round(hue || 0);
 
-    [r,g,b] = hslToRgb(hue, .5, .3);
+    [r,g,b] = hslToRgb(hue, .6, .3);
     r = Math.round(r * 255);
     g = Math.round(g * 255);
     b = Math.round(b * 255);

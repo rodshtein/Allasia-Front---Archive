@@ -47,7 +47,7 @@
 +if('data && data[0]')
   Nailer
     +each('data as el (el.id + data.length)')
-      .cards_decor--white( class!='{cls("procedure-item")}' )
+      .card_decor__white( class!='{cls("procedure-item")}' )
         .wrap
           .header-wrap
             h3.h4 {el.name}

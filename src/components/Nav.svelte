@@ -37,7 +37,7 @@ function searchHandler(){
         li
           Button(invert iconR='chat' text='Задать вопрос')
         li
-          Button(invert text='Клиники')
+          Button(invert text='Клиники' href='./clinics')
         li
           Button(invert text='Акции')
         li

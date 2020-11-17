@@ -40,7 +40,7 @@
   import BranchesMenu from '../components/Branches-menu.svelte';
   import Quote from '../components/Quote.svelte';
   import CardWrapper from '../components/Card-wrapper.svelte';
-  import Clinics from '../components/Cards-clinics.svelte';
+  import Clinics from '../components/Slider-clinics.svelte';
   import CallToAction from '../components/Call-to-action.svelte';
 </script>
 
@@ -56,7 +56,7 @@ svelte:head
   .text-block
     h1.h1-I Лечение<br>за рубежом
     p.p-large Подбираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
-    .tel_wrapper.cards_decor--white
+    .tel_wrapper.card_decor__white
       .info Единый, бесплатный номер в РФ
       .phone-number 8 800 250 82 97
       .button-wrap
@@ -187,7 +187,7 @@ CardWrapper
       align-items: start
 
     .h1-I
-      margin-bottom: 30px
+      margin-bottom: 40px
       text-align: center
 
       @media( width > 800px )
@@ -196,7 +196,7 @@ CardWrapper
     .p-large
       text-align: center
       max-width: 400px
-      margin-bottom: 30px
+      margin-bottom: 40px
 
       @media( 600px > width > 800px )
         margin-bottom: 60px

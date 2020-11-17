@@ -46,13 +46,13 @@ mixin body
 Nailer
   +each('data as el (el.id + data.length)')
     +if('el.head_img && el.head_img.publicUrl')
-      .slider-item.cards_decor--img(
+      .slider-item.card_decor__img(
         use:colorFilter='{el.head_img}'
         class!='{cls("slider-item")}'
         )
         +body
       +else
-        .slider-item.cards_decor--white(
+        .slider-item.card_decor__white(
             class!='{cls("slider-item")}'
             )
           +body
@@ -100,7 +100,7 @@ TechnologyPopup(
   &:last-child
     margin-right: 0
 
-  &.cards_decor--img
+  &.card_decor__img
     background-size: cover
     background-position: center
     background-color: var(--PURPLE)

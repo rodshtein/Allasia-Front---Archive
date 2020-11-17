@@ -12,7 +12,7 @@
 
 <template lang='pug'>
 
-.card.cards_decor--white
+.card.card_decor__white
   .header
     h2.h2 {header}
     .text-wrap

@@ -1,4 +1,6 @@
 <script>
+  import { beforeUpdate, afterUpdate, onMount } from 'svelte';
+
   /** How to call user */
   export let text = false;
   export let href = false;
@@ -27,6 +29,22 @@
     ${showIconL} ${iconLclass}
     ${showIconR} ${iconRclass}
   `;
+
+
+  // onMount(() => {
+  //   console.log('onMount');
+  //   disabled = false
+  // });
+
+  // beforeUpdate(() => {
+  //   console.log('beforeUpdate');
+  //   disabled = true
+  // });
+
+  // afterUpdate(() => {
+  //   console.log('afterUpdate');
+  //   disabled = false
+  // });
 
 </script>
 
