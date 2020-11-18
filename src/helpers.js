@@ -2,7 +2,7 @@ import escapeHtml from 'escape-html'
 
 export function serialize (data, {
   p = 'p',
-  h2 = 'h4'
+  h2 = 'h3'
 }={}) {
 
   const serialize = (data, length) => {
@@ -58,17 +58,51 @@ export function serialize (data, {
 
 export function sort(arr, value='name'){
   if(arr.length < 2) return arr;
-
   return arr.slice().sort((a, b) => valueCompare(a,b,value));
 }
 
 function valueCompare(a,b,value){
   a = value ? a[value] : a;
   b = value ? b[value] : b;
-  if (a > b) return 1
-  if (a == b) return 0
-  if (a < b) return -1
+  return a.localeCompare(b)
 }
+
+export function sortTrees({
+  data, sort_field, sub_selector, sub_sort_field
+}={}){
+  if( !data || !sort_field ) {
+    console.error(`sort config error, some parameters was not passed`)
+    return data ? data : []
+  }
+  let sortedArr = [];
+
+  // sort subtree
+  data.forEach(item => {
+    if(sub_selector && sub_sort_field && item[ sub_selector ].length) {
+        // Sort clinics by country name
+        if(item[sub_selector].length > 1){
+          let sortedSubLvl = item[sub_selector].slice().sort((a, b) => {
+            a = a[ sub_sort_field ] ? a[ sub_sort_field ] : '';
+            b = b[ sub_sort_field ] ? b[ sub_sort_field ] : '';
+            return a.localeCompare(b)
+          });
+          sortedArr.push(Object.assign({}, item, { [sub_selector] : sortedSubLvl  }))
+        } else {
+          sortedArr.push(Object.assign({}, item ))
+        }
+    }
+  });
+
+  // Sort country's with sorted clinics
+  sortedArr.sort((a, b) => {
+    a = a[ sort_field ] ? a[ sort_field ] : '';
+    b = b[ sort_field ] ? b[ sort_field ] : '';
+    return a.localeCompare(b)
+  });
+  return sortedArr
+}
+
+
 
 export function getBranchPath (obj, name, count=0) {
   let inName = name ? ' / ' + name : '';

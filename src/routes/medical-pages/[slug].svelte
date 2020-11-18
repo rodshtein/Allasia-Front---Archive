@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { client } from '../../utils';
   import { getBranchPath } from '../../helpers';
-  import { MEDICAL_PAGE } from '../../queries';
+  import { MEDICAL_PAGE } from './queries';
   import { searchString } from '../../components/Store-search';
   import { branchId, showMenu } from '../../components/Store-branches';
 

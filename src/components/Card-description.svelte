@@ -5,6 +5,7 @@
 
   // Content
   export let header ='No header';
+  export let subHeader = null;
   export let content = 'No content';
   export let btnTxt = 'Читать полностью';
 
@@ -31,6 +32,7 @@
       Popup(
         bind:show!='{showContent}'
         header='{header}'
+        header2='{subHeader}'
       )
         .content
           +html('description')

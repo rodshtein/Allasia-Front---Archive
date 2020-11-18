@@ -1,62 +1,5 @@
 import { gql } from "apollo-boost";
 
-export const BRANCHES = gql`
-  {
-    allMedicalBranches {
-      id
-      name
-      pages {
-        id
-        name
-        diseases {
-          id
-          name
-          ad_name
-        }
-      }
-      children {
-        id
-        name
-      }
-      parent {
-        id
-        name
-      }
-    }
-  }`;
-
-export const QUOTE_COUNT = gql`{
-  _allFeedbackQuotesMeta { count }
-}`;
-
-export const QUOTE = gql`
-  query ($int: Int){
-    allFeedbackQuotes ( skip: $int  first: 1 ) {
-      quote
-      feedback {
-        header
-        name
-        age
-        date
-        city {
-          name
-        }
-        country {
-          name
-        }
-        review {
-          document
-        }
-        gallery {
-          alt
-          img {
-            publicUrl
-          }
-        }
-      }
-    },
-  }`;
-
 export const MEDICAL_PAGE = gql`
   query($id: ID!){
       MedicalPage (where: {id: $id}) {
@@ -194,22 +137,3 @@ export const MEDICAL_PAGE = gql`
       }
     }
   `;
-
-export const INDEX_CLINICS = gql`
-  query($first: Int!){
-    allClinics (first: $first) {
-      id
-      name_ru
-      full_name_ru
-      country {
-        id
-        name
-      }
-      head_img {
-        id
-        publicUrl
-      }
-    }
-  }
-`;
-

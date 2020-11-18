@@ -1,7 +1,8 @@
 <script context="module">
   import { onMount } from 'svelte';
   import { client } from '../../utils';
-  import { CLINICS_COUNTRY_CLINICS } from '../../queries';
+  import { sortTrees } from '../../helpers';
+  import { CLINICS_COUNTRY_CLINICS } from './queries';
 
   export async function preload(page) {
 
@@ -34,36 +35,12 @@
     })
   });
 
-  function sortClinics(data){
-    if(!data) return null
-    let sortedCountry = [];
-
-    data.forEach(country => {
-      if(country.clinics.length) {
-
-          // Sort clinics by country name
-          if(country.clinics.length > 1){
-            let clinics = country.clinics.slice().sort((a, b) => {
-              a = a.name_ru ? a.name_ru : '';
-              b = b.name_ru ? b.name_ru : '';
-              return a.localeCompare(b)
-            });
-            sortedCountry.push(Object.assign({}, country, { clinics }))
-          } else {
-            sortedCountry.push(Object.assign({}, country ))
-          }
-      }
-    });
-
-    // Sort country's with sorted clinics
-    sortedCountry.sort((a, b) => {
-      a = a.name ? a.name : '';
-      b = b.name ? b.name : '';
-      return a.localeCompare(b)
-    });
-
-    return sortedCountry
-  }
+  const sortConf = (data) => { return {
+    data: data,
+    sort_field: 'name',
+    sub_selector: 'clinics',
+    sub_sort_field: 'name_ru'
+  }}
 </script>
 
 <template lang='pug'>
@@ -72,12 +49,12 @@ header
   p.p-large Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
   .illustration
 
-+each('sortClinics(Q) as country')
++each(`sortTrees(sortConf(Q)) as country`)
   CardWrapper
     CardHeader(header!='{country.name}')
     .clinics-container
       +each('country.clinics as clinic')
-        Clinic(data='{clinic}')
+        Clinic(data='{clinic}' href='./clinics/')
 
 </template>
 

@@ -1,5 +1,6 @@
 <script>
   export let data;
+  export let href = '';
 
   import Button from './Button.svelte';
   import { colorFilter } from '../color-filter';
@@ -9,12 +10,13 @@
 </script>
 
 <template lang='pug'>
-
 .clinic-card(
   class='{cls}'
   use:colorFilter='{data.head_img}'
 )
   .head
+    +if('data.name && data.name !== data.name_ru')
+      p.subheader-h3 {data.name}
     +if('data.country && data.country.name')
       p.subheader-h3 {data.country.name}
     +if('data.name_ru')
@@ -26,7 +28,7 @@
     Button(
       size='small'
       text='Подробнее'
-      href='#'
+      href!=`{href + ( data && data.id ? data.id : '#') }`
     )
 
 </template>
