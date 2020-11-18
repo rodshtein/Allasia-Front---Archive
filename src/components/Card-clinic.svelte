@@ -1,6 +1,6 @@
 <script>
   export let data;
-  export let href = '';
+  export let href = '/clinics/';
 
   import Button from './Button.svelte';
   import { colorFilter } from '../color-filter';

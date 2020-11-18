@@ -31,8 +31,14 @@ export const CLINIC_PAGE = gql`
           name
         }
         doctor {
+          id
           name
+          specialty {
+            id
+            name
+          }
           avatar {
+            id
             publicUrl
           }
         }

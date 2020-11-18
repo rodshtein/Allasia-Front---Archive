@@ -61,17 +61,6 @@ header
 <style lang='postcss'>
 @import "../../style/mixins.sss"
 
-.clinics-container
-  display: grid
-  grid-template-columns: 1
-  grid-gap: 10px
-  @media( width > 450px )
-    grid-template-columns: repeat( 2, 1fr )
-    grid-gap: 20px 10px
-  @media( width > 850px )
-    grid-template-columns: repeat( 3, 1fr )
-
-
 header
   display: grid
   grid-template: auto / 1fr
@@ -124,5 +113,15 @@ header
       height: 100%
       margin-bottom: 0
       grid-area: 1 / 2 / span 2
+
+.clinics-container
+  display: grid
+  grid-template-columns: 1
+  grid-gap: 10px
+  @media( width > 450px )
+    grid-template-columns: repeat( 2, 1fr )
+    grid-gap: 20px 10px
+  @media( width > 850px )
+    grid-template-columns: repeat( 3, 1fr )
 
 </style>

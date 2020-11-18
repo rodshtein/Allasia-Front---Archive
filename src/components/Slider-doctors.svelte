@@ -28,11 +28,22 @@
     }, '')
   }
 
+  function dataNormalize(data){
+    if(data[0].__typename === 'Doctor') return data
+
+    let arr = [];
+    data.forEach( el => {
+      if(el.doctor) arr.push(el.doctor)
+    })
+
+    return arr
+  }
+
 </script>
 
 <template lang='pug'>
 Nailer
-  +each('data as el (el.id)')
+  +each('dataNormalize(data) as el (el.id)')
     a.slider-item(alt='Страница врача' href='.' rel='prefetch')
       +if('el.avatar && el.avatar.publicUrl')
         .avatar(
@@ -41,7 +52,7 @@ Nailer
         +else
           .avatar
       h3.name {el.name}
-      +if('el.specialty[0]')
+      +if('el.specialty && el.specialty[0]')
         p.specialty {makeSpecialty(el.specialty)}
 
 </template>
