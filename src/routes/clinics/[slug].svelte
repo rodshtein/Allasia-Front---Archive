@@ -45,6 +45,12 @@
     })
   });
 
+  let description = () => {
+    let n = Q.full_name_ru ? Q.full_name_ru + ', ': '';
+    let c = Q.country.name ? Q.country.name : '';
+    return n + c
+  }
+
 </script>
 
 <template lang='pug'>
@@ -55,9 +61,19 @@
 
 +if('Q')
   header
-    h1.h1 Клиники
-    p.p-large Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
-    .illustration
+    .wrap
+      p.p {Q.name}
+      h1.h1 {Q.name_ru}
+      +if('description()')
+        p.p-large {description()}
+
+      h2.h4 Специализация
+      p.p
+        +if('Q.type')
+          +each('Q.type as el')
+            span {el.name}
+
+    .illustration(style!=`background-image: url('{Q.head_img.publicUrl}')`)
 
 +if('Q.description')
   CardWrapper
@@ -98,6 +114,7 @@ CardWrapper
 
 <style lang='postcss'>
 @import "../../style/mixins.sss"
+
 header
   display: grid
   grid-template: auto / 1fr
@@ -131,7 +148,7 @@ header
     padding-bottom: 50px
     grid-row-gap: 15px
 
-  .p-large
+  .subheader-h1
     text-align: center
     @media( width >= 450px )
       text-align: left
@@ -140,14 +157,14 @@ header
     background-position: center
     background-repeat: no-repeat
     background-size: contain
-    background-image: url('/illustration/plus.svg')
+    border-radius: 50%
+    border: solid 1px var(--color--borders---card-img)
     max-width: 360px
-    width: 100%
-    height: 110px
+    width: 200px
+    height: 200px
     order: -1
 
     @media( width > 450px )
-      height: 100%
       margin-bottom: 0
       grid-area: 1 / 2 / span 2
 
