@@ -49,6 +49,7 @@ function fix_content(param) {
     container.style.top = '-' + ( scrollY + 0 ) + 'px';
 
     document.body.scrollTop = 0;
+    document.body.overflowY = 'scroll';
     document.documentElement.scrollTop = 0;
 
     paintModal = true;
@@ -167,8 +168,8 @@ function handleKeydown(e) {
   left: 0
   width: 100%
   height: 100%
-  @media( width < 650px )
-    top: 30vh
+  /* @media( width < 650px )
+    top: 30vh */
 
 .wrapper
   display: flex
