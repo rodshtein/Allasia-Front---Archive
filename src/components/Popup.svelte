@@ -47,9 +47,9 @@ function fix_content(param) {
     container.setAttribute( 'aria-hidden', 'true');
 
     container.style.top = '-' + ( scrollY + 0 ) + 'px';
+    document.body.style.overflowY = 'scroll';
 
     document.body.scrollTop = 0;
-    document.body.overflowY = 'scroll';
     document.documentElement.scrollTop = 0;
 
     paintModal = true;
@@ -67,7 +67,8 @@ function fix_content(param) {
     // Убираем фикс
     container.classList.remove('fixed');
     container.removeAttribute( 'aria-hidden' );
-    container.style.top = "";
+    container.style.top = '';
+    document.body.style.overflowY = '';
 
     document.body.scrollTop = fix_scroll_value;
     document.documentElement.scrollTop = fix_scroll_value;
