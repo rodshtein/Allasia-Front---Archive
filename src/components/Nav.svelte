@@ -85,21 +85,29 @@ Branches
   padding: 0
   @media(width < 900px)
     overflow-x: hidden
-    padding:
-      top: 10px
-      bottom: 10px
+    padding: 0
     border-radius: 16px
     backdrop-filter: blur(17px)
     background-color: #ced8ff94
 
 
 .slider
-  display: flex
+  display: inline-grid
   column-gap: 20px
   list-style: none
-  padding: 0
+  padding:
+    top: 10px
+    bottom: 10px
   margin: 0
   grid-auto-flow: column
+
+  &::before
+    content: ''
+    position: absolute
+    height: 100%
+    width: 100%
+    background: #ff000059
+
 
   & li:first-child
     display: none

@@ -210,7 +210,7 @@ export function nailer(node, {
   }
 
   function onDown(e) {
-
+    console.log('down')
     calcSteps()
 
     // Stop All Animation by change anim id
@@ -348,7 +348,7 @@ export function nailer(node, {
       },
     })
 
-
+    console.log('up')
     node.style.cursor = 'grab'
     window.removeEventListener('mousemove', onMove);
     window.removeEventListener('mouseup', onUp);
