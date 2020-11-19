@@ -98,7 +98,9 @@ Branches
   padding:
     top: 10px
     bottom: 10px
-  margin: 0
+    left: 0
+    right: 0
+  margin: 0 15px
   grid-auto-flow: column
 
 
