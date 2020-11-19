@@ -210,7 +210,6 @@ export function nailer(node, {
   }
 
   function onDown(e) {
-
     calcSteps()
 
     // Stop All Animation by change anim id
@@ -347,7 +346,6 @@ export function nailer(node, {
         checkOverflow()
       },
     })
-
 
     node.style.cursor = 'grab'
     window.removeEventListener('mousemove', onMove);

@@ -71,6 +71,14 @@ FeedbackPopup(
   @media(width < 400px)
     width: calc(100% - 30px)
 
+  &::before
+    content: ''
+    position: absolute
+    left: -15px
+    right: -15px
+    top: -15px
+    bottom: -15px
+
   &:last-child
     margin-right: 0
 
