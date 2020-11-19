@@ -1,6 +1,7 @@
 <script>
   import Branches from './Nav-branches.svelte';
   import Button from './Button.svelte';
+  import { nailer } from './nailer';
   import { branchId, showMenu } from './Store-branches.js';
   import { searchString } from './Store-search';
 
@@ -27,7 +28,7 @@ function searchHandler(){
 
   nav.nav
     .slider-wrap
-      ul.slider
+      ul.slider(use:nailer)
         li
           a(rel='prefetch' href=".")
             img.logo(alt="logo" src="icons/special/logo--short.svg")
@@ -82,8 +83,8 @@ Branches
 .slider-wrap
   position: relative
   padding: 0
-  overflow-x: scroll
   @media(width < 900px)
+    overflow-x: hidden
     padding:
       top: 10px
       bottom: 10px
@@ -93,17 +94,12 @@ Branches
 
 
 .slider
-  display: grid
+  display: flex
   column-gap: 20px
   list-style: none
   padding: 0
   margin: 0
   grid-auto-flow: column
-  @media(width < 900px)
-    &:after, &:before
-      content: ''
-      width: 1px
-      margin-left: -1px
 
   & li:first-child
     display: none
