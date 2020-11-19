@@ -101,13 +101,6 @@ Branches
   margin: 0
   grid-auto-flow: column
 
-  &::before
-    content: ''
-    position: absolute
-    height: 100%
-    width: 100%
-    background: #ff000059
-
 
   & li:first-child
     display: none
