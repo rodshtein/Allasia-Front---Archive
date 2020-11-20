@@ -180,11 +180,15 @@ export function nailer(node, {
   }
 
   // Reactive functions
-  onMount(init)
-  afterUpdate(()=>init(true))
+  // onMount(init)
+  // afterUpdate(()=>init(true))
 
-  async function init(update){
-    await tick();
+  init()
+  afterUpdate(init)
+
+  function init(update){
+    // TODO why is tick here?
+    // await tick();
     node.addEventListener('mousedown', onDown);
     node.addEventListener('touchstart', onDown);
     if(!node.NAILER || update) node.NAILER = {
@@ -207,6 +211,27 @@ export function nailer(node, {
     node.style.zIndex = '1'
     calcSteps()
     checkOverflow()
+
+    // resizeObserver(node, function(){
+    //   console.log(this.offsetWidth + ' x ' + this.offsetHeight)
+    // });
+  }
+
+  function resizeObserver(node, handler){
+    let frame = document.createElement('iframe');
+    frame.style.cssText = `
+      position:absolute;
+      left:0;
+      top:-100%;
+      width:100%;
+      height:100%;
+      margin:1px 0 0;
+      border:none;
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;`;
+    node.parentNode.appendChild(frame)
+    frame.contentWindow.onresize = () => { handler.call(node.parentNode) };
   }
 
   function onDown(e) {
@@ -353,6 +378,8 @@ export function nailer(node, {
     window.removeEventListener('touchmove', onMove);
     window.removeEventListener('touchend', onUp);
   }
+
+
   return {
     update(props) {
       if(props.time ) time = props.time
@@ -375,4 +402,5 @@ export function nailer(node, {
       node.removeEventListener('touchstart', onDown);
     }
   };
+
 }

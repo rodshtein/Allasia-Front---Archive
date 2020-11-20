@@ -144,6 +144,7 @@ a
   BUG Transition on buttons cause flash with popups
   */
   cursor: pointer
+  user-select: none
 
   &:hover
     border-color: var(--color--btn-border---active)
