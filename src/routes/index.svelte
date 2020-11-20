@@ -420,7 +420,7 @@ CardWrapper
       margin-bottom: 30px
       max-width: 400px
       text-align: center
-      color: var(--color--txt-p-I)
+      color: var(--color--txt-p)
       @media( width > 650px )
         text-align: left
 
@@ -620,7 +620,7 @@ CardWrapper
       margin-bottom: 30px
       max-width: 400px
       text-align: center
-      color: var(--color--txt-p-I)
+      color: var(--color--txt-p)
       @media( width > 650px )
         text-align: left
 
