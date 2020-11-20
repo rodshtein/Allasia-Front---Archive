@@ -67,11 +67,12 @@
       +if('description()')
         p.p-large {description()}
 
-      h2.h4 Специализация
-      p.p
-        +if('Q.type')
-          +each('Q.type as el')
-            span {el.name}
+      +if('Q.type && Q.type[0].name')
+        h2.h4 Специализация
+        p.p
+          +if('Q.type')
+            +each('Q.type as el')
+              span {el.name}
 
     .illustration(style!=`background-image: url('{Q.head_img.publicUrl}')`)
 
@@ -119,6 +120,7 @@ header
   display: grid
   grid-template: auto / 1fr
   justify-items: center
+  align-items: center
   grid-row-gap: 20px
   padding:
     top: 50px
@@ -130,7 +132,7 @@ header
   @media( width > 450px )
     grid-template: 1fr / auto 30%
     grid-column-gap: 80px
-    justify-items: start
+    justify-items: end
     padding:
       bottom: 50px
 
@@ -148,7 +150,7 @@ header
     padding-bottom: 50px
     grid-row-gap: 15px
 
-  .subheader-h1
+  .p-large
     text-align: center
     @media( width >= 450px )
       text-align: left
@@ -159,7 +161,6 @@ header
     background-size: contain
     border-radius: 50%
     border: solid 1px var(--color--borders---card-img)
-    max-width: 360px
     width: 200px
     height: 200px
     order: -1
