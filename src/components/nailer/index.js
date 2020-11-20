@@ -235,6 +235,10 @@ export function nailer(node, {
   }
 
   function onDown(e) {
+
+    // Prevent click && drag on links
+    e.preventDefault()
+
     calcSteps()
 
     // Stop All Animation by change anim id
@@ -259,6 +263,9 @@ export function nailer(node, {
 
   function onMove(e) {
 
+    // Prevent click && drag on links
+    node.onclick = () => false;
+
     pointerX = morph(e).clientX
     pathX = pointerX - downX
     nodeX = node.NAILER.x
@@ -280,6 +287,8 @@ export function nailer(node, {
     if ((point) < node.NAILER.hiPoint ) {
       moveToPoint = easePoint
     }
+
+
 
     node.style.transform = `translate(${moveToPoint}px)`
 
@@ -377,6 +386,13 @@ export function nailer(node, {
     window.removeEventListener('mouseup', onUp);
     window.removeEventListener('touchmove', onMove);
     window.removeEventListener('touchend', onUp);
+
+    // Allow click && drag on links
+    // Timeout for prevent event after drag
+    setTimeout(()=>{
+      node.onclick = () => true;
+    }, 1)
+
   }
 
 
