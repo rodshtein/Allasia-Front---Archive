@@ -54,7 +54,7 @@ svelte:head
   .logotype(alt="logotype" src="icons/special/logo.svg")
 
   .text-block
-    h1.h1-I Лечение<br>за рубежом
+    h1 Лечение<br>за рубежом
     p.p-large Подбираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
     .tel_wrapper.card_decor__white
       .info Единый, бесплатный номер в РФ
@@ -151,10 +151,13 @@ CardWrapper
     left: 15px
     right: 15px
 
-  @media( width > 800px )
+  @media( width >= 800px )
     grid-template-columns: calc(50% - 30px) calc(50% - 30px)
     grid-gap: 60px
 
+  @media( width >= 900px )
+    padding:
+      top: 120px
 
   .logotype
     display: block
@@ -186,7 +189,9 @@ CardWrapper
     @media( width > 800px)
       align-items: start
 
-    .h1-I
+    h1
+      font-size: 50px
+      line-height: 90%
       margin-bottom: 40px
       text-align: center
 
@@ -224,7 +229,7 @@ CardWrapper
         color: var(--color--txt---light-blue)
         margin-bottom: 10px
         padding-bottom: 7px
-        @mixin devider_border_bottom
+        @mixin devider_bottom
 
       .button-wrap
         margin-bottom: 15px
@@ -547,7 +552,7 @@ CardWrapper
         padding-top: 10px
         padding-bottom: 10px
         max-width: 200px
-        @mixin devider_border_right
+        @mixin devider_right
 
 .address_card
   display: grid

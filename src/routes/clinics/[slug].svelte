@@ -62,17 +62,18 @@
 +if('Q')
   header
     .wrap
-      p.p {Q.name}
+      p.e_name {Q.name}
       h1.h1 {Q.name_ru}
       +if('description()')
-        p.p-large {description()}
+        p.subheader-h1 {description()}
 
       +if('Q.type && Q.type[0].name')
-        h2.h4 Специализация
-        p.p
-          +if('Q.type')
-            +each('Q.type as el')
-              span {el.name}
+        .wrap2
+          h2.h4.devider_bottom Специализация
+          p.p
+            +if('Q.type')
+              +each('Q.type as el')
+                span {el.name}
 
     .illustration(style!=`background-image: url('{Q.head_img.publicUrl}')`)
 
@@ -128,13 +129,15 @@ header
     bottom: 0
     left: 15px
   margin-bottom: 20px
+  text-align: center
 
   @media( width > 450px )
     grid-template: 1fr / auto 30%
     grid-column-gap: 80px
-    justify-items: end
+    justify-items: start
     padding:
       bottom: 50px
+    text-align: left
 
     &::after
       content: ''
@@ -150,10 +153,21 @@ header
     padding-bottom: 50px
     grid-row-gap: 15px
 
-  .p-large
-    text-align: center
-    @media( width >= 450px )
-      text-align: left
+  .e_name
+    font-size: 15px
+    font-weight: text
+    color: var(--LIGHT-BLACK)
+
+  .subheader-h1
+    margin-top: 10px
+
+  .wrap2
+    display: block
+    width: min-content
+    margin-top: 30px
+    .h4
+      padding-bottom: 10px
+      margin-bottom: 7px
 
   .illustration
     background-position: center

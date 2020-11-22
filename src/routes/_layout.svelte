@@ -1,5 +1,7 @@
 <script>
-  import { onMount } from "svelte";
+  export let segment;
+
+  import { onMount, afterUpdate } from "svelte";
   import { stores } from "@sapper/app";
   import NProgress from "nprogress";
   import Nav from '../components/Nav.svelte';
@@ -21,16 +23,17 @@
     });
   });
 
-  export let segment;
+  let layout_shift = segment ? true : false;
+  afterUpdate( () => layout_shift = segment ? true : false );
+
+
 </script>
 
 
 <Nav {segment}/>
-
-<main>
-  <slot></slot>
+<main class:layout_shift>
+  <slot/>
 </main>
-
 <Floating/>
 
 <style global lang="postcss">
@@ -39,10 +42,29 @@
 main
   position: relative
   max-width: 1040px
-  margin: 0 auto
-  padding: 0 70px
-  @media(width < 800px)
+  margin:
+    left: auto
+    right: auto
+    top: 130px
+    bottom: 0
+  padding: 0
+  transform: translateY(0)
+  transition: transform .5s ease-out
+
+  @media ( width >= 500px )
     padding: 0 15px
-  @media(width < 500px)
-    padding: 0
+
+  @media ( width >= 650px)
+    margin-top: 140px
+
+  @media ( width >= 800px )
+    padding: 0 70px
+
+  @media ( width >= 900px )
+    margin-top: 50px
+    &.layout_shift
+      transform: translateY(130px)
+
+
+
 </style>

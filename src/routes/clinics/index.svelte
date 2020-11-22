@@ -46,7 +46,7 @@
 <template lang='pug'>
 header
   h1.h1 Клиники
-  p.p-large Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
+  p.subheader-h1 Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
   .illustration
 
 +each(`sortTrees(sortConf(Q)) as country`)
@@ -67,13 +67,13 @@ header
   justify-items: center
   grid-row-gap: 20px
   padding:
-    top: 50px
+    top: 0
     right: 15px
     bottom: 0
     left: 15px
   margin-bottom: 20px
 
-  @media( width > 450px )
+  @media( width >= 450px )
     grid-template: 1fr / auto 30%
     grid-column-gap: 80px
     justify-items: start
@@ -88,13 +88,13 @@ header
       @mixin devider
 
 
-  @media( width > 800px )
+  @media( width >= 800px )
     grid-column-gap: 120px
-    padding-top: 100px
+    padding-top: 50px
     padding-bottom: 50px
     grid-row-gap: 15px
 
-  .p-large
+  .subheader-h1
     text-align: center
     @media( width >= 450px )
       text-align: left
@@ -104,13 +104,15 @@ header
     background-repeat: no-repeat
     background-size: contain
     background-image: url('/illustration/plus.svg')
-    max-width: 360px
     width: 100%
     height: 110px
     order: -1
 
     @media( width > 450px )
       height: 100%
+      max-height: 130px
+      max-width: 130px
+      justify-self: end
       margin-bottom: 0
       grid-area: 1 / 2 / span 2
 

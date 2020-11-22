@@ -1,30 +1,33 @@
 <script>
+  export let segment;
+
   import Branches from './Nav-branches.svelte';
   import Button from './Button.svelte';
   import { nailer } from './nailer';
   import { branchId, showMenu } from './Store-branches.js';
   import { searchString } from './Store-search';
+  import { afterUpdate } from 'svelte';
 
-  export let segment;
-
-function searchHandler(){
-   if($searchString) {
+  function searchHandler(){
+    if($searchString) {
       showMenu.set(true)
     } else {
       branchId.set(null)
       showMenu.set(true)
     }
   }
+
+  let layout_shift = segment ? true : false;
+  afterUpdate( () => layout_shift = segment ? true : false );
+
 </script>
 
 
 <template lang="pug">
 
-.head
-  .logo_wrap
-    +if('segment')
-      a(rel='prefetch' href=".")
-        img.logotype(alt="logotype" src="icons/special/logo.svg")
+.head(class:layout_shift)
+  a.link(rel='prefetch' href='.')
+    span Главная страница
 
   nav.nav
     .slider-wrap
@@ -52,29 +55,50 @@ Branches
 
 
 <style lang='postcss'>
+@import "../style/mixins.sss"
 .head
-  margin-bottom: 100px
-  @media (width > 650px)
-    margin-bottom: 120px
-  @media (width > 900px)
-    margin-bottom: 60px
+  transform: none
 
-.logo_wrap
-  display: block
-  max-width: 150px
-  margin: 0 auto
-  padding:
-    top: 66px
-    bottom: 40px
-  @media(width < 900px)
-    display: none
+  @media ( width >= 900px )
+    transition: transform .3s ease-out
+    transform: translateY(65px)
+
+    &.layout_shift
+      transform: translateY(130px)
+
+      & .link
+        opacity: 1
+
+
+  & .link
+    display: block
+    position: absolute
+    width: 150px
+    height: 50px
+
+    background-position: center
+    background-repeat: no-repeat
+    background-size: contain
+    background-image: url('/icons/special/logo.svg')
+
+    top: -70px
+    opacity: 0
+    left: calc( ( 100% / 2 ) - 75px )
+    transition: all .5s ease-out
+
+    @media ( width < 900px )
+      display: none
+
+    & span
+      opacity: 0
 
 .nav
   flex-wrap: wrap
   display: flex
   justify-content: center
   padding: 10px
-  @media(width < 900px)
+
+  @media ( width < 900px )
     position: fixed
     width: 100%
     top: 0
@@ -83,7 +107,8 @@ Branches
 .slider-wrap
   position: relative
   padding: 0
-  @media(width < 900px)
+
+  @media( width < 900px )
     overflow-x: hidden
     padding: 0
     border-radius: 16px
@@ -103,10 +128,14 @@ Branches
   margin: 0 15px
   grid-auto-flow: column
 
+  & li
+    &:not(:first-child)
+      border-radius: 12px
+      @mixin light_shadow
 
-  & li:first-child
-    display: none
-    @media(width < 900px)
-      display: block
+    &:first-child
+      display: none
+      @media(width < 900px)
+        display: block
 
 </style>
