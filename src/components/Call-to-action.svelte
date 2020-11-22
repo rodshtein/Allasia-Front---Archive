@@ -92,7 +92,7 @@
     text-align: left
     margin-bottom: 10px
     padding-bottom: 7px
-    @mixin devider_border_bottom
+    @mixin devider_bottom
 
   .number-wrap
     width: 100%

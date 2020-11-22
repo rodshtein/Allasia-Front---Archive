@@ -88,7 +88,7 @@
   header
     .wrap
       +if('branch')
-        p.subheader-h1 {branch}
+        p.breadcrumb {branch}
       h1.h1 {Q.name}
 
     +if('branch')
@@ -168,7 +168,7 @@ header
   padding: 30px 15px 40px
   margin-bottom: 20px
 
-  @media (width > 800px)
+  @media ( width >= 800px)
     align-items: start
 
   &:after
@@ -186,11 +186,18 @@ header
     margin-bottom: 30px
 
     @media (width > 800px)
-      grid-gap: 10px
+      grid-gap: 15px
       align-items: left
 
-    .subheader-h1
+    .breadcrumb
       text-align: center
+      font-size: 14px
+      line-height: 120%
+      color: var(--color--txt-subheaders)
+
+      @media(width > 650px)
+        /* margin-top: 10px */
+        font-size: 19px
 
       @media (width > 800px)
         order: 2
