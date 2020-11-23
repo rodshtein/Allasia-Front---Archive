@@ -53,8 +53,14 @@
   }
 
   function check(left, right){
-    return left > right
+    return left < right
   }
+
+  let cls = (name) => {
+    if(data.length > 2) return name
+    if(data.length < 2) return `${name} ${name}--1`
+    if(data.length < 3) return `${name} ${name}--2`
+  };
 </script>
 
 <template lang='pug'>
@@ -78,10 +84,13 @@
           p.p
             +if('Q.type')
               +each('Q.type as el, i')
-                +if('check(Q.type.length - 1, i)')
-                  | {el.name + ', '}
-                +if('Q.type.length === i')
-                  | {el.name + '.'}
+                +if('check(i, Q.type.length - 1)')
+                  +if('i === 0')
+                   | {el.name + ', '}
+                   +else
+                    | {el.name.toLowerCase() + ', '}
+                +if('Q.type.length - 1 === i')
+                  | {el.name.toLowerCase() + '.'}
 
     +if('Q.head_img && Q.head_img.publicUrl')
       .illustration(style=`background-image: url('{Q.head_img.publicUrl}')`)
@@ -202,25 +211,12 @@ header
         right: 0
       margin: 0
 
-
-
     .h4
       margin-bottom: 5px
       @media ( width >= 650px )
         padding-bottom: 10px
         margin-bottom: 7px
         @mixin devider_bottom
-    .p
-      white-space: pre-wrap
-
-      span
-        display: inline-block
-        &:not(:first-child)
-          text-transform: lowercase
-        &::after
-          content: ', '
-        &:last-child::after
-          content: '.'
 
   .illustration
     background-position: center
