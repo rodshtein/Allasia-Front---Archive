@@ -235,7 +235,6 @@ export function nailer(node, {
   }
 
   function onDown(e) {
-
     // Prevent click && drag on links
     e.preventDefault()
 

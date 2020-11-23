@@ -31,29 +31,30 @@
   function dataNormalize(data){
     if(data[0].__typename === 'Doctor') return data
 
-    let arr = [];
+    let set = new Set();
     data.forEach( el => {
-      if(el.doctor) arr.push(el.doctor)
+      if(el.doctor) set.add(el.doctor)
     })
 
-    return arr
+    return [...set]
   }
 
 </script>
 
 <template lang='pug'>
 Nailer
-  +each('dataNormalize(data) as el (el.id)')
-    a.slider-item(alt='Страница врача' href='.' rel='prefetch')
-      +if('el.avatar && el.avatar.publicUrl')
-        .avatar(
-          style='background-image: url({el.avatar.publicUrl})'
-          )
-        +else
-          .avatar
-      h3.name {el.name}
-      +if('el.specialty && el.specialty[0]')
-        p.specialty {makeSpecialty(el.specialty)}
+  +if('data.length')
+    +each('dataNormalize(data) as el (el.id)')
+      a.slider-item(alt='Страница врача' href='.' rel='prefetch')
+        +if('el.avatar && el.avatar.publicUrl')
+          .avatar(
+            style='background-image: url({el.avatar.publicUrl})'
+            )
+          +else
+            .avatar
+        h3.name {el.name}
+        +if('el.specialty && el.specialty[0]')
+          p.specialty {makeSpecialty(el.specialty)}
 
 </template>
 
