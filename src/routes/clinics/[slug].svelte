@@ -34,6 +34,7 @@
   import Doctors from '../../components/Slider-doctors.svelte';
   import Technology from '../../components/Slider-technology.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
+
   // set preloaded data to chache
   onMount(()=> {
     client.writeQuery({
@@ -51,6 +52,9 @@
     return n + c
   }
 
+  function check(left, right){
+    return left > right
+  }
 </script>
 
 <template lang='pug'>
@@ -62,27 +66,31 @@
 +if('Q')
   header
     .wrap
-      p.e_name {Q.name}
       h1.h1 {Q.name_ru}
+      +if('Q.name !== Q.name_ru')
+        p.e_name {Q.name}
       +if('description()')
         p.subheader-h1 {description()}
 
       +if('Q.type && Q.type[0].name')
-        .wrap2
-          h2.h4.devider_bottom Специализация
+        .type
+          h2.h4 Специализация
           p.p
             +if('Q.type')
-              +each('Q.type as el')
-                span {el.name}
+              +each('Q.type as el, i')
+                +if('check(Q.type.length - 1, i)')
+                  | {el.name + ', '}
+                +if('Q.type.length === i')
+                  | {el.name + '.'}
 
-    .illustration(style!=`background-image: url('{Q.head_img.publicUrl}')`)
+    +if('Q.head_img && Q.head_img.publicUrl')
+      .illustration(style=`background-image: url('{Q.head_img.publicUrl}')`)
 
 +if('Q.description')
   CardWrapper
     .description-wrap
       +if('Q.description')
         div
-          CardHeader(header='Описание')
           Description(
             header = '{Q.name_ru}'
             subHeader = '{Q.full_name_ru}'
@@ -102,7 +110,7 @@ CardWrapper
     CardHeader(header!='{Q.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
     Feedback(data='{Q.feedback}')
 
-+if('Q.staff')
++if('Q.staff && Q.staff.length')
   CardWrapper
     CardHeader(header!='{Q.staff.length > 1 ? "Врачи" : "Врач" }')
     Doctors(data='{Q.staff}')
@@ -119,55 +127,100 @@ CardWrapper
 
 header
   display: grid
-  grid-template: auto / 1fr
+  grid-auto-columns: 1fr
   justify-items: center
-  align-items: center
+  align-items: start
   grid-row-gap: 20px
   padding:
-    top: 50px
+    top: 0
     right: 15px
     bottom: 0
     left: 15px
   margin-bottom: 20px
   text-align: center
 
-  @media( width > 450px )
-    grid-template: 1fr / auto 30%
-    grid-column-gap: 80px
+  @media( width >= 650px )
+    grid-auto-columns: minmax(min-content, 80%) 30%
+    grid-column-gap: 60px
     justify-items: start
     padding:
+      top: 50px
       bottom: 50px
     text-align: left
 
-    &::after
-      content: ''
-      margin-top: 50px
-      width: 100%
-      grid-area: span 1 / span 2
-      @mixin devider
-
-
   @media( width > 800px )
-    grid-column-gap: 120px
-    padding-top: 100px
+    grid-auto-columns: minmax(min-content, 80%) 200px
+    grid-column-gap: 100px
+    padding-top: 20px
     padding-bottom: 50px
-    grid-row-gap: 15px
 
   .e_name
+    margin-top: 20px
     font-size: 15px
     font-weight: text
+    font-style: italic
     color: var(--LIGHT-BLACK)
+    padding:
+      left: 19px
+      right: 19px
+    @media( width >= 650px )
+      margin-top: 30px
+      font-size: 17px
+      padding:
+        left: 0
+        right: 0
 
   .subheader-h1
-    margin-top: 10px
+    margin-top: 5px
+    padding:
+      left: 19px
+      right: 19px
+    @media( width >= 650px )
+      padding:
+        left: 0
+        right: 0
 
-  .wrap2
+  .type
     display: block
-    width: min-content
-    margin-top: 30px
+    padding:
+      top: 30px
+      left: 9px
+      right: 9px
+    margin:
+      top: 30px
+      left: 10px
+      right: 10px
+    text-align: left
+    @mixin devider_top
+
+    @media ( width >= 650px )
+      display: inline-block
+      border: none
+      padding:
+        top: 30px
+        left: 0
+        right: 0
+      margin: 0
+
+
+
     .h4
-      padding-bottom: 10px
-      margin-bottom: 7px
+      margin-bottom: 5px
+      @media ( width >= 650px )
+        padding-bottom: 10px
+        margin-bottom: 7px
+        @mixin devider_bottom
+    .p
+      white-space: pre-wrap
+
+      span
+        display: inline-block
+        &:not(:first-child)
+          text-transform: lowercase
+        &::after
+          content: ', '
+        &:last-child::after
+          content: '.'
 
   .illustration
     background-position: center
@@ -175,12 +228,19 @@ header
     background-size: contain
     border-radius: 50%
     border: solid 1px var(--color--borders---card-img)
-    width: 200px
-    height: 200px
+    width: 120px
+    height: 120px
     order: -1
 
-    @media( width > 450px )
+    @media( width >= 450px )
+      width: 160px
+      height: 160px
+
+    @media( width >= 650px )
+      width: 100%
+      padding-bottom: calc(100% - 2px)
+      height: 0
       margin-bottom: 0
-      grid-area: 1 / 2 / span 2
+      grid-area: 1 / 2 / span 1
 
 </style>
