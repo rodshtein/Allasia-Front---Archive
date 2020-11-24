@@ -21,6 +21,7 @@ export const CLINIC_PAGE = gql`
         document
       }
       gallery {
+        id
         alt
         img {
           publicUrl

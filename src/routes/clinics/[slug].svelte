@@ -27,6 +27,7 @@
   export let Q;
 
   // components
+  import Nailer from '../../components/nailer/Nailer.svelte';
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
   import Description from '../../components/Card-description.svelte';
@@ -57,9 +58,13 @@
   }
 
   let cls = (name) => {
-    if(data.length > 2) return name
-    if(data.length < 2) return `${name} ${name}--1`
-    if(data.length < 3) return `${name} ${name}--2`
+    let gLength = Q.gallery ? Q.gallery.length : 0;
+    let dLength = Q.description && Q.description.document ? 1 : 0;
+    let total = gLength + dLength;
+
+    if(total > 2) return name
+    if(total < 2) return `${name} ${name}--1`
+    if(total < 3) return `${name} ${name}--2`
   };
 </script>
 
@@ -93,18 +98,25 @@
                   | {el.name.toLowerCase() + '.'}
 
     +if('Q.head_img && Q.head_img.publicUrl')
-      .illustration(style=`background-image: url('{Q.head_img.publicUrl}')`)
+      .head_img(style=`background-image: url('{Q.head_img.publicUrl}')`)
 
-+if('Q.description')
++if('Q.description && Q.description.document || Q.gallery')
   CardWrapper
-    .description-wrap
-      +if('Q.description')
-        div
+    Nailer
+      +if('Q.description && Q.description.document')
+        div(class!='{cls("gallery_item")}')
           Description(
             header = '{Q.name_ru}'
             subHeader = '{Q.full_name_ru}'
-            content = '{Q.description.document}'
+            content = '{Q.description.document}')
+
+      +if('Q.gallery')
+        +each('Q.gallery as el (el.id + Q.gallery.length)')
+          .card_decor__img(
+            class!='{cls("gallery_item")}'
+            style=`background-image: url('{el.img.publicUrl}')`
           )
+            span {el.alt}
 
 CardWrapper
   CallToAction(
@@ -218,10 +230,10 @@ header
         margin-bottom: 7px
         @mixin devider_bottom
 
-  .illustration
+  .head_img
     background-position: center
     background-repeat: no-repeat
-    background-size: contain
+    background-size: cover
     border-radius: 50%
     border: solid 1px var(--color--borders---card-img)
     width: 120px
@@ -238,5 +250,45 @@ header
       height: 0
       margin-bottom: 0
       grid-area: 1 / 2 / span 1
+
+.gallery_item
+  display: inline
+  background-position: center
+  background-repeat: no-repeat
+  background-size: cover
+  position: relative
+  user-select: none
+  flex: 0 0 auto
+  width: calc(83% / 2)
+  margin-right: 15px
+
+  @media(width < 650px)
+    width: calc(83%)
+
+  @media(width < 400px)
+    width: calc(100% - 30px)
+
+  &::before
+    content: ''
+    position: absolute
+    left: -15px
+    right: -15px
+    top: -15px
+    bottom: -15px
+
+
+  &:last-child
+    margin-right: 0
+
+  &--1
+    width: 100%
+
+  &--2
+    width: calc((100% - 15px) / 2)
+    @media(width < 650px)
+      width: calc((83% - 15px))
+
+  & span
+    opacity: 0
 
 </style>

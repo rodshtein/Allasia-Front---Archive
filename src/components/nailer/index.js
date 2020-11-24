@@ -100,39 +100,51 @@ export function nailer(node, {
     Xmark = pointerX
   }
 
+  // Calc step cords
   function calcSteps(){
-    // Calc step cords
-    let stepCords=[];
-    let children = node.children;
-    let wrapWidth = node.parentNode.clientWidth;
-    let nodeWidth = node.scrollWidth;
-    let margin = node.offsetLeft;
+    // We use Set Array for prevent double values
+    // from multiline slider
+    let stepCordsSet = new Set();
+    let cards = node.children;
+    // sizes
+    let wrapperWidth = node.parentNode.clientWidth;
+    let margin = wrapperWidth - node.offsetWidth;
+    let viewport = wrapperWidth - margin;
+    let sliderWidth = node.scrollWidth;
 
-    // TODO need change array to set
-    // to prevent unique values (for multiline sliders)
-    // https://learn.javascript.ru/map-set#set
+    for (let card of cards) {
+      console.log(card.offsetLeft)
+      if ( card.offsetLeft <= sliderWidth - viewport ){
+        stepCordsSet.add( card.offsetLeft*-1 );
 
-    for (let node of children) {
-      if ( node.offsetLeft <= nodeWidth - wrapWidth - margin * 2 ){
-        stepCords.push(node.offsetLeft*-1);
       } else {
-        if (!stepCords.length) stepCords.push(0)
+
+        if (!stepCordsSet.size) stepCordsSet.add(0)
+
         // align last item ro right
         // adds right shift by the way
-        if (stepCords.length >= 1 && nodeWidth > wrapWidth - margin * 2 ||
-          nodeWidth > wrapWidth - margin * 2){
-            stepCords.push((nodeWidth - wrapWidth + margin * 2 + rightShift)/-1)
+        if (  stepCordsSet.size >= 1 && sliderWidth > viewport
+              || sliderWidth > viewport){
+            stepCordsSet.add((sliderWidth - wrapperWidth + margin + rightShift)/-1)
             break
         }
+
       }
     }
 
+    let stepCords = [...stepCordsSet]
+
+    // Sort cords because we can get unsorted data from
+    // multiline sliders
     stepCords.sort( (a, b) => b - a );
+
     // adds left shift for all item except first and last
     // we can do it only after sort, because slide can be multiline
     // and item on next line can be closer to left/right than first
-    for (let i = 1; i < stepCords.length - 1 ; i++) {
+    if(leftShift){
+      for (let i = 1; i < stepCords.length - 1 ; i++) {
         stepCords[i] += leftShift
+      }
     }
 
     node.NAILER.hiPoint = stepCords[stepCords.length-1]
@@ -156,23 +168,32 @@ export function nailer(node, {
     // Events
     let e = (data) => new CustomEvent( "update", { detail: data });
 
+    // get bigger cordinate from cords array
     let lastCord = node.NAILER.stepCords[node.NAILER.stepCords.length-1];
 
+    // console.log(node)
+    // console.log(node.NAILER)
+    // console.log(lastCord)
+
     // Overside starts
+    // - left
     if( Math.round(node.NAILER.x) < 0 && !node.NAILER.overflowL) {
       node.NAILER.overflowL = true
       node.dispatchEvent(e({type: "overflowL", status: true}));
     }
+    // - right
     if(	Math.round( node.NAILER.x) > lastCord && !node.NAILER.overflowR) {
       node.NAILER.overflowR = true
       node.dispatchEvent(e({type: "overflowR", status: true}));
     }
 
     //Overside ends
+    // - left
     if( Math.round(node.NAILER.x) >= 0 && node.NAILER.overflowL){
       node.NAILER.overflowL = false
       node.dispatchEvent(e({type: "overflowL", status: false}));
      }
+    // - right
     if(Math.round( node.NAILER.x) <= lastCord && node.NAILER.overflowR) {
       node.NAILER.overflowR = false
       node.dispatchEvent(e({type: "overflowR", status: false}));
@@ -236,7 +257,7 @@ export function nailer(node, {
 
   function onDown(e) {
     // Prevent click && drag on links
-    e.preventDefault()
+    if(e.type != "touchstart") e.preventDefault()
 
     calcSteps()
 
