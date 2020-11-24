@@ -111,21 +111,24 @@ export function nailer(node, {
     let margin = wrapperWidth - node.offsetWidth;
     let viewport = wrapperWidth - margin;
     let sliderWidth = node.scrollWidth;
+    let viewportOverflowWidth = sliderWidth - viewport;
 
-    for (let card of cards) {
-      console.log(card.offsetLeft)
-      if ( card.offsetLeft <= sliderWidth - viewport ){
-        stepCordsSet.add( card.offsetLeft*-1 );
+    for(let card of cards) {
+
+      if( card.offsetLeft <= viewportOverflowWidth ){
+        stepCordsSet.add( card.offsetLeft*-1 )
 
       } else {
-
-        if (!stepCordsSet.size) stepCordsSet.add(0)
+        // I have no idea why I make it, temp off
+        // and off second condition depends off it ↓↓↓
+        // if (!stepCordsSet.size) stepCordsSet.add(0)
 
         // align last item ro right
         // adds right shift by the way
-        if (  stepCordsSet.size >= 1 && sliderWidth > viewport
-              || sliderWidth > viewport){
-            stepCordsSet.add((sliderWidth - wrapperWidth + margin + rightShift)/-1)
+        // temp off, read ↑↑↑
+        // if (  stepCordsSet.size >= 1 && sliderWidth > viewport || sliderWidth > viewport
+        if( sliderWidth > viewport ){
+            stepCordsSet.add( (sliderWidth - wrapperWidth + margin + rightShift)/-1 )
             break
         }
 
