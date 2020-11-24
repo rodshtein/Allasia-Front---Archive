@@ -26,15 +26,15 @@
 <template lang="pug">
 
 .head(class:layout_shift)
-  a.link(rel='prefetch' href='.')
+  a.full_logo(rel='prefetch' href='.')
     span Главная страница
 
   nav.nav
     .slider-wrap
       ul.slider(use:nailer)
         li
-          a(rel='prefetch' href=".")
-            img.logo(alt="logo" src="icons/special/logo--short.svg")
+          a.short_logo(rel='prefetch' href=".")
+            span Главная страница
         li
           Button(invert iconR='search' text='Поиск лечения'
             on:click!='{searchHandler}')
@@ -66,11 +66,11 @@ Branches
     &.layout_shift
       transform: translateY(130px)
 
-      & .link
+      & .full_logo
         opacity: 1
 
 
-  & .link
+  & .full_logo
     display: block
     position: absolute
     width: 150px
@@ -92,50 +92,62 @@ Branches
     & span
       opacity: 0
 
-.nav
-  flex-wrap: wrap
-  display: flex
-  justify-content: center
-  padding: 10px
 
-  @media ( width < 900px )
-    position: fixed
-    width: 100%
-    top: 0
-    z-index: 10
+  & .short_logo
+    display: block
+    width: 32px
+    height: 30px
 
-.slider-wrap
-  position: relative
-  padding: 0
+    background-position: center
+    background-repeat: no-repeat
+    background-size: contain
+    background-image: url('/icons/special/logo--short.svg')
 
-  @media( width < 900px )
-    overflow-x: hidden
-    padding: 0
-    border-radius: 16px
-    backdrop-filter: blur(17px)
-    background-color: #ced8ff94
-
-
-.slider
-  display: inline-grid
-  column-gap: 20px
-  list-style: none
-  padding:
-    top: 10px
-    bottom: 10px
-    left: 0
-    right: 0
-  margin: 0 15px
-  grid-auto-flow: column
-
-  & li
-    &:not(:first-child)
-      border-radius: 12px
-      @mixin light_shadow
-
-    &:first-child
+    @media ( width > 900px )
       display: none
-      @media(width < 900px)
-        display: block
+
+    & span
+      opacity: 0
+
+  & .nav
+    flex-wrap: wrap
+    display: flex
+    justify-content: center
+    padding: 10px
+
+    @media ( width < 900px )
+      position: fixed
+      width: 100%
+      top: 0
+      z-index: 10
+
+    & .slider-wrap
+      position: relative
+      padding: 0
+
+      @media( width < 900px )
+        overflow-x: hidden
+        padding: 0
+        border-radius: 16px
+        backdrop-filter: blur(17px)
+        background-color: #ced8ff94
+
+      & .slider
+        display: inline-grid
+        align-items: center
+        column-gap: 20px
+        list-style: none
+        padding:
+          top: 10px
+          bottom: 10px
+          left: 0
+          right: 0
+        margin: 0 15px
+        grid-auto-flow: column
+
+        & li
+          &:not(:first-child)
+            border-radius: 12px
+            @mixin light_shadow
 
 </style>
