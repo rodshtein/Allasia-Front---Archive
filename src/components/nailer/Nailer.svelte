@@ -147,8 +147,6 @@
 .slider
   display: flex
   margin: 0 15px
-  @media(width < 800px)
+  @media( 500px < width < 800px)
     margin: 0 30px
-  @media(width < 500px)
-    margin: 0 15px
 </style>

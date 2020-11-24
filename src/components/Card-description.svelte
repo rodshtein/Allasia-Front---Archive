@@ -29,15 +29,17 @@
         text="{btnTxt}"
         on:click!='{() => showContent=!showContent}'
       )
-      Popup(
-        bind:show!='{showContent}'
-        header='{header}'
-        header2='{subHeader}'
-      )
-        .content
-          +html('description')
   .list-2
   .list-3
+
+Popup(
+  bind:show!='{showContent}'
+  header='{header}'
+  header2='{subHeader}'
+)
+  .content
+    +html('description')
+
 </template>
 
 <style lang='postcss'>
