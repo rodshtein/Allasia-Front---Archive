@@ -106,15 +106,24 @@ export function nailer(node, {
     // from multiline slider
     let stepCordsSet = new Set();
     let cards = node.children;
+
     // sizes
     let wrapperWidth = node.parentNode.clientWidth;
     let margin = wrapperWidth - node.offsetWidth;
     let viewport = wrapperWidth - margin;
-    let sliderWidth = node.scrollWidth;
+
+    // Find slider with without pseudo elements
+    // by find most right element by calc offsetLeft + el.width
+    let sliderWidth = 0;
+    for(let card of cards) {
+      let size = card.offsetLeft + card.offsetWidth;
+      sliderWidth = size > sliderWidth ? size : sliderWidth;
+    }
     let viewportOverflowWidth = sliderWidth - viewport;
 
     for(let card of cards) {
-
+      // console.log(card)
+      // console.dir(card)
       if( card.offsetLeft <= viewportOverflowWidth ){
         stepCordsSet.add( card.offsetLeft*-1 )
 
