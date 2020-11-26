@@ -30,7 +30,7 @@
 </script>
 
 
-<!-- <Nav {segment}/> -->
+<Nav {segment}/>
 <main class:layout_shift>
   <slot/>
 </main>

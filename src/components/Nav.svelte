@@ -41,11 +41,11 @@
         li
           Button(invert iconR='chat' text='Задать вопрос')
         li
+          Button(invert text='Вопрос-ответ' href='./wiki')
+        li
           Button(invert text='Клиники' href='./clinics')
         li
           Button(invert text='Акции')
-        li
-          Button(invert text='Вопрос-ответ')
         li
           Button(invert text='Контакты')
 

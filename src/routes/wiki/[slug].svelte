@@ -74,67 +74,67 @@
   p Что-то пошло не так…
 
 
-//- +if('Q')
-//-   header
-//-     .wrap
-//-       h1.h1 {Q.name_ru}
-//-       +if('Q.name !== Q.name_ru')
-//-         p.e_name {Q.name}
-//-       +if('description()')
-//-         p.subheader-h1 {description()}
++if('Q')
+  header
+    .wrap
+      h1.h1 {Q.name_ru}
+      +if('Q.name !== Q.name_ru')
+        p.e_name {Q.name}
+      +if('description()')
+        p.subheader-h1 {description()}
 
-//-       +if('Q.type && Q.type[0].name')
-//-         .type
-//-           h2.h4 Специализация
-//-           p.p
-//-             +if('Q.type')
-//-               +each('Q.type as el, i')
-//-                 +if('check(i, Q.type.length - 1)')
-//-                   +if('i === 0')
-//-                    | {el.name + ', '}
-//-                    +else
-//-                     | {el.name.toLowerCase() + ', '}
-//-                 +if('Q.type.length - 1 === i')
-//-                   | {el.name.toLowerCase() + '.'}
+      +if('Q.type && Q.type[0].name')
+        .type
+          h2.h4 Специализация
+          p.p
+            +if('Q.type')
+              +each('Q.type as el, i')
+                +if('check(i, Q.type.length - 1)')
+                  +if('i === 0')
+                   | {el.name + ', '}
+                   +else
+                    | {el.name.toLowerCase() + ', '}
+                +if('Q.type.length - 1 === i')
+                  | {el.name.toLowerCase() + '.'}
 
-//-     +if('Q.head_img && Q.head_img.publicUrl')
-//-       .head_img(style=`background-image: url('{Q.head_img.publicUrl}')`)
+    +if('Q.head_img && Q.head_img.publicUrl')
+      .head_img(style=`background-image: url('{Q.head_img.publicUrl}')`)
 
-//- +if('Q.description && Q.description.document || Q.gallery')
-//-   CardWrapper
-//-     Nailer
-//-       +if('Q.description && Q.description.document')
-//-         div(class!='{cls("gallery_item")}')
-//-           Description(
-//-             header = '{Q.name_ru}'
-//-             subHeader = '{Q.full_name_ru}'
-//-             content = '{Q.description.document}')
++if('Q.description && Q.description.document || Q.gallery')
+  CardWrapper
+    Nailer
+      +if('Q.description && Q.description.document')
+        div(class!='{cls("gallery_item")}')
+          Description(
+            header = '{Q.name_ru}'
+            subHeader = '{Q.full_name_ru}'
+            content = '{Q.description.document}')
 
-//-       +if('Q.gallery')
-//-         +each('Q.gallery as el (el.id + Q.gallery.length)')
-//-           .card_decor__img(
-//-             class!='{cls("gallery_item")}'
-//-             style=`background-image: url('{el.img.publicUrl}')`
-//-           )
-//-             span {el.alt}
+      +if('Q.gallery')
+        +each('Q.gallery as el (el.id + Q.gallery.length)')
+          .card_decor__img(
+            class!='{cls("gallery_item")}'
+            style=`background-image: url('{el.img.publicUrl}')`
+          )
+            span {el.alt}
 
-//- CardWrapper
-//-   CallToAction(
-//-     header='Хотите поехать в эту клинику?'
-//-     text='Напишите или позвоните, расскажите какая услуга вас интересует — мы всё устроим.'
-//-     btnText='Открыть чат'
-//-     tel
-//-   )
+CardWrapper
+  CallToAction(
+    header='Хотите поехать в эту клинику?'
+    text='Напишите или позвоните, расскажите какая услуга вас интересует — мы всё устроим.'
+    btnText='Открыть чат'
+    tel
+  )
 
-//- +if('Q.feedback && Q.feedback[0]')
-//-   CardWrapper
-//-     CardHeader(header!='{Q.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
-//-     Feedback(data='{Q.feedback}')
++if('Q.feedback && Q.feedback[0]')
+  CardWrapper
+    CardHeader(header!='{Q.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
+    Feedback(data='{Q.feedback}')
 
-//- +if('Q.staff && Q.staff.length')
-//-   CardWrapper
-//-     CardHeader(header!='{Q.staff.length > 1 ? "Врачи" : "Врач" }')
-//-     Doctors(data='{Q.staff}')
++if('Q.staff && Q.staff.length')
+  CardWrapper
+    CardHeader(header!='{Q.staff.length > 1 ? "Врачи" : "Врач" }')
+    Doctors(data='{Q.staff}')
 
 +if('Q.technology && Q.technology[0]')
   CardWrapper

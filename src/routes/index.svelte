@@ -98,7 +98,7 @@ CardWrapper
     .text-wrap
       h2.h2-I Вопрос — ответ
       p.p Мы собрали ответы на самые популярные вопросы. Найдите ответы или задайте свой вопрос
-      Button(size='regular' href='#' iconR='arrow-r' text="Вопрос-ответ")
+      Button(size='regular' href='/wiki' iconR='arrow-r' text="Вопрос-ответ")
 
 .clinics_block
   CardWrapper
