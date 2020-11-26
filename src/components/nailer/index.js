@@ -109,42 +109,40 @@ export function nailer(node, {
 
     // sizes
     let wrapperWidth = node.parentNode.clientWidth;
-    let margin = wrapperWidth - node.offsetWidth;
+    // let margin = wrapperWidth - node.offsetWidth;
+    let margin = node.offsetLeft * 2;
     let viewport = wrapperWidth - margin;
 
     // Find slider with without pseudo elements
     // by find most right element by calc offsetLeft + el.width
+    // By using the method we do not depend on 'display' mode on slider
     let sliderWidth = 0;
     for(let card of cards) {
       let size = card.offsetLeft + card.offsetWidth;
       sliderWidth = size > sliderWidth ? size : sliderWidth;
     }
+
     let viewportOverflowWidth = sliderWidth - viewport;
 
+    console.log(wrapperWidth)
+    console.log(node.offsetWidth)
+    console.log(margin)
+    console.log(viewport)
+
     for(let card of cards) {
-      // console.log(card)
-      // console.dir(card)
-      if( card.offsetLeft <= viewportOverflowWidth ){
+      if ( card.offsetLeft <= viewportOverflowWidth ){
         stepCordsSet.add( card.offsetLeft*-1 )
-
-      } else {
-        // I have no idea why I make it, temp off
-        // and off second condition depends off it ↓↓↓
-        // if (!stepCordsSet.size) stepCordsSet.add(0)
-
-        // align last item ro right
-        // adds right shift by the way
-        // temp off, read ↑↑↑
-        // if (  stepCordsSet.size >= 1 && sliderWidth > viewport || sliderWidth > viewport
-        if( sliderWidth > viewport ){
-            stepCordsSet.add( (sliderWidth - wrapperWidth + margin + rightShift)/-1 )
-            break
-        }
-
+      } else if ( sliderWidth > viewport ) {
+        stepCordsSet.add( (sliderWidth - wrapperWidth + margin + rightShift)/-1 )
+        break
       }
     }
 
-    let stepCords = [...stepCordsSet]
+    // convert Set to Array, with check to empty
+    // if it empty we set zero cord for other calcs
+    // TODO cords mean that no scroll slider
+    // - and we need to disable nailer by this condition
+    let stepCords = stepCordsSet.size ? [...stepCordsSet] : [0];
 
     // Sort cords because we can get unsorted data from
     // multiline sliders

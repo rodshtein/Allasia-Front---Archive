@@ -72,6 +72,7 @@ Popup(
 
     .content
       overflow: hidden
+      width: 100%
       max-height: 230px
       margin-bottom: 20px
       position: relative
