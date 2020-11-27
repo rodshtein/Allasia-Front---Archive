@@ -298,11 +298,12 @@ export function nailer(node, {
 
     pointerX = morph(e).clientX
     pathX = pointerX - downX
+    // console.log(pathX)
     nodeX = node.NAILER.x
 
 
     // corner grips
-    let point = nodeX+pathX;
+    let point = nodeX + pathX;
     let moveToPoint = point;
     let easePoint = pointerX // ← if is 0 nothing calculate
       ? nodeX + ( pathX / ( pointerX / ( pointerX / 5 )))
@@ -317,8 +318,6 @@ export function nailer(node, {
     if ((point) < node.NAILER.hiPoint ) {
       moveToPoint = easePoint
     }
-
-
 
     node.style.transform = `translate(${moveToPoint}px)`
 
