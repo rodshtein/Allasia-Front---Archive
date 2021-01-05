@@ -124,10 +124,10 @@ export function nailer(node, {
 
     let viewportOverflowWidth = sliderWidth - viewport;
 
-    console.log(wrapperWidth)
-    console.log(node.offsetWidth)
-    console.log(margin)
-    console.log(viewport)
+    // console.log(wrapperWidth)
+    // console.log(node.offsetWidth)
+    // console.log(margin)
+    // console.log(viewport)
 
     for(let card of cards) {
       if ( card.offsetLeft <= viewportOverflowWidth ){
@@ -251,16 +251,17 @@ export function nailer(node, {
   function resizeObserver(node, handler){
     let frame = document.createElement('iframe');
     frame.style.cssText = `
-      position:absolute;
-      left:0;
-      top:-100%;
-      width:100%;
-      height:100%;
-      margin:1px 0 0;
-      border:none;
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;`;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border: 0;
+      opacity: 0;
+      pointer-events: none;
+      z-index: -1;`;
     node.parentNode.appendChild(frame)
     frame.contentWindow.onresize = () => { handler.call(node.parentNode) };
   }

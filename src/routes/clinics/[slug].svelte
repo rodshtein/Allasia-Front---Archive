@@ -172,8 +172,6 @@ header
   @media( width > 800px )
     grid-auto-columns: minmax(min-content, 80%) 200px
     grid-column-gap: 100px
-    padding-top: 20px
-    padding-bottom: 50px
 
   .e_name
     margin-top: 20px

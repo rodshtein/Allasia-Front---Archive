@@ -5,7 +5,7 @@ export function serialize (data, {
   h2 = 'h3'
 }={}) {
 
-  const serialize = (data, length) => {
+  const serialize = (data) => {
     // import { Text } from 'slate'
     // if (Text.isText(data)) {
     //     return escapeHtml(data.text)
@@ -55,6 +55,31 @@ export function serialize (data, {
 
   return serialize(data);
 }
+
+
+export function serializeAndCut (data, length = false) {
+
+  const serialize = (data) => {
+
+    if (data.object === 'text' ) {
+      let markArr = data.marks ? data.marks.map(item => item.type) : '';
+
+      let markedText = data.marks.reduce((prev, item) => `${prev}`,
+      escapeHtml(data.text) /* ← sets to prev */ );
+
+      return markedText
+    }
+
+
+    const children = data.nodes.map(n => serialize(n)).join('');
+    return `${children} `
+  }
+  let string = serialize(data);
+
+  return length ? string.substring(0, length) + '…' : string
+}
+
+
 
 export function sort(arr, value='name'){
   if(arr.length < 2) return arr;

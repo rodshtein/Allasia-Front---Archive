@@ -2,17 +2,17 @@
   import { onMount } from 'svelte';
   import { client } from '../../utils';
   import { sortTrees } from '../../helpers';
-  import { CLINICS_COUNTRY_CLINICS } from './queries';
+  import { WIKI } from './queries';
 
   export async function preload(page) {
 
     let query = await client.query({
-        query: CLINICS_COUNTRY_CLINICS
+        query: WIKI
       });
 
     return {
       DATA: query.data,
-      Q: query.data.allClinicCountries,
+      Q: query.data.allWikiSections,
     };
   }
 
@@ -24,13 +24,13 @@
 
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
-  import Clinic from '../../components/Card-clinic.svelte';
-  import Clinics from '../../components/Slider-clinics.svelte';
+  import Button from '../../components/Button.svelte';
+  import { serialize, serializeAndCut } from '../../helpers.js';
 
   // set preloaded data to chache
   onMount(()=> {
     client.writeQuery({
-      query: CLINICS_COUNTRY_CLINICS,
+      query: WIKI,
       data: DATA
     })
   });
@@ -41,6 +41,14 @@
     sub_selector: 'clinics',
     sub_sort_field: 'name_ru'
   }}
+
+  const toggle = async (el) => {
+		// feedback = el
+		// await tick();
+		// showFeedback=!showFeedback
+  }
+
+  let classConfig = { p: "p-mini" }
 </script>
 
 <template lang='pug'>
@@ -51,12 +59,22 @@ header
     | Найдите ответы или задайте свой вопрос
   .illustration
 
-+each(`sortTrees(sortConf(Q)) as country`)
++each('Q as section')
   CardWrapper
-    CardHeader(header!='{country.name}')
-    .clinics-container
-      +each('country.clinics as clinic')
-        Clinic(data='{clinic}' href='./clinics/')
+    CardHeader(header!='{section.name}')
+    .slider-wrapper
+      .slider
+        +each('section.questions as question')
+          .wiki-card.card.card_decor__white
+            .head
+              h3.p-mini {question.question}
+            p.p-mini.answer {serializeAndCut(JSON.parse(question.answer.document))}
+            .btn-wrap
+              Button(
+                size='small'
+                text='Читать полностью'
+                on:click!='{() => toggle(question) }'
+              )
 
 </template>
 
@@ -75,30 +93,19 @@ header
     left: 15px
   margin-bottom: 20px
 
-  @media( width >= 450px )
-    grid-template: 1fr / auto 30%
-    grid-column-gap: 80px
+  @media( width >= 800px )
+    grid-template: auto / auto 50%
+    grid-column-gap: 40px
+    grid-row-gap: 15px
     justify-items: start
     padding:
       bottom: 50px
-
-    &::after
-      content: ''
-      margin-top: 50px
-      width: 100%
-      grid-area: span 1 / span 2
-      @mixin devider
-
-
-  @media( width >= 800px )
-    grid-column-gap: 120px
-    padding-top: 50px
-    padding-bottom: 50px
-    grid-row-gap: 15px
+      top: 50px
 
   .subheader-h1
+    max-width: 500px
     text-align: center
-    @media( width >= 450px )
+    @media( width >= 800px )
       text-align: left
 
   .illustration
@@ -110,43 +117,72 @@ header
     height: 156px
     order: -1
 
-    @media( width > 450px )
-      height: 100%
-      max-height: 130px
-      max-width: 130px
+    @media( width >650px )
+      background-image: url('/illustration/wiki.svg')
+      height: 220px
+      margin-bottom: 20px
+
+    @media( width > 800px )
+      height: 200%
+      max-height: 230px
+      max-width: 350px
       justify-self: end
+      align-self: center
       margin-bottom: 0
       grid-area: 1 / 2 / span 2
-      background-image: url('/illustration/wiki.svg')
 
-  .temp
-    display: block
-    height: 156px
-    width: 293px
-    margin-bottom: 20px
-    background-position: center
-    background-repeat: no-repeat
-    background-size: contain
-    background-image: url('/illustration/wiki-s.svg')
+.slider-wrapper
+  position: relative
+  overflow: hidden
+  padding: 0
 
-    @media( 650px < width < 1000px )
-      height: 100%
-      width: 120%
-      margin-left: -7%
-
-    @media( width > 1000px )
-      background-image: url('/illustration/wiki.svg')
-      height: 130%
-      width: 110%
-
-.clinics-container
+.slider
   display: grid
-  grid-template-columns: 1
-  grid-gap: 10px
-  @media( width > 450px )
-    grid-template-columns: repeat( 2, 1fr )
-    grid-gap: 20px 10px
-  @media( width > 850px )
-    grid-template-columns: repeat( 3, 1fr )
+  grid:
+    template: auto / repeat(3, 1fr)
+    column-gap: 20px
+    row-gap: 30px
+  justify-items: start
+
+.wiki-card
+  position: relative
+  display: flex
+  flex-direction: column
+  align-items: start
+  max-height: 360px
+  padding: 15px
+
+  &::before
+    content: ''
+    position: absolute
+    left: -15px
+    right: -15px
+    top: -15px
+    bottom: -15px
+
+  .head
+    position: relative
+    align-self: stretch
+    border: solid 1px var(--color--btn-border)
+    border-radius: 14px
+    padding:
+      top: 10px
+      right: 12px
+      bottom: 12px
+      left: 12px
+    margin-bottom: 15px
+
+    &::after
+      content: url(/icons/special/tail.svg)
+      position: absolute
+      left: 0
+      bottom: -20px
+
+  .answer
+    overflow: hidden
+    position: relative
+
+  .btn-wrap
+    margin-top: 10px
 
 </style>

@@ -212,6 +212,16 @@ function keyHandler(e) {
     }`
     on:keydown='{keyHandler}'
     disabled='{disabled}'
+    maxlength="260"
+    aria-autocomplete="both"
+    aria-haspopup="false"
+    autocapitalize="off"
+    autocomplete="off"
+    autocorrect="off"
+    role="combobox"
+    spellcheck="false"
+    title="Search"
+    aria-label="Поиск по болезням и услугам"
     )
 </template>
 

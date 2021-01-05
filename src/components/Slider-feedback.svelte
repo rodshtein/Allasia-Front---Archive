@@ -32,7 +32,7 @@ Nailer
       .head
         h3.h4 {el.header}
         p.p-small {el.name}, {el.age} {numDeclension(el.age)}
-      .content.fixed_font_size
+      .content
         +html('serialize(JSON.parse(el.review.document), classConfig)')
 
       .btn-wrap
@@ -55,14 +55,12 @@ FeedbackPopup(
 .slider-item
   padding: 23px 19px
   position: relative
-  user-select: none
   flex: 0 0 auto
   width: calc(83% / 2)
   display: flex
   flex-direction: column
   align-items: start
   max-height: 260px
-  padding-bottom: 50px
   margin-right: 15px
 
   @media(width < 650px)
@@ -106,13 +104,11 @@ FeedbackPopup(
       linear-gradient(
         to top,
         transparent 5%,
-        black 30%,
+        #00000030 30%,
         black 100%
       )
 
   .btn-wrap
-    position: absolute
-    bottom: 23px
-    left: 19px
+    margin-top: 10px
 
 </style>
