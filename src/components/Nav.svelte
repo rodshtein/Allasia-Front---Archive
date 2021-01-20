@@ -1,11 +1,11 @@
 <script>
   export let segment;
 
-  import Branches from './Nav-branches.svelte';
+  import Branches from './branches/Nav-branches.svelte';
   import Button from './Button.svelte';
   import { nailer } from './nailer';
-  import { branchId, showMenu } from './Store-branches.js';
-  import { searchString } from './Store-search';
+  import { branchId, showMenu } from './stores/Store-branches.js';
+  import { searchString } from './stores/Store-search';
   import { afterUpdate } from 'svelte';
 
   function searchHandler(){

@@ -5,34 +5,6 @@
   import CardWrapper from './Card-wrapper.svelte';
   import CardHeader from './Card-header.svelte';
 
-  // remove empty elements from ssr data
-  // data will updated on user routing
-  $: data = remEmptyData(data)
-
-  function remEmptyData(data){
-    if(!data) return null
-    let arr = [];
-
-    data.forEach(item => {
-      // paint only if there is at least one contry + price
-      if(item.price && item.price[0].country && item.price[0].price) {
-          // Sort item price by country name
-          if(item.price.length > 1){
-            let price = item.price.slice().sort((a, b) => {
-              a = a.country.name ? a.country.name : '';
-              b = b.country.name ? b.country.name : '';
-              return a.localeCompare(b)
-            });
-            arr.push(Object.assign({}, item, { price }))
-          } else {
-            arr.push(item)
-          }
-      }
-    });
-    return arr
-  }
-
-
   let length = (data, i) => data.length > i;
   let cls = (name) => {
     if(data.length > 2) return name
@@ -53,7 +25,7 @@
             h3.h4 {el.name}
             +if('el.feature')
               p.subheader-h3 {el.feature}
-          +if('el.price')
+          +if('el.price && el.price.length')
             .price( class!=`{ el.price.length < 2
                 ? "price--one-item" : "" }`)
               +each('el.price as el')

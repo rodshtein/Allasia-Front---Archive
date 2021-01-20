@@ -311,3 +311,27 @@ export function columnMark(
 
   return {map, col, L}
 }
+
+  // remove empty elements from ssr data
+export function clearProcedures(data){
+  if(!data) return null
+  let arr = [];
+
+  data.forEach(item => {
+    // paint only if there is at least one country + price
+    if(item.price && item.price.length && item.price[0].country && item.price[0].price) {
+        // Sort item price by country name
+        if(item.price.length > 1){
+          let price = item.price.slice().sort((a, b) => {
+            a = a.country.name ? a.country.name : '';
+            b = b.country.name ? b.country.name : '';
+            return a.localeCompare(b)
+          });
+          arr.push(Object.assign({}, item, { price }))
+        } else {
+          arr.push(item)
+        }
+    }
+  });
+  return arr
+}

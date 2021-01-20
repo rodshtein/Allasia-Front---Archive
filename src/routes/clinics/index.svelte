@@ -1,38 +1,31 @@
 <script context="module">
   import { onMount } from 'svelte';
-  import { client } from '../../utils';
+  import { client, cache }  from '../../tinyClient';
   import { sortTrees } from '../../helpers';
   import { CLINICS_COUNTRY_CLINICS } from './queries';
 
-  export async function preload(page) {
-
-    let query = await client.query({
-        query: CLINICS_COUNTRY_CLINICS
-      });
-
-    return {
-      DATA: query.data,
-      Q: query.data.allClinicCountries,
-    };
+  export async function preload() {
+    return { DATA : await client(CLINICS_COUNTRY_CLINICS) };
   }
 
 </script>
 
 <script>
   export let DATA;
-  export let Q;
 
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
   import Clinic from '../../components/Card-clinic.svelte';
   import Clinics from '../../components/Slider-clinics.svelte';
 
-  // set preloaded data to chache
+  // set preloaded data to cache
   onMount(()=> {
-    client.writeQuery({
-      query: CLINICS_COUNTRY_CLINICS,
-      data: DATA
-    })
+    cache.set(
+      JSON.stringify({
+        query: CLINICS_COUNTRY_CLINICS
+      }),
+      DATA
+    )
   });
 
   const sortConf = (data) => { return {
@@ -49,7 +42,7 @@ header
   p.subheader-h1 Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
   .illustration
 
-+each(`sortTrees(sortConf(Q)) as country`)
++each(`sortTrees(sortConf(DATA.allClinicCountries)) as country`)
   CardWrapper
     CardHeader(header!='{country.name}')
     .clinics-container

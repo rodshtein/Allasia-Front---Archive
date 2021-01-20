@@ -28,15 +28,21 @@
     }, '')
   }
 
+  // Prepare data for iteration
   function dataNormalize(data){
     if(data[0].__typename === 'Doctor') return data
 
-    let set = new Set();
+    let employers = new Map();
     data.forEach( el => {
-      if(el.doctor) set.add(el.doctor)
+      // for clinics we have data included to doctor object
+      // for medical pages data in root object
+      el = el.doctor || el;
+      if(!employers.has(el.id)) {
+        employers.set(el.id, el)
+      }
     })
 
-    return [...set]
+    return Array.from(employers.values())
   }
 
 </script>

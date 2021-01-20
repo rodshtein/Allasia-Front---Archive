@@ -1,26 +1,19 @@
 <script>
-  import { nailer } from './nailer';
+  import { nailer } from '../nailer';
   import { fly, fade } from 'svelte/transition';
-  import { showMenu, branchId } from './Store-branches.js';
-  import { client } from "../utils";
-  import { BRANCHES } from '../queries';
-  import { sort, columnMark } from "../helpers";
+  import { showMenu, branchId } from '../stores/Store-branches.js';
+  import { client }  from '../../tinyClient';
+  import { BRANCHES } from './queries';
+  import { sort, columnMark } from "../../helpers";
 
   let styleMapBranches = {};
   let menuBranches;
 
 
-  client.watchQuery({ query: BRANCHES }).subscribe(
-    (result) => {
-      if (result.errors) {
-        console.log({ 'result error':result.errors })
-      } else {
-        prepareData(result.data.allMedicalBranches)
-      }
-    },
-    (error) => console.log({ 'request error':error  })
+  client(BRANCHES).then(
+    result => prepareData(result.allMedicalBranches),
+    error => console.error(error)
   );
-
 
   function prepareData(queryResult){
     menuBranches = sort(queryResult.filter(item => !item.parent));

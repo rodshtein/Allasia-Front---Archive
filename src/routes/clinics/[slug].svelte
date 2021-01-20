@@ -1,21 +1,18 @@
 <script context="module">
   import { onMount } from 'svelte';
-  import { client } from '../../utils';
+  import { client, cache }  from '../../tinyClient';
   import { CLINIC_PAGE } from './queries';
 
   export async function preload(page) {
 
-    let query = await client.query({
-        query: CLINIC_PAGE,
-        variables: {
-          id: page.params.slug
-        }
-      });
+    let query = await client(
+      CLINIC_PAGE,
+      { id: page.params.slug }
+    );
 
     return {
       PAGE: page,
-      DATA: query.data,
-      Q: query.data.Clinic,
+      _DATA: query,
     };
   }
 
@@ -23,8 +20,7 @@
 
 <script>
   export let PAGE;
-  export let DATA;
-  export let Q;
+  export let _DATA;
 
   // components
   import Nailer from '../../components/nailer/Nailer.svelte';
@@ -36,20 +32,26 @@
   import Technology from '../../components/Slider-technology.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
 
-  // set preloaded data to chache
+
+  // set preloaded data to cache
   onMount(()=> {
-    client.writeQuery({
-      query: CLINIC_PAGE,
-      variables: {
+    cache.set(
+      JSON.stringify({
+        query: CLINIC_PAGE,
+        variables : {
           id: PAGE.params.slug
-      },
-      data: DATA
-    })
+        }
+      }),
+      _DATA
+    )
   });
 
+  // Short data path
+  $: DATA = _DATA.Clinic
+
   let description = () => {
-    let n = Q.full_name_ru ? Q.full_name_ru + ', ': '';
-    let c = Q.country.name ? Q.country.name : '';
+    let n = DATA.full_name_ru ? DATA.full_name_ru + ', ': '';
+    let c = DATA.country.name ? DATA.country.name : '';
     return n + c
   }
 
@@ -58,8 +60,8 @@
   }
 
   let cls = (name) => {
-    let gLength = Q.gallery ? Q.gallery.length : 0;
-    let dLength = Q.description && Q.description.document ? 1 : 0;
+    let gLength = DATA.gallery ? DATA.gallery.length : 0;
+    let dLength = DATA.description && DATA.description.document ? 1 : 0;
     let total = gLength + dLength;
 
     if(total > 2) return name
@@ -70,48 +72,48 @@
 
 <template lang='pug'>
 
-+if('!Q')
++if('!DATA')
   p Что-то пошло не так…
 
 
-+if('Q')
++if('DATA')
   header
     .wrap
-      h1.h1 {Q.name_ru}
-      +if('Q.name !== Q.name_ru')
-        p.e_name {Q.name}
+      h1.h1 {DATA.name_ru}
+      +if('DATA.name !== DATA.name_ru')
+        p.e_name {DATA.name}
       +if('description()')
         p.subheader-h1 {description()}
 
-      +if('Q.type && Q.type[0].name')
+      +if('DATA.type && DATA.type[0].name')
         .type
           h2.h4 Специализация
           p.p
-            +if('Q.type')
-              +each('Q.type as el, i')
-                +if('check(i, Q.type.length - 1)')
+            +if('DATA.type')
+              +each('DATA.type as el, i')
+                +if('check(i, DATA.type.length - 1)')
                   +if('i === 0')
                    | {el.name + ', '}
                    +else
                     | {el.name.toLowerCase() + ', '}
-                +if('Q.type.length - 1 === i')
+                +if('DATA.type.length - 1 === i')
                   | {el.name.toLowerCase() + '.'}
 
-    +if('Q.head_img && Q.head_img.publicUrl')
-      .head_img(style=`background-image: url('{Q.head_img.publicUrl}')`)
+    +if('DATA.head_img && DATA.head_img.publicUrl')
+      .head_img(style=`background-image: url('{DATA.head_img.publicUrl}')`)
 
-+if('Q.description && Q.description.document || Q.gallery')
++if('DATA.description && DATA.description.document || DATA.gallery')
   CardWrapper
     Nailer
-      +if('Q.description && Q.description.document')
+      +if('DATA.description && DATA.description.document')
         div(class!='{cls("gallery_item")}')
           Description(
-            header = '{Q.name_ru}'
-            subHeader = '{Q.full_name_ru}'
-            content = '{Q.description.document}')
+            header = '{DATA.name_ru}'
+            subHeader = '{DATA.full_name_ru}'
+            content = '{DATA.description.document}')
 
-      +if('Q.gallery')
-        +each('Q.gallery as el (el.id + Q.gallery.length)')
+      +if('DATA.gallery')
+        +each('DATA.gallery as el (el.id + DATA.gallery.length)')
           .card_decor__img(
             class!='{cls("gallery_item")}'
             style=`background-image: url('{el.img.publicUrl}')`
@@ -126,20 +128,20 @@ CardWrapper
     tel
   )
 
-+if('Q.feedback && Q.feedback[0]')
++if('DATA.feedback && DATA.feedback[0]')
   CardWrapper
-    CardHeader(header!='{Q.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
-    Feedback(data='{Q.feedback}')
+    CardHeader(header!='{DATA.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
+    Feedback(data='{DATA.feedback}')
 
-+if('Q.staff && Q.staff.length')
++if('DATA.staff && DATA.staff.length')
   CardWrapper
-    CardHeader(header!='{Q.staff.length > 1 ? "Врачи" : "Врач" }')
-    Doctors(data='{Q.staff}')
+    CardHeader(header!='{DATA.staff.length > 1 ? "Врачи" : "Врач" }')
+    Doctors(data='{DATA.staff}')
 
-+if('Q.technology && Q.technology[0]')
++if('DATA.technology && DATA.technology[0]')
   CardWrapper
     CardHeader(header='Технологии')
-    Technology(data='{Q.technology}')
+    Technology(data='{DATA.technology}')
 
 </template>
 

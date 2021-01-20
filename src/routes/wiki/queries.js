@@ -1,7 +1,4 @@
-import { gql } from "apollo-boost";
-
-
-export const WIKI = gql`
+export const WIKI = `
 query {
   allWikiSections {
     id

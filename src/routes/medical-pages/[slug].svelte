@@ -1,24 +1,20 @@
 <script context="module">
   import { onMount } from 'svelte';
-  import { client } from '../../utils';
-  import { getBranchPath } from '../../helpers';
+  import { client, cache }  from '../../tinyClient';
+  import { getBranchPath, clearProcedures } from '../../helpers';
   import { MEDICAL_PAGE } from './queries';
-  import { searchString } from '../../components/Store-search';
-  import { branchId, showMenu } from '../../components/Store-branches';
+  import { searchString } from '../../components/stores/Store-search';
+  import { branchId, showMenu } from '../../components/stores/Store-branches';
 
   export async function preload(page) {
-
-    let query = await client.query({
-        query: MEDICAL_PAGE,
-        variables: {
-          id: page.params.slug
-        }
-      });
+    let query = await client(
+      MEDICAL_PAGE,
+      { id: page.params.slug }
+    );
 
     return {
       PAGE: page,
-      DATA: query.data,
-      Q: query.data.MedicalPage,
+      _DATA: query,
     };
   }
 
@@ -26,8 +22,7 @@
 
 <script>
   export let PAGE;
-  export let DATA;
-  export let Q;
+  export let _DATA;
 
   // components
   import CardWrapper from '../../components/Card-wrapper.svelte';
@@ -45,19 +40,28 @@
   import Button from '../../components/Button.svelte';
   import Popup from '../../components/Popup.svelte';
 
-  // set preloaded data to chache
+  // set preloaded data to cache
   onMount(()=> {
-    client.writeQuery({
-      query: MEDICAL_PAGE,
-      variables: {
+    cache.set(
+      JSON.stringify({
+        query: MEDICAL_PAGE,
+        variables : {
           id: PAGE.params.slug
-      },
-      data: DATA
-    })
+        }
+      }),
+      _DATA
+    )
   });
 
+  // Short data path
+  $: DATA = _DATA.MedicalPage;
+
+  // remove empty elements from ssr data
+  // data will updated on user routing
+  $: procedures = clearProcedures(DATA.procedures);
+
   // Paint barnch treee
-  $: branch = Q.branch ? getBranchPath(Q.branch) : '';
+  $: branch = DATA.branch ? getBranchPath(DATA.branch) : '';
 
   let showDiseases = (data) => {
     let el = data.diseases;
@@ -72,7 +76,7 @@
     if($searchString) {
       showMenu.set(true)
     } else {
-      branchId.set(Q.branch.id)
+      branchId.set(DATA.branch.id)
       showMenu.set(true)
     }
   }
@@ -81,49 +85,49 @@
 
 <template lang='pug'>
 
-+if('!Q')
++if('!DATA')
   p Что-то пошло не так…
 
-+if('Q')
++if('DATA')
   header
     .wrap
       +if('branch')
         p.breadcrumb {branch}
-      h1.h1 {Q.name}
+      h1.h1 {DATA.name}
 
     +if('branch')
       Button(
         size='mini',
         iconL='arrow-l'
-        text=`{$searchString ? 'Результаты поиска' : Q.branch.name}`
+        text=`{$searchString ? 'Результаты поиска' : DATA.branch.name}`
         on:click!='{backHandler}'
       )
 
 
-  +if('Q.description || showDiseases(Q)')
+  +if('DATA.description || showDiseases(DATA)')
     CardWrapper
       .description-wrap(
-        class:two_column!='{showDiseases(Q)}'
+        class:two_column!='{showDiseases(DATA)}'
       )
-        +if('Q.description')
+        +if('DATA.description')
           div
             CardHeader(header='Описание')
             Description(
-              header = '{Q.name}'
-              content = '{Q.description.document}'
+              header = '{DATA.name}'
+              content = '{DATA.description.document}'
             )
-        +if('showDiseases(Q)')
+        +if('showDiseases(DATA)')
           .diseases
             CardHeader(header='Болезни')
             Diseases(
-              data='{Q.diseases}'
-              pageName='{Q.name}'
+              data='{DATA.diseases}'
+              pageName='{DATA.name}'
             )
 
-+if('Q.procedures && Q.procedures[0]')
++if('procedures.length')
   CardWrapper
     CardHeader(header='Процедуры' subHeader='Стоимость, особенности, сроки')
-    Procedures(data='{Q.procedures}')
+    Procedures(data='{procedures}')
 
 CardWrapper
   CallToAction(
@@ -133,25 +137,25 @@ CardWrapper
     tel
   )
 
-+if('Q.feedback && Q.feedback[0]')
++if('DATA.feedback && DATA.feedback[0]')
   CardWrapper
-    CardHeader(header!='{Q.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
-    Feedback(data='{Q.feedback}')
+    CardHeader(header!='{DATA.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
+    Feedback(data='{DATA.feedback}')
 
-+if('Q.clinics && Q.clinics[0]')
++if('DATA.clinics && DATA.clinics[0]')
   CardWrapper
-    CardHeader(header!='{Q.clinics.length > 1 ? "Клиники" : "Клиника" }')
-    Clinics(data='{Q.clinics}')
+    CardHeader(header!='{DATA.clinics.length > 1 ? "Клиники" : "Клиника" }')
+    Clinics(data='{DATA.clinics}')
 
-+if('Q.doctors && Q.doctors[0]')
++if('DATA.doctors && DATA.doctors[0]')
   CardWrapper
-    CardHeader(header!='{Q.doctors.length > 1 ? "Врачи" : "Врач" }')
-    Doctors(data='{Q.doctors}')
+    CardHeader(header!='{DATA.doctors.length > 1 ? "Врачи" : "Врач" }')
+    Doctors(data='{DATA.doctors}')
 
-+if('Q.technology && Q.technology[0]')
++if('DATA.technology && DATA.technology[0]')
   CardWrapper
     CardHeader(header='Технологии')
-    Technology(data='{Q.technology}')
+    Technology(data='{DATA.technology}')
 
 
 </template>

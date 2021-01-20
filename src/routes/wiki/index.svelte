@@ -1,26 +1,17 @@
 <script context="module">
   import { onMount } from 'svelte';
-  import { client } from '../../utils';
-  import { sortTrees } from '../../helpers';
+  import { client, cache }  from '../../tinyClient';
   import { WIKI } from './queries';
 
-  export async function preload(page) {
-
-    let query = await client.query({
-        query: WIKI
-      });
-
-    return {
-      DATA: query.data,
-      Q: query.data.allWikiSections,
-    };
+  export async function preload() {
+    return { DATA : await client(WIKI) };
   }
+
 
 </script>
 
 <script>
   export let DATA;
-  export let Q;
 
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
@@ -29,11 +20,12 @@
 
   // set preloaded data to chache
   onMount(()=> {
-    client.writeQuery({
-      query: WIKI,
-      data: DATA
-    })
+    cache.set(
+      JSON.stringify(WIKI),
+      DATA
+    )
   });
+
 
   const sortConf = (data) => { return {
     data: data,
@@ -59,7 +51,7 @@ header
     | Найдите ответы или задайте свой вопрос
   .illustration
 
-+each('Q as section')
++each('DATA.allWikiSections as section')
   CardWrapper
     CardHeader(header!='{section.name}')
     .slider-wrapper
@@ -68,7 +60,8 @@ header
           .wiki-card.card.card_decor__white
             .head
               h3.p-mini {question.question}
-            p.p-mini.answer {serializeAndCut(JSON.parse(question.answer.document))}
+            +if('question.answer')
+              p.p-mini.answer {serializeAndCut(JSON.parse(question.answer.document))}
             .btn-wrap
               Button(
                 size='small'

@@ -1,15 +1,15 @@
 <script>
-import { client } from "../utils";
-import { sort, numDeclension, columnMark } from "../helpers";
-import { BRANCHES } from '../queries';
+import { client }  from '../../tinyClient';
+import { sort, numDeclension, columnMark } from "../../helpers";
+import { BRANCHES } from './queries';
 
-import { showMenu, branchId } from './Store-branches.js';
+import { showMenu, branchId } from '../stores/Store-branches.js';
 import { searchInProgress, searchString, backPointId,
-  prevSearchString, searchResult } from './Store-search.js';
+  prevSearchString, searchResult } from '../stores/Store-search.js';
 
 // Components
-import Popup from './Popup.svelte';
-import SearchBox from './Search-box.svelte';
+import Popup from '../Popup.svelte';
+import SearchBox from '../search/Search-box.svelte';
 
 let branches;
 
@@ -24,16 +24,10 @@ let styleMapBranches = {};
 let styleMapPages = {};
 
 
-client.watchQuery({ query: BRANCHES }).subscribe(
-  (result) => {
-    if (result.errors) {
-      console.log({ 'result error':result.errors })
-    } else {
-      prepareData(result.data.allMedicalBranches)
-    }
-  },
-  (error) => console.log({ 'request error':error  })
-);
+client(BRANCHES).then(
+    result => prepareData(result.allMedicalBranches),
+    error => console.error(error)
+  );
 
 function prepareData(queryResult){
   branches = queryResult

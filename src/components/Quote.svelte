@@ -1,16 +1,52 @@
 <script>
-  import { query } from "svelte-apollo";
-  import { client } from "../utils";
-  import { QUOTE, QUOTE_COUNT } from '../queries';
+  import { client }  from '../tinyClient';
+
+  export const QUOTE_COUNT = `{
+    _allFeedbackQuotesMeta { count }
+  }`;
+
+  export const QUOTE = `
+    query ($int: Int){
+      allFeedbackQuotes ( skip: $int  first: 1 ) {
+        quote
+        feedback {
+          header
+          name
+          age
+          date
+          city {
+            name
+          }
+          country {
+            name
+          }
+          review {
+            document
+          }
+          gallery {
+            alt
+            img {
+              publicUrl
+            }
+          }
+        }
+      },
+    }`;
 
   // components
   import Button from './Button.svelte';
   import FeedbackPopup from './Popups-feedback.svelte';
   import { scale } from 'svelte/transition';
 
-  let quoteCountQuery = query(client, {
-      query: QUOTE_COUNT,
-    });
+  client(QUOTE_COUNT)
+    .then (
+      result => {
+        count = result._allFeedbackQuotesMeta.count
+        intArr = shuffle(Array.from(Array(count).keys()))
+        int = intArr[intCount]
+        getQuote(int)
+      }
+    )
 
   let quoteQuery;
   let animateClass;
@@ -20,32 +56,31 @@
   let int = 0;
   let showFeedback = false;
   let feedbackBtnOff = false;
+  let quote = null;
 
-  $: quoteQuery = query(client, {
-        query: QUOTE,
-        variables: {int}
-      })
+  function getQuote(int){
+    animateClass = 'mask'
+    feedbackBtnOff= true
 
-
-  $quoteCountQuery.then (
-    result => {
-      count = result.data._allFeedbackQuotesMeta.count
-      intArr = shuffle(Array.from(Array(count).keys()))
-      int = intArr[intCount]
-    }
-  )
+    client( QUOTE, {int: int})
+      .then(
+      (result) => {
+        if (result.errors) {
+          console.log({ 'result error':result.errors })
+        } else {
+          quote = result.allFeedbackQuotes[0]
+          animateClass = ''
+          feedbackBtnOff = false
+        }
+      },
+      (error) => console.log({ 'request error':error  })
+    );
+  }
 
   function handleClick() {
 		intCount = intCount != intArr.length-1 ? ++intCount : 0;
     int = intArr[intCount];
-    animateClass = 'mask'
-    feedbackBtnOff= true
-
-    $quoteQuery.then(result => {
-      animateClass = ''
-      feedbackBtnOff = false
-    })
-
+    getQuote(int)
 	}
 
   let blockHeight = 160;
@@ -70,46 +105,33 @@
   img(alt="quote icon" src="illustration/quote.svg")
   .quote-wrapper(
     transition:scale!='{{duration: 500}}')
-    +await('$quoteCountQuery')
-      p Загрузка…
-      +then ('result')
-        +await('$quoteQuery')
-          p Загрузка…
-          +then ('result')
-            +if('result && result.data.allFeedbackQuotes.length')
-              div(class='{animateClass}' use:setParentHight)
-                p.p-small.author
-                  b {result.data.allFeedbackQuotes[0].feedback.name}
-                  | , {result.data.allFeedbackQuotes[0].feedback.city.name}
-                p.quote  {result.data.allFeedbackQuotes[0].quote}
+      +if('quote')
+        div(class='{animateClass}' use:setParentHight)
+          p.p-small.author
+            b {quote.feedback.name}
+            | , {quote.feedback.city.name}
+          p.quote  {quote.quote}
 
-              +else
-                p Что-то пошло не так
+        +else
+          p Загрузка
 
-          +catch('error')
-            pre {JSON.stringify(error, 0, 2)}
-
-      +catch('error')
-        pre {JSON.stringify(error, 0, 2)}
-
-  Button(
-    size='small'
-    text='Читать полный отзыв'
-    disabled='{feedbackBtnOff}'
-    on:click!='{() => showFeedback=!showFeedback}')
+  +if('quote && quote.feedback')
+    Button(
+      size='small'
+      text='Читать полный отзыв'
+      disabled='{feedbackBtnOff}'
+      on:click!='{() => showFeedback=!showFeedback}')
 
   Button(
     size='regular'
     iconR='spinner'
     on:click='{handleClick}')
 
-+await('$quoteCountQuery then result')
-  +await('$quoteQuery then result')
-    +if('result.data.allFeedbackQuotes[0].feedback')
-      FeedbackPopup(
-        data='{result.data.allFeedbackQuotes[0].feedback}'
-        bind:showFeedback!='{showFeedback}'
-      )
++if('quote && quote.feedback')
+  FeedbackPopup(
+    data='{quote.feedback}'
+    bind:showFeedback!='{showFeedback}'
+  )
 
 </template>
 

@@ -1,20 +1,18 @@
 <script context="module">
   import { onMount } from 'svelte';
-  import { client } from '../utils';
-  import { INDEX_CLINICS } from '../queries';
+  import { client, cache }  from '../tinyClient';
+  import { INDEX_CLINICS } from './queries';
+
 
   export async function preload() {
 
-    let query = await client.query({
-        query: INDEX_CLINICS,
-        variables: {
-          first: 30
-        }
-      });
+    let query = await client(
+      INDEX_CLINICS,
+      { first: 10 }
+    );
 
     return {
-      DATA: query.data,
-      CLINICS: query.data.allClinics,
+      _DATA: query
     };
   }
 
@@ -22,22 +20,28 @@
 
 
 <script >
-  export let DATA;
-  export let CLINICS;
+  export let _DATA;
 
-  // set preloaded data to chache
+  // set preloaded data to cache
   onMount(()=> {
-    client.writeQuery({
-      query: INDEX_CLINICS,
-      data: DATA
-    })
-    // console.log(CLINICS)
+    cache.set(
+      JSON.stringify({
+        query: INDEX_CLINICS,
+        variables : {
+          first: 3
+        }
+      }),
+      _DATA
+    )
   });
 
+  // Short data path
+  let DATA = _DATA.allClinics
+
   // components
-  import SearchBox from '../components/Search-box.svelte';
+  import SearchBox from '../components/search/Search-box.svelte';
   import Button from '../components/Button.svelte';
-  import BranchesMenu from '../components/Branches-menu.svelte';
+  import BranchesMenu from '../components/branches/Branches-menu.svelte';
   import Quote from '../components/Quote.svelte';
   import CardWrapper from '../components/Card-wrapper.svelte';
   import Clinics from '../components/Slider-clinics.svelte';
@@ -106,7 +110,7 @@ CardWrapper
       h2.h2-I Клиники
       p.p Мы сотрудничаем со множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
       Button(size='regular' href='/clinics' iconR='arrow-r' text="Все клиники")
-    Clinics( data='{CLINICS}')
+    Clinics( data='{DATA}')
 
 CardWrapper
   .about_block

@@ -863,6 +863,11 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
+"@fabienjuif/graph-client@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@fabienjuif/graph-client/-/graph-client-0.5.1.tgz#03647b07926b8327790686adf8d8635e8b1b1dc5"
+  integrity sha512-5ez49wi1tQHZnv2hXGG+I3oSIptm5gfXjyS8UUN3IefxUndNJU7vzP/KxPFt4B1tuLxS3A8ns/QrIgbHy+y67A==
+
 "@graphql-typed-document-node/core@^3.0.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.0.tgz#0eee6373e11418bfe0b5638f654df7a4ca6a3950"

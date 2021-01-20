@@ -285,11 +285,11 @@ export function nailer(node, {
     node.style.cursor = 'grabbing'
 
 
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
+    window.addEventListener('mousemove', onMove, {passive: true});
+    window.addEventListener('mouseup', onUp, {passive: true});
 
-    window.addEventListener('touchmove', onMove);
-    window.addEventListener('touchend', onUp);
+    window.addEventListener('touchmove', onMove, {passive: true});
+    window.addEventListener('touchend', onUp, {passive: true});
   }
 
   function onMove(e) {
@@ -412,10 +412,10 @@ export function nailer(node, {
     })
 
     node.style.cursor = 'grab'
-    window.removeEventListener('mousemove', onMove);
-    window.removeEventListener('mouseup', onUp);
-    window.removeEventListener('touchmove', onMove);
-    window.removeEventListener('touchend', onUp);
+    window.removeEventListener('mousemove', onMove, {passive: true});
+    window.removeEventListener('mouseup', onUp, {passive: true});
+    window.removeEventListener('touchmove', onMove, {passive: true});
+    window.removeEventListener('touchend', onUp, {passive: true});
 
     // Allow click && drag on links
     // Timeout for prevent event after drag
@@ -436,10 +436,10 @@ export function nailer(node, {
       if(props.rightShift) rightShift = props.rightShift
 
       if(props.nextBtn) props.nextBtn.addEventListener(
-        'click',()=>slideTo('right')
+        'click',()=>slideTo('right'), {passive: true}
         );
       if(props.prevBtn) props.prevBtn.addEventListener(
-        'click',()=>slideTo('left')
+        'click',()=>slideTo('left'), {passive: true}
         );
 
     },

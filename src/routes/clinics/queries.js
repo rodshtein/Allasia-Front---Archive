@@ -1,7 +1,4 @@
-import { gql } from "apollo-boost";
-
-
-export const CLINIC_PAGE = gql`
+export const CLINIC_PAGE = `
   query($id: ID!){
     Clinic (where: {id: $id}) {
       id
@@ -87,7 +84,7 @@ export const CLINIC_PAGE = gql`
   }
 `;
 
-export const CLINICS_COUNTRY_CLINICS = gql`
+export const CLINICS_COUNTRY_CLINICS = `
   query {
     allClinicCountries{
       id

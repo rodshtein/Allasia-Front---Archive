@@ -1,6 +1,4 @@
-import { gql } from "apollo-boost";
-
-export const MEDICAL_PAGE = gql`
+export const MEDICAL_PAGE = `
   query($id: ID!){
       MedicalPage (where: {id: $id}) {
         id

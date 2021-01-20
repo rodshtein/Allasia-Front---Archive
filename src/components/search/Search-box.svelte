@@ -1,28 +1,28 @@
 <script>
-import { client } from "../utils";
-import { orderSplice, getRootBranch } from "../helpers";
-import { BRANCHES } from '../queries';
-import { showMenu } from './Store-branches.js';
+import { client }  from '../../tinyClient';
+import { orderSplice, getRootBranch } from "../../helpers";
+import { BRANCHES } from './queries';
+import { showMenu } from '../stores/Store-branches.js';
 import {  searchInProgress,
           searchString,
           prevSearchString,
-          searchResult, } from './Store-search.js';
+          searchResult, } from '../stores/Store-search.js';
 
 let branches = [];
 let disabled = true;
 
-client.watchQuery({ query: BRANCHES }).subscribe(
-  (result) => {
-    if (result.errors) {
-      console.log({ 'result error':result.errors })
-    } else {
-      branches = result.data.allMedicalBranches
-      disabled = false
-      // console.log(result.data);
-    }
-  },
-  (error) => console.log({ 'request error':error  })
-);
+client(BRANCHES)
+  .then(
+    (result) => {
+      if (result.errors) {
+        console.log({ 'result error':result.errors })
+      } else {
+        branches = result.allMedicalBranches
+        disabled = false
+      }
+    },
+    (error) => console.log({ 'request error':error  })
+  );
 
 $: $searchString, searchThrottle();
 
