@@ -1,11 +1,10 @@
 <script>
 import { client }  from '../../tinyClient';
-import { sort, numDeclension, columnMark } from "../../helpers";
+import { sort, numDeclension, columnMark } from '../../helpers';
 import { BRANCHES } from './queries';
 
 import { showMenu, branchId } from '../stores/Store-branches.js';
-import { searchInProgress, searchString, backPointId,
-  prevSearchString, searchResult } from '../stores/Store-search.js';
+import { searchInProgress, searchString, backPointId, searchResult } from '../stores/Store-search.js';
 
 // Components
 import Popup from '../Popup.svelte';
@@ -245,7 +244,7 @@ Popup(
 </template>
 
 <style lang='postcss'>
-@import "../style/mixins.sss"
+@import "../../style/mixins.sss"
 
 .search_wrapper
   margin-bottom: 15px

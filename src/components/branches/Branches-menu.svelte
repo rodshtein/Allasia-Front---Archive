@@ -78,7 +78,7 @@
 </template>
 
 <style lang='postcss'>
-@import "../style/mixins.sss"
+@import "../../style/mixins.sss"
 
 .container
   position: relative
