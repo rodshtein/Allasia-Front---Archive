@@ -5,3 +5,10 @@ yarn-error.log
 /cypress/screenshots/
 /__sapper__/
 *.log
+packages/ellipsis/scripts
+packages/ellipsis/src
+packages/ellipsis/README.md
+packages/ellipsis/public
+packages/ellipsis/node_modules
+packages/ellipsis/.vscode
+packages/ellipsis/.git
