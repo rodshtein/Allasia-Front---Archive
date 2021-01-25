@@ -1,11 +1,24 @@
 <script>
+import { onMount } from 'svelte';
+
+let chatra = null;
+
+onMount(() => chatra = window.Chatra)
+
+function openChatra(){
+  console.log('test')
+  if(chatra) {
+    chatra('openChat', true)
+  }
+}
+
 
 </script>
 
 <template lang="pug">
 
 .floating-wrap
-  button.message
+  button.message( on:click='{openChatra}' )
   button.call
 
 </template>

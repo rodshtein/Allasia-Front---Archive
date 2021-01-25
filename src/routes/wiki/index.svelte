@@ -15,6 +15,8 @@
 
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
+  import CardQuestion from '../../components/Card-Question.svelte';
+
   import Button from '../../components/Button.svelte';
   import { serialize, serializeAndCut } from '../../helpers.js';
 
@@ -35,13 +37,16 @@
   }}
 
   const toggle = async (el) => {
-		// feedback = el
-		// await tick();
-		// showFeedback=!showFeedback
+		feedback = el
+		await tick();
+		showFeedback=!showFeedback
   }
+
 
   let classConfig = { p: "p-mini" }
 </script>
+
+
 
 <template lang='pug'>
 header
@@ -57,19 +62,11 @@ header
     .slider-wrapper
       .slider
         +each('section.questions as question')
-          .wiki-card.card.card_decor__white
-            .head
-              h3.p-mini {question.question}
-            +if('question.answer')
-              p.p-mini.answer {serializeAndCut(JSON.parse(question.answer.document))}
-            .btn-wrap
-              Button(
-                size='small'
-                text='Читать полностью'
-                on:click!='{() => toggle(question) }'
-              )
+          +if('question.answer && question.question')
+            CardQuestion(data='{question}')
 
 </template>
+
 
 <style lang='postcss'>
 @import "../../style/mixins.sss"
@@ -137,45 +134,6 @@ header
     row-gap: 30px
   justify-items: start
 
-.wiki-card
-  position: relative
-  display: flex
-  flex-direction: column
-  align-items: start
-  max-height: 360px
-  padding: 15px
 
-  &::before
-    content: ''
-    position: absolute
-    left: -15px
-    right: -15px
-    top: -15px
-    bottom: -15px
-
-  .head
-    position: relative
-    align-self: stretch
-    border: solid 1px var(--color--btn-border)
-    border-radius: 14px
-    padding:
-      top: 10px
-      right: 12px
-      bottom: 12px
-      left: 12px
-    margin-bottom: 15px
-
-    &::after
-      content: url(/icons/special/tail.svg)
-      position: absolute
-      left: 0
-      bottom: -20px
-
-  .answer
-    overflow: hidden
-    position: relative
-
-  .btn-wrap
-    margin-top: 10px
 
 </style>
