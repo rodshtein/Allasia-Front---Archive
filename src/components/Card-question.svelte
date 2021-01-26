@@ -1,7 +1,7 @@
 <script>
 export let data;
 
-import ellipsis from '../../packages/ellipsis/src/ellipsis';
+import ellipsis from '../lib/ellipsis';
 import Button from './Button.svelte';
 import { serialize, serializeAndCut } from '../helpers.js';
 
