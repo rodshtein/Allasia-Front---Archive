@@ -15,7 +15,7 @@
 
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
-  import CardQuestion from '../../components/Card-Question.svelte';
+  import CardQuestion from '../../components/Card-question.svelte';
 
 
   import Button from '../../components/Button.svelte';
