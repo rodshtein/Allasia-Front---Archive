@@ -71,6 +71,18 @@
         s.src = 'https://call.chatra.io/chatra.js';
         if (d.head) d.head.appendChild(s);
     })(document, window, 'Chatra');
+
+    window.ChatraSetup = {
+        buttonStyle: 'round',
+        colors: {
+            buttonText: '#ffffff',
+            buttonBg: '#3A33D9'
+        },
+        onAnalyticEvent: function(eventName) {
+            console.log('An event just happend:', eventName);
+        }
+    };
+
 </script>
 <!-- /Chatra {/literal} -->
 </html>

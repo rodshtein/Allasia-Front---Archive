@@ -15,9 +15,7 @@ let ellipsisProps = { overflowBadge:'…', cutLength: 20 };
     .head
       h3.p-mini {data.question}
     +if('data.answer')
-      p.p-mini.answer(
-        use:ellipsis='{ellipsisProps}'
-      ) {serializeAndCut(JSON.parse(data.answer.document))}
+      p.p-mini.answer {serializeAndCut(JSON.parse(data.answer.document))}
     .btn-wrap
       Button(
         size='small'
@@ -68,6 +66,6 @@ let ellipsisProps = { overflowBadge:'…', cutLength: 20 };
     position: relative
 
   .btn-wrap
-    margin-top: 10px
+    margin-top: 20px
 
   </style>
