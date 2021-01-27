@@ -1,15 +1,8 @@
 <script>
 import { onMount } from 'svelte';
 
-let chatra = null;
-
-onMount(() => chatra = window.Chatra)
-
 function openChatra(){
-  console.log('test')
-  if(chatra) {
-    chatra('openChat', true)
-  }
+  window.Chatra('openChat', true)
 }
 
 
