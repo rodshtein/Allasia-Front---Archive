@@ -1,7 +1,7 @@
 // pan swipe
 // reel ribbon
 
-import { onMount, afterUpdate, tick } from 'svelte';
+import { afterUpdate } from 'svelte';
 import { closest, morph } from './helpers'
 import { animate, easing, back } from './animate'
 
@@ -15,11 +15,26 @@ export function nailer(node, {
   rightShift = 0,
 }={}) {
 
+  // Affects
+  let resizeObserver = new ResizeObserver(init)
+  resizeObserver.observe(node.parentNode)
+
+  // let mutationObserver = new MutationObserver(init)
+  // mutationObserver.observe(node, {
+  //   attributes: true,
+  //   characterData: true,
+  //   subtree: true,
+  // });
+
+  afterUpdate(init)
+
   // initial props
-  let downX, nodeX, pathX, pointerX;
+  let downX, nodeX, pathX, pointerX, styleInit = false;
 
   // Cacl force
   let force, vectorForce, Tmark, Xmark;
+
+
 
   // Buttons Handlers
   function setBtn(node, direction){
@@ -176,14 +191,17 @@ export function nailer(node, {
     };
 
     // Events
-    let e = (data) => new CustomEvent( "update", { detail: data });
+    let e = (data) => new CustomEvent( "update", {
+      bubbles: true,
+      detail: data,
+    });
 
-    // get bigger cordinate from cords array
+    // get bigger coordinate from cords array
     let lastCord = node.NAILER.stepCords[node.NAILER.stepCords.length-1];
 
-    // console.log(node)
-    // console.log(node.NAILER)
-    // console.log(lastCord)
+
+    console.log('x: ' + node.NAILER.x)
+    console.log('lc: ' + lastCord)
 
     // Overside starts
     // - left
@@ -208,18 +226,51 @@ export function nailer(node, {
       node.NAILER.overflowR = false
       node.dispatchEvent(e({type: "overflowR", status: false}));
     }
+
+    // No overflow
+    if(!node.NAILER.x && !lastCord) {
+      node.dispatchEvent(e({type: "overflowL", status: false}));
+      node.dispatchEvent(e({type: "overflowR", status: false}));
+      release()
+    }
   }
 
-  // Reactive functions
-  // onMount(init)
-  // afterUpdate(()=>init(true))
+  function initOverflow(){
 
-  init()
-  afterUpdate(init)
+  }
+
+  let stylesStore = new Set();
+
+  function initStyles(styles){
+    // if(!styleInit) return;
+    styles.forEach(prop => {
+      let node = prop[0];
+      let stl = prop[1];
+      let value = prop[2];
+
+      // stylesStore.add(
+      //   [ node, stl, node.style[stl]]
+      // )
+
+      node.style[stl] = value
+    });
+    // styleInit = true
+  }
+
+  function releaseStyles(){
+    stylesStore.forEach(prop => {
+      console.log(prop)
+      let node = prop[0];
+      let stl = prop[1];
+      let value = prop[2];
+      node.style[stl] = value
+    })
+    stylesStore = new Set()
+    styleInit = false
+  }
 
   function init(update){
-    // TODO why is tick here?
-    // await tick();
+    console.log('init')
     node.addEventListener('mousedown', onDown);
     node.addEventListener('touchstart', onDown);
     if(!node.NAILER || update) node.NAILER = {
@@ -231,40 +282,30 @@ export function nailer(node, {
       isMovedTo: false,
     };
 
+
     // init styling
-    node.style.cursor = 'grab'
-    node.style.touchAction = 'pan-y'
-    // BUG node.style.willChange = 'transform'
-    // ↑ it causes a splash on mobile devices
-    node.style.transform = 'translate(0)'
-    // need to fix freeze over mouse move
-    node.parentNode.style.zIndex = '1'
-    node.style.zIndex = '1'
+    initStyles([
+      [node, 'cursor', 'grab'],
+      [node, 'touchAction', 'pan-y'],
+      // BUG node.style.willChange = 'transform'
+      // ↑ it causes a splash on mobile devices
+      [node, 'transform', 'translate(0)'],
+      // ↑ need to fix freeze over mouse move
+      [node.parentNode, 'zIndex', '1'],
+      [node.parentNode, 'overflow', 'hidden'],
+      [node, 'zIndex', '1']
+    ]),
     calcSteps()
     checkOverflow()
-
-    // resizeObserver(node, function(){
-    //   console.log(this.offsetWidth + ' x ' + this.offsetHeight)
-    // });
   }
 
-  function resizeObserver(node, handler){
-    let frame = document.createElement('iframe');
-    frame.style.cssText = `
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      border: 0;
-      opacity: 0;
-      pointer-events: none;
-      z-index: -1;`;
-    node.parentNode.appendChild(frame)
-    frame.contentWindow.onresize = () => { handler.call(node.parentNode) };
+  function release(){
+    console.log('release')
+    node.removeEventListener('mousedown', onDown);
+    node.removeEventListener('touchstart', onDown);
+    // releaseStyles()
   }
+
 
   function onDown(e) {
     // Prevent click && drag on links
@@ -417,7 +458,7 @@ export function nailer(node, {
     window.removeEventListener('touchmove', onMove, {passive: true});
     window.removeEventListener('touchend', onUp, {passive: true});
 
-    // Allow click && drag on links
+    // Allow click && drag by links
     // Timeout for prevent event after drag
     setTimeout(()=>{
       node.onclick = () => true;

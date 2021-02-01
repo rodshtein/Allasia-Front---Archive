@@ -13,12 +13,14 @@
 <script>
   export let DATA;
 
+  import { sortTrees } from '../../helpers';
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
   import CardQuestion from '../../components/Card-question.svelte';
 
-
   import Button from '../../components/Button.svelte';
+  import Nailer from '../../components/nailer/NailerGrid.svelte';
+  import { nailer } from '../../components/nailer';
   import { serialize, serializeAndCut } from '../../helpers.js';
 
   // set preloaded data to chache
@@ -29,12 +31,13 @@
     )
   });
 
+  let data = DATA.allWikiSections;
 
   const sortConf = (data) => { return {
     data: data,
     sort_field: 'name',
-    sub_selector: 'clinics',
-    sub_sort_field: 'name_ru'
+    sub_selector: 'questions',
+    sub_sort_field: 'question'
   }}
 
   const toggle = async (el) => {
@@ -44,7 +47,11 @@
   }
 
 
-  let classConfig = { p: "p-mini" }
+  let cls = (name) => {
+    if(data.length > 2) return name
+    if(data.length < 2) return `${name} ${name}__1`
+    if(data.length < 3) return `${name} ${name}__2`
+  };
 </script>
 
 
@@ -57,11 +64,12 @@ header
     | Найдите ответы или задайте свой вопрос
   .illustration
 
-+each('DATA.allWikiSections as section')
++each('sortTrees(sortConf(data)) as section')
   CardWrapper
     CardHeader(header!='{section.name}')
-    .slider-wrapper
-      .slider
+    Nailer(let:props)
+      //- pre {JSON.stringify(props, 0, 2)}
+      .slider(use:nailer='{props}' class!='{cls("slider")}')
         +each('section.questions as question')
           +if('question.answer && question.question')
             CardQuestion(data='{question}')
@@ -122,11 +130,6 @@ header
       margin-bottom: 0
       grid-area: 1 / 2 / span 2
 
-.slider-wrapper
-  position: relative
-  overflow: hidden
-  padding: 0
-
 .slider
   display: grid
   grid:
@@ -134,7 +137,29 @@ header
     column-gap: 20px
     row-gap: 30px
   justify-items: start
+  margin: 0 15px
 
+  @media( width <= 950px)
+    grid-auto-flow: column
+    grid-auto-columns: calc(83% / 2)
+    grid-template-columns: unset
+
+  @media( width <= 650px)
+    grid-auto-columns: calc(83%)
+
+  @media(width < 400px)
+    grid-auto-columns: calc(100% - 30px)
+
+  @media( 500px < width < 800px)
+    margin: 0 30px
+
+  &__1
+    grid-auto-columns: 100%
+
+  &__2
+    grid-auto-columns: calc((100% - 15px) / 2)
+    @media(width < 650px)
+      grid-auto-columns: calc((83% - 15px))
 
 
 </style>
