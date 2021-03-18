@@ -1,12 +1,15 @@
 import createClient from '@fabienjuif/graph-client'
-import nodeFetch from "node-fetch";
+import fetch from "node-fetch";
+
+let url = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:3001/admin/api'
+  : 'https://tildateamtop.ru/admin/api';
 
 const cache = new Map();
 const client = createClient({
-  url: 'https://tildateamtop.ru/admin/api',
-  // url: "http://localhost:3001/admin/api",
-  fetch: nodeFetch,
-  cache: cache,
+  url,
+  fetch,
+  cache,
 })
 
 export {

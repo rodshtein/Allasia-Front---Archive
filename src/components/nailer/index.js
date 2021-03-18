@@ -29,10 +29,16 @@ export function nailer(node, {
   afterUpdate(init)
 
   // initial props
-  let downX, nodeX, pathX, pointerX, styleInit = false;
+  let downX, nodeX, pathX, pointerX, isInitiated = false;
 
   // Cacl force
   let force, vectorForce, Tmark, Xmark;
+
+  // Events
+  let event = (data) => new CustomEvent( "update", {
+    bubbles: true,
+    detail: data,
+  });
 
 
 
@@ -87,7 +93,7 @@ export function nailer(node, {
         draw: (progress) => {
           node.style.transform = `translate(${startPos + (progress * calc)}px)`
           node.NAILER.x = startPos + (progress * calc)
-          checkOverflow()
+          checkSliderPosition()
         },
       })
     }
@@ -176,103 +182,94 @@ export function nailer(node, {
     node.NAILER.stepCords = stepCords;
   }
 
-  function checkOverflow(){
+  function checkSliderPosition(){
     // throttle
     if(!node.NAILER.throttleCheckOverflow) {
 
       node.NAILER.throttleCheckOverflow = true
 
       setTimeout(()=> {
-        checkOverflow()
+        checkSliderPosition()
         node.NAILER.throttleCheckOverflow = false
       }, 50)
 
       return
     };
 
-    // Events
-    let e = (data) => new CustomEvent( "update", {
-      bubbles: true,
-      detail: data,
-    });
-
     // get bigger coordinate from cords array
     let lastCord = node.NAILER.stepCords[node.NAILER.stepCords.length-1];
 
-
-    console.log('x: ' + node.NAILER.x)
-    console.log('lc: ' + lastCord)
+    // console.log('x: ' + node.NAILER.x)
+    // console.log('lc: ' + lastCord)
 
     // Overside starts
     // - left
     if( Math.round(node.NAILER.x) < 0 && !node.NAILER.overflowL) {
       node.NAILER.overflowL = true
-      node.dispatchEvent(e({type: "overflowL", status: true}));
+      node.dispatchEvent(event({type: "overflowL", status: true}));
     }
     // - right
     if(	Math.round( node.NAILER.x) > lastCord && !node.NAILER.overflowR) {
       node.NAILER.overflowR = true
-      node.dispatchEvent(e({type: "overflowR", status: true}));
+      node.dispatchEvent(event({type: "overflowR", status: true}));
     }
 
     //Overside ends
     // - left
     if( Math.round(node.NAILER.x) >= 0 && node.NAILER.overflowL){
       node.NAILER.overflowL = false
-      node.dispatchEvent(e({type: "overflowL", status: false}));
+      node.dispatchEvent(event({type: "overflowL", status: false}));
      }
     // - right
     if(Math.round( node.NAILER.x) <= lastCord && node.NAILER.overflowR) {
       node.NAILER.overflowR = false
-      node.dispatchEvent(e({type: "overflowR", status: false}));
-    }
-
-    // No overflow
-    if(!node.NAILER.x && !lastCord) {
-      node.dispatchEvent(e({type: "overflowL", status: false}));
-      node.dispatchEvent(e({type: "overflowR", status: false}));
-      release()
+      node.dispatchEvent(event({type: "overflowR", status: false}));
     }
   }
 
-  function initOverflow(){
-
+  function checkOverflow(){
+    if(node.scrollWidth <= node.parentNode.offsetWidth){
+      if (isInitiated) release()
+      return false
+    } else {
+      return true
+    }
   }
 
   let stylesStore = new Set();
 
   function initStyles(styles){
-    // if(!styleInit) return;
     styles.forEach(prop => {
       let node = prop[0];
       let stl = prop[1];
       let value = prop[2];
 
-      // stylesStore.add(
-      //   [ node, stl, node.style[stl]]
-      // )
+      stylesStore.add(
+        [ node, stl, node.style[stl]]
+      )
 
       node.style[stl] = value
     });
-    // styleInit = true
   }
 
   function releaseStyles(){
     stylesStore.forEach(prop => {
-      console.log(prop)
       let node = prop[0];
       let stl = prop[1];
       let value = prop[2];
       node.style[stl] = value
     })
-    stylesStore = new Set()
-    styleInit = false
+    isInitiated = false
   }
 
   function init(update){
-    console.log('init')
+    // Check overflow, have we hidden content for scroll
+    if (!checkOverflow()) return;
+
+    console.log(update ? 'update': 'init')
     node.addEventListener('mousedown', onDown);
     node.addEventListener('touchstart', onDown);
+
     if(!node.NAILER || update) node.NAILER = {
       x: 0,
       hiPoint: 0,
@@ -284,7 +281,7 @@ export function nailer(node, {
 
 
     // init styling
-    initStyles([
+    if(!isInitiated) initStyles([
       [node, 'cursor', 'grab'],
       [node, 'touchAction', 'pan-y'],
       // BUG node.style.willChange = 'transform'
@@ -294,16 +291,31 @@ export function nailer(node, {
       [node.parentNode, 'zIndex', '1'],
       [node.parentNode, 'overflow', 'hidden'],
       [node, 'zIndex', '1']
-    ]),
+    ])
+
     calcSteps()
-    checkOverflow()
+    checkSliderPosition()
+    isInitiated = true;
   }
+
+  afterUpdate(()=>init(true))
 
   function release(){
     console.log('release')
+    console.log(node)
+
+    // Call to hide buttons
+    node.dispatchEvent(event({type: "overflowL", status: false}));
+    node.dispatchEvent(event({type: "overflowR", status: false}));
+
+    // releaseStyles()
+
+    // Remove listeners
     node.removeEventListener('mousedown', onDown);
     node.removeEventListener('touchstart', onDown);
     // releaseStyles()
+
+    isInitiated = false
   }
 
 
@@ -378,7 +390,7 @@ export function nailer(node, {
     // 		: morph(e).clientX
     // 	: 6
 
-    checkOverflow()
+    checkSliderPosition()
   }
 
   function onUp() {
@@ -448,7 +460,7 @@ export function nailer(node, {
       draw: (progress) => {
         node.style.transform = `translate(${startPos + (progress * calc)}px)`
         node.NAILER.x = startPos + (progress * calc)
-        checkOverflow()
+        checkSliderPosition()
       },
     })
 

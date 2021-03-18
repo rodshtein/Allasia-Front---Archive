@@ -17,7 +17,6 @@ const toggle = async () => {
   await tick();
   showAnswer=!showAnswer
 }
-
 </script>
 
 
@@ -27,7 +26,8 @@ const toggle = async () => {
     .head
       h3.p-mini {data.question}
     +if('data.answer')
-      p.p-mini.answer {serializeAndCut(JSON.parse(data.answer.document))}
+      p.p-mini.answer
+        +html('serializeAndCut(JSON.parse(data.answer.document))')
     .btn-wrap
       Button(
         size='small'
@@ -53,7 +53,7 @@ Popup(
   display: flex
   flex-direction: column
   align-items: start
-  max-height: 360px
+  max-height: 230px
   padding: 15px
 
   &::before

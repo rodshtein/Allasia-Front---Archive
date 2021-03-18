@@ -68,7 +68,6 @@ header
   CardWrapper
     CardHeader(header!='{section.name}')
     Nailer(let:props)
-      //- pre {JSON.stringify(props, 0, 2)}
       .slider(use:nailer='{props}' class!='{cls("slider")}')
         +each('section.questions as question')
           +if('question.answer && question.question')

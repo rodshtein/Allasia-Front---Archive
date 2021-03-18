@@ -64,7 +64,7 @@ export function serializeAndCut (data, length = false) {
     if (data.object === 'text' ) {
       let markArr = data.marks ? data.marks.map(item => item.type) : '';
 
-      let markedText = data.marks.reduce((prev, item) => `${prev}`,
+      let markedText = data.marks.reduce((prev, item) => prev,
       escapeHtml(data.text) /* ← sets to prev */ );
 
       return markedText
@@ -335,3 +335,17 @@ export function clearProcedures(data){
   });
   return arr
 }
+
+export function getExpirationLabel(date){
+  if(date == undefined) return 'Бессрочная'
+
+  let dateFinish = new Date(date);
+  let inYear = new Date(Date.now()).getFullYear() == dateFinish.getFullYear();
+  let month = dateFinish.getMonth();
+  let day = dateFinish.getDate();
+  let monthNames = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+
+  return inYear
+    ? `До ${day} ${monthNames[month]}`
+    : `До ${day} ${monthNames[month]} ${dateFinish.getFullYear()} г.`
+};

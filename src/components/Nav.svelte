@@ -45,9 +45,9 @@
         li
           Button(invert text='Клиники' href='./clinics')
         li
-          Button(invert text='Акции')
+          Button(invert text='Акции' href='./promotion')
         li
-          Button(invert text='Контакты')
+          Button(invert text='Контакты' href='./contacts')
 
 //- Nav Popup
 Branches

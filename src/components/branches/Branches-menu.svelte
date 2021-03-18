@@ -16,7 +16,9 @@
   );
 
   function prepareData(queryResult){
-    menuBranches = sort(queryResult.filter(item => !item.parent));
+    if(queryResult.length) {
+      menuBranches = sort(queryResult.filter(item => !item.parent));
+    }
   }
 
   $: {
@@ -45,8 +47,8 @@
 
 <template lang="pug">
 +if('!menuBranches')
-  p Loading...
-+if('menuBranches')
+  p Загрузка...
++if('menuBranches && menuBranches.length')
   .container
     +if('overflowL')
       .left-side(transition:fade='{{duration: 300}}')
