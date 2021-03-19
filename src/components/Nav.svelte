@@ -26,14 +26,14 @@
 <template lang="pug">
 
 .head(class:layout_shift)
-  a.full_logo(rel='prefetch' href='.')
+  a.full_logo(sapper:prefetch href='.')
     span Главная страница
 
   nav.nav
     .slider-wrap
       ul.slider(use:nailer)
         li
-          a.short_logo(rel='prefetch' href=".")
+          a.short_logo(sapper:prefetch href=".")
             span Главная страница
         li
           Button(invert iconR='search' text='Поиск лечения'
