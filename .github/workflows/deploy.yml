@@ -15,7 +15,7 @@ jobs:
           node-version: '14.x'
       # Build
       - run: npm install --global yarn
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - run: yarn build
       # Setup key
       - run: set -eu
