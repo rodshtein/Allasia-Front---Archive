@@ -30,6 +30,7 @@
   import Description from '../../components/Card-description.svelte';
   import Diseases from '../../components/Card-diseases.svelte';
 
+  import Promotions from '../../components/Slider-promotions.svelte';
   import Procedures from '../../components/Slider-procedures.svelte';
   import Feedback from '../../components/Slider-feedback.svelte';
   import Clinics from '../../components/Slider-clinics.svelte';
@@ -128,6 +129,11 @@
   CardWrapper
     CardHeader(header='Процедуры' subHeader='Стоимость, особенности, сроки')
     Procedures(data='{procedures}')
+
++if('DATA.promotions.length')
+  CardWrapper
+    CardHeader(header!='{DATA.promotions.length > 1 ? "Акции" : "Акция" }' subHeader!='{DATA.promotions.length > 1 ? "Специальные предложения разработанные для этого вида лечения" : "Специальное предложение разработанное для этого вида лечения" }')
+    Promotions(data='{DATA.promotions}')
 
 CardWrapper
   CallToAction(

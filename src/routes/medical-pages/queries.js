@@ -51,6 +51,16 @@ export const MEDICAL_PAGE = `
             }
           }
         }
+        promotions {
+          id
+          name
+          review {
+            document
+          }
+          url
+          date_start
+          date_finish
+        }
         portfolio {
           id
           img {

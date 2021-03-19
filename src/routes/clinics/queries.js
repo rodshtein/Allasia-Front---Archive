@@ -41,6 +41,16 @@ export const CLINIC_PAGE = `
           }
         }
       }
+      promotions {
+        id
+        name
+        review {
+          document
+        }
+        url
+        date_start
+        date_finish
+      }
       feedback {
         id
         header

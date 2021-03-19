@@ -7,12 +7,16 @@ import Button from './Button.svelte';
 import Popup from './Popup.svelte';
 import { serializeAndCut, getExpirationLabel } from '../helpers.js';
 
+
+let cardWidth = '';
+
+$: console.log(cardWidth)
 </script>
 
 
 <template lang='pug'>
 +if('data')
-  .promo-card.card.card_decor__white
+  .promo-card.card.card_decor__white(bind:clientWidth='{cardWidth}' class!='{ cardWidth > 400 ? "width--L" : "width--M" }')
     p.label {getExpirationLabel(data.date_finish)}
     h2.h4 {data.name}
     p.p-mini.body
@@ -28,12 +32,17 @@ import { serializeAndCut, getExpirationLabel } from '../helpers.js';
 
 
 <style lang='postcss'>
+.width
+  &--L
+    max-height: 230px
+  &--M
+    max-height: 340px
+
 .promo-card
   position: relative
   display: flex
   flex-direction: column
   align-items: start
-  max-height: 410px
   padding:
     top: 23px
     right: 19px

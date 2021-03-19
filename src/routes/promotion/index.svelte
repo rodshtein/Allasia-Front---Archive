@@ -15,6 +15,7 @@
   import CardPromotion from '../../components/Card-promotion.svelte';
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
+  import CallToAction from '../../components/Call-to-action.svelte';
 
 
   // set preloaded data to cache
@@ -59,7 +60,13 @@ CardWrapper
     +each('DATA.allPromotions as promo')
       +if('check(promo.date_start, promo.date_finish)')
         CardPromotion(data='{promo}' href='./promotion/')
-
+CardWrapper
+  CallToAction(
+    header='Есть вопросы?'
+    text='Напишите или позвоните, расскажите какая акция вас интересует — мы вам поможем.'
+    btnText='Заполнить заявку'
+    tel
+  )
 </template>
 
 <style lang='postcss'>

@@ -84,9 +84,9 @@ svelte:head
         Button(size='mini' text="Найти")
     .buttons
       .btn-wrap
-        Button(size='mini' href='#' iconR='arrow-r' text="Акции")
+        Button(size='mini' href='/promotion/' iconR='arrow-r' text="Акции")
       .btn-wrap
-        Button(size='mini' href='#' iconR='arrow-r' text="Клиники")
+        Button(size='mini' href='/clinics/' iconR='arrow-r' text="Клиники")
 
   BranchesMenu
 

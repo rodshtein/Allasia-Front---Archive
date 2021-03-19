@@ -27,6 +27,8 @@
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
   import Description from '../../components/Card-description.svelte';
+
+  import Promotions from '../../components/Slider-promotions.svelte';
   import Feedback from '../../components/Slider-feedback.svelte';
   import Doctors from '../../components/Slider-doctors.svelte';
   import Technology from '../../components/Slider-technology.svelte';
@@ -85,7 +87,7 @@
       +if('description()')
         p.subheader-h1 {description()}
 
-      +if('DATA.type && DATA.type[0].name')
+      +if('DATA.type[0]?.name')
         .type
           h2.h4 Специализация
           p.p
@@ -102,10 +104,10 @@
     +if('DATA.head_img && DATA.head_img.publicUrl')
       .head_img(style=`background-image: url('{DATA.head_img.publicUrl}')`)
 
-+if('DATA.description && DATA.description.document || DATA.gallery')
++if('DATA.description?.document || DATA.gallery')
   CardWrapper
     Nailer
-      +if('DATA.description && DATA.description.document')
+      +if('DATA.description?.document')
         div(class!='{cls("gallery_item")}')
           Description(
             header = '{DATA.name_ru}'
@@ -120,6 +122,16 @@
           )
             span {el.alt}
 
++if('DATA.staff?.length')
+  CardWrapper
+    CardHeader(header!='{DATA.staff.length > 1 ? "Врачи" : "Врач" }')
+    Doctors(data='{DATA.staff}')
+
++if('DATA.promotions?.length')
+  CardWrapper
+    CardHeader(header!='{DATA.promotions.length > 1 ? "Акции" : "Акция" }' subHeader!='{DATA.promotions.length > 1 ? "Специальные предложения разработанные для этого вида лечения" : "Специальное предложение разработанное для этого вида лечения" }')
+    Promotions(data='{DATA.promotions}')
+
 CardWrapper
   CallToAction(
     header='Хотите поехать в эту клинику?'
@@ -128,17 +140,14 @@ CardWrapper
     tel
   )
 
-+if('DATA.feedback && DATA.feedback[0]')
++if('DATA.feedback?.length')
   CardWrapper
     CardHeader(header!='{DATA.feedback.length > 1 ? "Отзывы" : "Отзыв" }')
     Feedback(data='{DATA.feedback}')
 
-+if('DATA.staff && DATA.staff.length')
-  CardWrapper
-    CardHeader(header!='{DATA.staff.length > 1 ? "Врачи" : "Врач" }')
-    Doctors(data='{DATA.staff}')
 
-+if('DATA.technology && DATA.technology[0]')
+
++if('DATA.technology?.length')
   CardWrapper
     CardHeader(header='Технологии')
     Technology(data='{DATA.technology}')

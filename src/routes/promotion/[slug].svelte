@@ -76,18 +76,18 @@
       CardHeader(header!='{DATA.clinics.length > 1 ? "Клиники" : "Клиника" }')
       Clinics(data='{DATA.clinics}')
 
-    CardWrapper
-      CallToAction(
-        header='Хотите поехать в эту клинику?'
-        text='Напишите или позвоните, — мы всё устроим!'
-        btnText='Открыть чат'
-        tel
-      )
-
   +if('DATA.technologies && DATA.technologies[0]')
     CardWrapper
       CardHeader(header='Технологии')
       Technology(data='{DATA.technologies}')
+
+  CardWrapper
+    CallToAction(
+      header='Хотите участвовать в акции?'
+      text='Напишите или позвоните, — мы всё устроим!'
+      btnText='Открыть чат'
+      tel
+    )
 
 </template>
 
