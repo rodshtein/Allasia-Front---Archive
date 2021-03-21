@@ -1,104 +1,27 @@
-export const CLINIC_PAGE = `
-  query($id: ID!){
-    Clinic (where: {id: $id}) {
-      id
+export const CONTACTS = `
+  query {
+    allContactCountries {
       name
-      name_ru
-      full_name_ru
-      country {
-        name
-      }
-      head_img {
-        publicUrl
-      }
-      type {
-        name
-      }
-      description {
-        document
-      }
-      gallery {
+      contacts {
         id
-        alt
-        img {
-          publicUrl
-        }
-      }
-      staff {
-        positions {
+        city
+        tel
+        tel_link
+        main_number
+        main_number_desc
+        mail
+        fields {
           name
+          link
+          link_name
         }
-        doctor {
-          id
-          name
-          specialty {
-            id
-            name
-          }
-          avatar {
-            id
-            publicUrl
-          }
-        }
-      }
-      feedback {
-        id
-        header
-        name
-        age
-        date
-        city {
-          id
-          name
-        }
-        country {
-          id
-          name
-        }
-        review {
-          id
-          document
-        }
-        gallery {
-          id
-          alt
-          img {
-            id
-            publicUrl
-          }
-        }
-      }
-      technology {
-        id
-        name
         description {
-          id
           document
-        }
-        head_img {
-          id
-          publicUrl
         }
       }
     }
   }
 `;
 
-export const CLINICS_COUNTRY_CLINICS = `
-  query {
-    allClinicCountries{
-      id
-      name
-      clinics {
-        name
-        name_ru
-        full_name_ru
-        id
-        head_img {
-          id
-          publicUrl
-        }
-      }
-    }
-  }
-`;
+
+

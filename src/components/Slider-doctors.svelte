@@ -51,16 +51,17 @@
 Nailer
   +if('data.length')
     +each('dataNormalize(data) as el (el.id)')
-      a.slider-item(alt='Страница врача' href='.' rel='prefetch')
-        +if('el.avatar && el.avatar.publicUrl')
-          .avatar(
-            style='background-image: url({el.avatar.publicUrl})'
-            )
-          +else
-            .avatar
-        h3.name {el.name}
-        +if('el.specialty && el.specialty[0]')
-          p.specialty {makeSpecialty(el.specialty)}
+      +if('el.name')
+        a.slider-item(alt='Страница врача' href='.' rel='prefetch')
+          +if('el?.avatar?.publicUrl')
+            .avatar(
+              style='background-image: url({el.avatar.publicUrl})'
+              )
+            +else
+              .avatar
+          h3.name {el.name}
+          +if('el.specialty.length')
+            p.specialty {makeSpecialty(el.specialty)}
 
 </template>
 

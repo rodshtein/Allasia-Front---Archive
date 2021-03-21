@@ -26,6 +26,7 @@ const toggle = async () => {
     .head
       h3.p-mini {data.question}
     +if('data.answer')
+      //- p.p-mini.answer(use:ellipsis='{ellipsisProps}')
       p.p-mini.answer
         +html('serializeAndCut(JSON.parse(data.answer.document))')
     .btn-wrap

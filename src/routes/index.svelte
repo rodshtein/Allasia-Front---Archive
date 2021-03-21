@@ -139,7 +139,7 @@ CardWrapper
     .text-wrap
       h2.h2-I Контакты
       p.p Организуем лечение из любого города России, Казахстана или Кыргызстана
-      Button(size='regular' href='#' iconR='arrow-r' text="Контакты")
+      Button(size='regular' href='/contacts/' iconR='arrow-r' text="Контакты")
 
 </template>
 

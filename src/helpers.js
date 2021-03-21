@@ -87,8 +87,16 @@ export function sort(arr, value='name'){
 }
 
 function valueCompare(a,b,value){
-  a = value ? a[value] : a;
-  b = value ? b[value] : b;
+  a = !value
+    ? a
+    : a[value]
+      ? a[value]
+      : '0'; // if a[val] == undefined set it to 0
+  b = !value
+    ? b
+    : b[value]
+      ? b[value]
+      : '0'; // if a[val] == undefined set it to 0
   return a.localeCompare(b)
 }
 
