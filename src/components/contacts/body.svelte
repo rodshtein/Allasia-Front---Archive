@@ -7,7 +7,7 @@
   +if('!contact.main_number')
     h3.h3 {contact.city}
     a.phone-number( href='{contact.tel_link}' ) {contact.tel}
-    a.email( href='{contact.mail}' ) {contact.mail}
+    a.email( href='mailto:{contact.mail}' ) {contact.mail}
       span.label Написать письмо
     +if('contact.fields')
       .ex_fields
