@@ -1,5 +1,6 @@
 <script>
 import { onMount } from 'svelte';
+import { chatIsLoaded } from './stores/Store-chat.js';
 
 function openChatra(){
   window.Chatra('openChat', true)
@@ -11,7 +12,7 @@ function openChatra(){
 <template lang="pug">
 
 .floating-wrap
-  button.message( on:click='{openChatra}' )
+  button.message( class:loading='{!$chatIsLoaded}' on:click='{openChatra}' )
   button.call
 
 </template>
@@ -51,7 +52,26 @@ function openChatra(){
 
   .message
     background-image: url('/icons/49/chat.svg')
+    &.loading
+      box-shadow: 0 0 0 0 rgb(44 49 204 / 40%)
+      animation: pulse 2s infinite
+      cursor: default
+      opacity: .3
+      &:hover
+        border-color: var(--color--btn-border)
+      &:active
+        transform: translateY(0)
+      &:after, &:before
+        opacity: .2
+
   .call
     background-image: url('/icons/49/handset.svg')
 
+@keyframes pulse
+  0%
+    box-shadow: 0 0 0 0 rgb(44 47 204 / 40%)
+  70%
+    box-shadow: 0 0 0 10px rgb(44 56 204 / 0%)
+  100%
+    box-shadow: 0 0 0 0 rgb(48 44 204 / 0%)
 </style>

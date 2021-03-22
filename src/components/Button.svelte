@@ -6,6 +6,7 @@
   export let href = false;
   export let invert = false;
   export let disabled = false;
+  export let loading = false;
     /**
    * Specify the kind of button
    * @type {"regular" | "mini" | "small" | "micro"} [size="regular"]
@@ -58,7 +59,7 @@
       span {text}
 
   +else
-    button.btn( class='{cls}' disabled='{disabled}' on:click )
+    button.btn( class='{cls}' class:loading disabled='{disabled}' on:click )
       +if('text')
         span {text}
 
@@ -250,5 +251,25 @@ a
     &.invert
       background-color: var(--color--btn-bg---white)
 
+.loading
+  box-shadow: 0 0 0 0 rgb(44 49 204 / 40%)
+  animation: pulse 2s infinite
+  cursor: default
+  & span
+    opacity: .3
+  &:hover
+    border-color: var(--color--btn-border)
+  &:active
+    transform: translateY(0)
+  &:after, &:before
+    opacity: .2
+
+@keyframes pulse
+  0%
+    box-shadow: 0 0 0 0 rgb(44 47 204 / 40%)
+  70%
+    box-shadow: 0 0 0 10px rgb(44 56 204 / 0%)
+  100%
+    box-shadow: 0 0 0 0 rgb(48 44 204 / 0%)
 
 </style>

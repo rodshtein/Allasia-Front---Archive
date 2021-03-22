@@ -5,6 +5,7 @@
   import Button from './Button.svelte';
   import { nailer } from './nailer';
   import { branchId, showMenu } from './stores/Store-branches.js';
+  import { chatIsLoaded } from './stores/Store-chat.js';
   import { searchString } from './stores/Store-search';
   import { afterUpdate } from 'svelte';
 
@@ -18,7 +19,7 @@
   }
 
   function openChatra(){
-    window.Chatra('openChat', true)
+    window.Chatra('openChat')
   }
 
 
@@ -44,7 +45,7 @@
           Button(invert iconR='search' text='Поиск лечения'
             on:click!='{searchHandler}')
         li
-          Button(invert iconR='chat' text='Задать вопрос' on:click!='{openChatra}')
+          Button(loading='{!$chatIsLoaded}' invert iconR='chat' text='Задать вопрос' on:click!='{openChatra}')
         li
           Button(invert text='Вопрос-ответ' href='./wiki')
         li
