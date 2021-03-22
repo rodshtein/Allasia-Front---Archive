@@ -17,6 +17,11 @@
     }
   }
 
+  function openChatra(){
+    window.Chatra('openChat', true)
+  }
+
+
   let layout_shift = segment ? true : false;
   afterUpdate( () => layout_shift = segment ? true : false );
 
@@ -39,7 +44,7 @@
           Button(invert iconR='search' text='Поиск лечения'
             on:click!='{searchHandler}')
         li
-          Button(invert iconR='chat' text='Задать вопрос')
+          Button(invert iconR='chat' text='Задать вопрос' on:click!='{openChatra}')
         li
           Button(invert text='Вопрос-ответ' href='./wiki')
         li
