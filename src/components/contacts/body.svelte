@@ -1,6 +1,6 @@
 <script>
   export let contact = null;
-  import { serialize } from '../../helpers';
+  import { serialize, sort } from '../../helpers';
 </script>
 
 <template lang='pug'>
@@ -8,10 +8,13 @@
     h3.h3 {contact.city}
     a.phone-number( href='{contact.tel_link}' ) {contact.tel}
     a.email( href='{contact.mail}' ) {contact.mail}
+      span.label Написать письмо
     +if('contact.fields')
       .ex_fields
-        +each('contact.fields as field')
-          a.ex_field(href='{field.link}' target="_blank" rel="nofollow") {field.name}
+        +each('sort(contact.fields) as field')
+          a.ex_field(href='{field.link}' target="_blank" rel="nofollow")
+            span.name {field.name + ': '}
+            span.description  {field.description}
             span.label {field.link_name}
     +if('contact?.description?.document')
       .content
@@ -19,6 +22,9 @@
     +else
       h3.info {contact.main_number_desc}
       a.phone-number( href='{contact.tel_link}' ) {contact.tel}
+      +if('contact?.description?.document')
+        .content
+          +html('serialize(JSON.parse(contact.description.document))')
 
 </template>
 
@@ -42,6 +48,9 @@
     @mixin devider
 
 .phone-number
+  display: flex
+  align-items: center
+  justify-content: space-between
   font-style: normal
   font-weight: 700
   font-size: 33px
@@ -49,16 +58,23 @@
   color: var(--color--txt-headers)
   line-height: 85%
 
+  &:after
+    content: url("/icons/25/handset.svg")
+    height: 25px
+    margin-left: 20px
 
   &:hover
     color: var(--ORANGE)
-    text-decoration: underline
 
   @media(width < 380px)
     font-size: 27px
 
 
 .email
+  display: flex
+  justify-content: space-between
+  white-space: pre-wrap
+  align-items: baseline
   font-size: 27px
   font-style: normal
   font-weight: normal
@@ -66,32 +82,32 @@
   line-height: 85%
   text-decoration: none
   color: var(--color--txt-headers)
-  margin-top: 15px
+  padding-top: 15px
+
+  .label
+    margin-left: 20px
+
   &:hover
     color: var(--ORANGE)
-    text-decoration: underline
-  &:after
-    content: ''
-    margin: 8px 0
-    @mixin devider
 
-.ex_fields
+    .label
+      border-color: var(--ORANGE)
+      color: var(--ORANGE)
+
+.ex_fields:before
+  content: ''
   margin:
-    top: 10px
-    bottom: 10px
-
-  &:after
-    content: ''
-    margin: 8px 0
-    @mixin devider
+    top: 15px
+    bottom: 8px
+  @mixin devider
 
 .ex_field
   display: flex
-  justify-content: space-between
+  justify-content: flex-start
+  white-space: pre-wrap
   align-items: baseline
-  font-style: normal
-  font-weight: bold
   font-size: 16px
+  font-style: normal
   line-height: 120%
   text-decoration: none
   color: var(--color--txt-headers)
@@ -99,16 +115,30 @@
     top: 5px
     bottom: 5px
 
-  span
-    margin-left: 20px
+  .name
+    font-weight: bold
+
+  .description
+    font-weight: normal
+    margin-right: 20px
+
+  .label
+    margin-left: auto
 
   &:hover
     color: var(--ORANGE)
 
-    span
+    .label
       text-decoration: none
       border-color: var(--ORANGE)
       color: var(--ORANGE)
+
+.content:before
+  content: ''
+  margin:
+    top: 8px
+    bottom: 30px
+  @mixin devider
 
 
 </style>

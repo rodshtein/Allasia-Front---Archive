@@ -12,6 +12,7 @@ export const CONTACTS = `
         mail
         fields {
           name
+          description
           link
           link_name
         }

@@ -103,6 +103,7 @@ header
   display: flex
   flex-direction: column
   justify-content: space-between
+  max-width: 600px
   border-radius: var(--radius--block)
   border: solid 1px var(--color--borders---card-white)
   background-color: var(--color--bg--card)
