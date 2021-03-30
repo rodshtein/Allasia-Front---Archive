@@ -25,7 +25,7 @@ button.card
 
 .card
   display: grid
-  grid-template: auto / auto 50%
+  grid-template: auto / auto
   justify-items: start
   grid-row-gap: 10px
 
@@ -84,6 +84,7 @@ button.card
   font-size: 13px
   line-height: 120%
   margin-bottom: -10px
+  white-space: nowrap
   &:after
     content: ''
     margin: 8px 0
@@ -95,14 +96,13 @@ button.card
   font-size: 16px
   line-height: 85%
   color: var(--color--txt-headers)
-
-  @media(width < 380px)
-    font-size: 27px
+  white-space: nowrap
 
 .country-number
   font-style: normal
   font-weight: bold
   font-size: 23px
   line-height: 23px
+  white-space: nowrap
 
 </style>
