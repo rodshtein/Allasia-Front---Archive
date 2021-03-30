@@ -94,12 +94,14 @@
       border-color: var(--ORANGE)
       color: var(--ORANGE)
 
-.ex_fields:before
-  content: ''
-  margin:
-    top: 15px
-    bottom: 8px
-  @mixin devider
+.ex_fields
+  margin-bottom: -5px
+  &::before
+    content: ''
+    margin:
+      top: 15px
+      bottom: 8px
+    @mixin devider
 
 .ex_field
   display: flex
@@ -133,10 +135,10 @@
       border-color: var(--ORANGE)
       color: var(--ORANGE)
 
-.content:before
+.content::before
   content: ''
   margin:
-    top: 8px
+    top: 15px
     bottom: 30px
   @mixin devider
 
