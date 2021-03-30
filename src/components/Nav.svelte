@@ -1,7 +1,6 @@
 <script>
   export let segment;
 
-  import Branches from './branches/Nav-branches.svelte';
   import Button from './Button.svelte';
   import { nailer } from './nailer';
   import { branchId, showMenu } from './stores/Store-branches.js';
@@ -55,8 +54,6 @@
         li
           Button(invert text='Контакты' href='./contacts')
 
-//- Nav Popup
-Branches
 </template>
 
 

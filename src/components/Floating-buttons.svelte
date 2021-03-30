@@ -1,11 +1,15 @@
 <script>
 import { onMount } from 'svelte';
 import { chatIsLoaded } from './stores/Store-chat.js';
+import { contactsIsLoaded, showCallModal } from './stores/Store-call.js';
 
 function openChatra(){
   window.Chatra('openChat', true)
 }
 
+function callModalHandler(){
+  showCallModal.set(true)
+}
 
 </script>
 
@@ -13,7 +17,7 @@ function openChatra(){
 
 .floating-wrap
   button.message( class:loading='{!$chatIsLoaded}' on:click='{openChatra}' )
-  button.call
+  button.call( class:loading='{!$contactsIsLoaded}' disabled='{!$contactsIsLoaded}' on:click!='{callModalHandler}')
 
 </template>
 
@@ -49,9 +53,6 @@ function openChatra(){
     background-repeat: no-repeat
     border-radius: 50%
 
-
-  .message
-    background-image: url('/icons/49/chat.svg')
     &.loading
       animation: pulse 2.5s infinite
       cursor: progress
@@ -61,6 +62,9 @@ function openChatra(){
         transform: translateY(0)
       &:after, &:before
         opacity: .2
+
+  .message
+    background-image: url('/icons/49/chat.svg')
 
   .call
     background-image: url('/icons/49/handset.svg')

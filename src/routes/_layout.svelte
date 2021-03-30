@@ -1,11 +1,14 @@
 <script>
   export let segment;
 
-  import { onMount, afterUpdate } from "svelte";
+  import { onMount, afterUpdate} from "svelte";
   import { stores } from "@sapper/app";
   import NProgress from "nprogress";
   import Nav from '../components/Nav.svelte';
   import Floating from '../components/Floating-buttons.svelte';
+
+  import CallModal from '../components/Modal-call.svelte';
+  import Branches from '../components/branches/Nav-branches.svelte';
 
   const { preloading } = stores();
 
@@ -34,6 +37,9 @@
 <main class:layout_shift>
   <slot/>
 </main>
+
+<Branches/>
+<CallModal/>
 <Floating/>
 
 <style global lang="postcss">
