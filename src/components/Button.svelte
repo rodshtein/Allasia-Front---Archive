@@ -252,10 +252,9 @@ a
       background-color: var(--color--btn-bg---white)
 
 .loading
-  box-shadow: 0 0 0 0 rgb(44 49 204 / 40%)
-  animation: pulse 2s infinite
-  cursor: default
-  & span
+  animation: pulse 2.5s infinite
+  cursor: progress
+  span
     opacity: .3
   &:hover
     border-color: var(--color--btn-border)
@@ -266,10 +265,10 @@ a
 
 @keyframes pulse
   0%
-    box-shadow: 0 0 0 0 rgb(44 47 204 / 40%)
+    opacity: .1
   70%
-    box-shadow: 0 0 0 10px rgb(44 56 204 / 0%)
+    opacity: 1
   100%
-    box-shadow: 0 0 0 0 rgb(48 44 204 / 0%)
+    opacity: .1
 
 </style>
