@@ -27,6 +27,7 @@ button.card
   display: grid
   grid-template: auto / auto
   justify-items: start
+  align-items: stretch
   grid-row-gap: 10px
 
   width: 100%
