@@ -161,7 +161,10 @@ Popup(
   +if('$branchId')
     h2.h3 { menuBrunchName }
   +if('$searchString && !$searchResult.success && !$searchInProgress')
-    p.p.info Ничего не нашлось
+    .info
+      h2.h4 Ничего не нашлось
+      p.p Попробуйте написать иначе или ищите в разделах ниже. Если не можете ничего найти — напишите или позвоните нам, мы поможем.
+
     h2.h3 Все разделы
 
   //- ############# SEARCH MENU #############
@@ -255,7 +258,17 @@ Popup(
     bottom: 10px
 
 .info
+  display: block
+  background-color: var(--LIGHT-PURPLE)
+  padding: 10px 13px
+  border-radius: 15px
   margin-bottom: 20px
+
+  .h4
+    margin-bottom: 4px
+  p
+    max-width: 620px
+
 
 .folder-header
   margin-bottom: 8px

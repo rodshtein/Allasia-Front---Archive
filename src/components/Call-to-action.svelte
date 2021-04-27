@@ -2,11 +2,16 @@
   import Popup from './Popup.svelte';
   import Button from './Button.svelte';
   import CardWrapper from './Card-wrapper.svelte';
+  import { contactsIsLoaded, showCallModal } from './stores/Store-call.js';
 
   export let header = 'Header';
   export let text = null;
   export let btnText = null;
   export let tel = null;
+
+  function callModalHandler(){
+    showCallModal.set(true)
+  }
 
 </script>
 
@@ -32,9 +37,12 @@
           p.phone-number 8 800 250 82 97
           .button-wrap
             Button(
+              disabled='{!$contactsIsLoaded}'
               size='mini'
               iconR='short_arrow-b'
-              text="Номера представительств")
+              text="Номера представительств"
+              on:click!='{callModalHandler}'
+            )
 
 </template>
 

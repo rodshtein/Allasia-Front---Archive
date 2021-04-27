@@ -38,6 +38,8 @@
   // Short data path
   let DATA = _DATA.allClinics
 
+  import { contactsIsLoaded, showCallModal } from '../components/stores/Store-call.js';
+
   // components
   import SearchBox from '../components/search/Search-box.svelte';
   import Button from '../components/Button.svelte';
@@ -46,6 +48,10 @@
   import CardWrapper from '../components/Card-wrapper.svelte';
   import Clinics from '../components/Slider-clinics.svelte';
   import CallToAction from '../components/Call-to-action.svelte';
+
+  function callModalHandler(){
+    showCallModal.set(true)
+  }
 </script>
 
 
@@ -64,7 +70,14 @@ svelte:head
       .info Единый, бесплатный номер в РФ
       .phone-number 8 800 250 82 97
       .button-wrap
-        Button(size='mini' iconR='short_arrow-b' text="Номера представительств")
+        Button(
+          disabled='{!$contactsIsLoaded}'
+          size='mini'
+          iconR='short_arrow-b'
+          text="Номера представительств"
+          on:click!='{callModalHandler}'
+        )
+
 
 .find_block
   .head_wrapper
