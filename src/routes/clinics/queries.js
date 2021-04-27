@@ -31,6 +31,9 @@ export const CLINIC_PAGE = `
         doctor {
           id
           name
+          country {
+            name
+          }
           specialty {
             id
             name

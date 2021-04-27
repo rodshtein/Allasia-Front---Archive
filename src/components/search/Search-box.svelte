@@ -208,7 +208,7 @@ function keyHandler(e) {
     bind:value='{$searchString}'
     placeholder=`{ disabled
       ? 'Поиск, загружаю данные…'
-      : 'Поиск, например: пластика'
+      : 'Поиск, например: рак желудка'
     }`
     on:keydown='{keyHandler}'
     disabled='{disabled}'

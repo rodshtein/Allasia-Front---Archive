@@ -3,7 +3,6 @@
 
   import Nailer from './nailer/Nailer.svelte';
 
-
   let doctorsUrl = "/doctors/";
 
   function makeSpecialty(arr){
@@ -64,6 +63,8 @@ Nailer
               )
             +else
               .avatar
+          +if('el?.country?.name')
+            p.country {el.country.name}
           h3.name {el.name}
           +if('el.specialty.length')
             p.specialty {makeSpecialty(el.specialty)}
@@ -80,7 +81,7 @@ Nailer
   display: flex
   flex-direction: column
   align-items: center
-  width: 140px
+  width: 160px
   text-decoration: none
   color: #000
   user-select: none
@@ -117,5 +118,12 @@ Nailer
   font-style: normal
   line-height: 14px
   text-align: center
+
+.country
+  font-size: 12px
+  font-style: normal
+  line-height: 14px
+  text-align: center
+  margin-bottom: 7px
 
 </style>

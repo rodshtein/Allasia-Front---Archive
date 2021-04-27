@@ -106,6 +106,9 @@ export const MEDICAL_PAGE = `
         doctors {
           id
           name
+          country {
+            name
+          }
           specialty {
             id
             name
