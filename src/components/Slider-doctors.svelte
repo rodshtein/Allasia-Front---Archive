@@ -3,6 +3,9 @@
 
   import Nailer from './nailer/Nailer.svelte';
 
+
+  let doctorsUrl = "/doctors/";
+
   function makeSpecialty(arr){
     let stop = false;
     let max = 30;
@@ -45,6 +48,8 @@
     return Array.from(employers.values())
   }
 
+
+
 </script>
 
 <template lang='pug'>
@@ -52,7 +57,7 @@ Nailer
   +if('data.length')
     +each('dataNormalize(data) as el (el.id)')
       +if('el.name')
-        a.slider-item(alt='Страница врача' href='.' rel='prefetch')
+        a.slider-item(alt='Страница врача' href='{doctorsUrl + el.id}' rel='prefetch')
           +if('el?.avatar?.publicUrl')
             .avatar(
               style='background-image: url({el.avatar.publicUrl})'

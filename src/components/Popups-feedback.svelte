@@ -1,16 +1,10 @@
 <script>
 import Popup from './Popup.svelte';
 import Button from './Button.svelte';
-import { serialize } from '../helpers.js';
+import { serialize, numDeclension } from '../helpers.js';
 
 export let data;
 export let showFeedback;
-
-function declOfNum(number) {
-  let cases = [2, 0, 1, 1, 1, 2];
-  let sign = ['год',  'года', 'лет'];
-  return sign[ ( number % 100 > 4 && number % 100 < 20 ) ? 2 : cases[ (number%10<5) ? number % 10 : 5 ] ];
-}
 
 const date = d => {
   return new Date(`${d}`).toLocaleString('ru', {
@@ -33,7 +27,7 @@ const date = d => {
           p.person
             span {data.name}
             +if('data.age')
-              span , {data.age} {declOfNum(data.age)}
+              span , {data.age} {numDeclension(data.age)}
 
         +if('data.country || data.city')
           p.p-small.location

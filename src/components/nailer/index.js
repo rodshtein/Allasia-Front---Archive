@@ -263,6 +263,11 @@ export function nailer(node, {
   }
 
   function init(update){
+    // if is destroyed
+    // TODO it's fast fix for init after node is removed
+    // Need to make onDestroy killer
+    if( !node?.parentNode ) return;
+
     // Check overflow, have we hidden content for scroll
     if (!checkOverflow()) return;
 
@@ -497,6 +502,7 @@ export function nailer(node, {
 
     },
     destroy() {
+      console.log('Destroed')
       node.removeEventListener('mousedown', onDown);
       node.removeEventListener('touchstart', onDown);
     }
