@@ -83,7 +83,7 @@
   .header-wrap
     margin-bottom: 15px
     padding-bottom: 15px
-    @mixin devider_bottom
+    @mixin divider_bottom
 
     .subheader-h3
       margin-top: 5px
@@ -108,7 +108,7 @@
     grid-gap: 5px
     margin-top: 10px
     padding-top: 15px
-    @mixin devider_top
+    @mixin divider_top
 
     &--1
       @media(width > 500px)

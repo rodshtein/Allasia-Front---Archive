@@ -57,7 +57,7 @@ $: $searchResult, searchHandler();
 $: $branchId, branchHandler();
 
 // Clear unsuccess search
-$: $showMenu, searchCleaner();
+// $: $showMenu, searchCleaner();
 
 
 // Handlers
@@ -370,9 +370,9 @@ Popup(
   border:
     solid
     1px
-    var(--color--borders---card-white)
+    var(--color--card--border---main)
   background-color:
-    var(--color--bg--card)
+    var(--color--card--bg---main)
 
   & a, & button
     display: flex

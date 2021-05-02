@@ -123,6 +123,7 @@
       width: 100%
       top: 0
       z-index: 10
+      padding: 0
 
     & .slider-wrap
       position: relative
@@ -133,7 +134,6 @@
         padding: 0
         border-radius: 16px
         backdrop-filter: blur(17px)
-        background-color: #ced8ff94
 
       & .slider
         display: inline-grid

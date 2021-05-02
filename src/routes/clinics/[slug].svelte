@@ -221,7 +221,7 @@ header
       left: 10px
       right: 10px
     text-align: left
-    @mixin devider_top
+    @mixin divider_top
 
     @media ( width >= 650px )
       display: inline-block
@@ -237,14 +237,14 @@ header
       @media ( width >= 650px )
         padding-bottom: 10px
         margin-bottom: 7px
-        @mixin devider_bottom
+        @mixin divider_bottom
 
   .head_img
     background-position: center
     background-repeat: no-repeat
     background-size: cover
     border-radius: 50%
-    border: solid 1px var(--color--borders---card-img)
+    border: solid 1px var(--color--card--border---img)
     width: 120px
     height: 120px
     order: -1

@@ -59,5 +59,5 @@
     color: var(--LIGHT-BLUE)
     margin-top: 15px
     padding-top: 7px
-    @mixin devider_top
+    @mixin divider_top
 </style>

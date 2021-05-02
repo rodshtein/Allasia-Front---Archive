@@ -58,8 +58,8 @@ Popup(
     padding: 23px 19px
     margin-right: 10px
     border-radius: var(--radius--block)
-    border: solid 1px var(--color--borders---card-white)
-    background-color: var(--color--bg--card)
+    border: solid 1px var(--color--card--border---main)
+    background-color: var(--color--card--bg---main)
     box-shadow:
       6px 10px 6px -7px rgb(165 184 253 / 35%)
 
@@ -92,8 +92,8 @@ Popup(
     width: calc(100% - 10px)
     z-index: 2
     border-radius: var(--radius--block)
-    border: solid 1px var(--color--borders---card-white)
-    background-color: var(--color--bg--card)
+    border: solid 1px var(--color--card--border---main)
+    background-color: var(--color--card--bg---main)
     box-shadow:
       6px 10px 6px -6px rgb(165 184 253 / 35%)
 
@@ -105,8 +105,8 @@ Popup(
     width: calc(100% - 10px)
     z-index: 1
     border-radius: var(--radius--block)
-    border: solid 1px var(--color--borders---card-white)
-    background-color: var(--color--bg--card)
+    border: solid 1px var(--color--card--border---main)
+    background-color: var(--color--card--bg---main)
     box-shadow:
       0px 3px 8px rgb(165 184 253 / 0.2),
       0px 3px 1px rgb(165 184 253 / 0.05)

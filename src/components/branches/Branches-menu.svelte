@@ -192,12 +192,12 @@
     border:
       solid
       1px
-      var(--color--borders---card-white)
+      var(--color--card--border---main)
     background-color:
-      var(--color--bg--card)
+      var(--color--card--bg---main)
 
     &:hover
-      border-color: var(--color--btn-border---active)
+      border-color: var(--color--btn--border---active)
 
     &:active
       transform: translateY(-2px)

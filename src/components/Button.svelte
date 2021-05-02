@@ -125,7 +125,7 @@ a
   justify-content: center
   align-items: center
 
-  color: var( --color--btn-txt---blue)
+  color: var(--color--btn--txt---main)
   font-family: var(--font--main)
   font-style: normal
   font-weight: 400
@@ -134,7 +134,7 @@ a
 
   border-width: 1px
   border-style: solid
-  border-color: var(--color--btn-border)
+  border-color: var(--color--btn--border---main)
   border-radius: 12px
 
   /* overflow: hidden
@@ -148,7 +148,7 @@ a
   user-select: none
 
   &:hover
-    border-color: var(--color--btn-border---active)
+    border-color: var(--color--btn--border---active)
 
   &:focus
     outline: none
@@ -161,7 +161,7 @@ a
     & span
       opacity: .3
     &:hover
-      border-color: var(--color--btn-border)
+      border-color: var(--color--btn--border---main)
     &:active
       transform: translateY(0)
     &:after, &:before
@@ -198,11 +198,11 @@ a
 
     &.base-color
       font-weight: 450
-      background-color: var(--color--btn-bg---light-blue)
+      background-color: var(--color--btn--bg---light)
       @mixin icons--base 23
 
     &.invert
-      background-color: var(--color--btn-bg---white)
+      background-color: var(--color--btn--bg---light)
       @mixin icons--invert 23
 
 
@@ -228,11 +228,11 @@ a
       margin-right: -6px
 
     &.base-color
-      background-color: var(--color--btn-bg---light-blue)
+      background-color: var(--color--btn--bg---light)
       @mixin icons--base 17
 
     &.invert
-      background-color: var(--color--btn-bg---white)
+      background-color: var(--color--btn--bg---light)
       @mixin icons--invert 17
 
   &.small
@@ -246,10 +246,10 @@ a
     letter-spacing: .3px
 
     &.base-color
-      background-color: var(--color--btn-bg---light-blue)
+      background-color: var(--color--btn--bg---light)
 
     &.invert
-      background-color: var(--color--btn-bg---white)
+      background-color: var(--color--btn--bg---light)
 
 .loading
   animation: pulse 2.5s infinite
@@ -257,7 +257,7 @@ a
   span
     opacity: .3
   &:hover
-    border-color: var(--color--btn-border)
+    border-color: var(--color--btn--border---active)
   &:active
     transform: translateY(0)
   &:after, &:before

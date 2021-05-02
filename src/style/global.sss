@@ -13,7 +13,7 @@ html
 
 body
   margin: 0
-  background-color: var(--color--body---light-blue)
+  background-color: var(--color--bg--body)
   scroll-behavior: smooth
 
 *
@@ -204,19 +204,19 @@ h1, h2, h3, h4, h5, h6, p
 .devider
   @mixin devider
 
-.devider_bottom
-  @mixin devider_bottom
+.divider_bottom
+  @mixin divider_bottom
 
 .light_shadow
   @mixin light_shadow
 
 .card_decor__white
   border-radius: var(--radius--block)
-  border: solid 1px var(--color--borders---card-white)
-  background-color: var(--color--bg--card)
+  border: solid 1px var(--color--card--border---main)
+  background-color: var(--color--card--bg---main)
   @mixin light_shadow
 
 .card_decor__img
   border-radius: var(--radius--block)
-  border: solid 1px var(--color--borders---card-img)
+  border: solid 1px var(--color--card--border---img)
   @mixin light_shadow

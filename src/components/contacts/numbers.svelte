@@ -40,8 +40,8 @@ button.card
   margin-bottom: 20px
 
   border-radius: 9px
-  border: solid 1px var(--color--borders---card-white)
-  background-color: var(--color--bg--card)
+  border: solid 1px var(--color--card--border---main)
+  background-color: var(--color--card--bg---main)
 
 
 

@@ -105,8 +105,8 @@ header
   justify-content: space-between
   max-width: 600px
   border-radius: var(--radius--block)
-  border: solid 1px var(--color--borders---card-white)
-  background-color: var(--color--bg--card)
+  border: solid 1px var(--color--card--border---main)
+  background-color: var(--color--card--bg---main)
   box-shadow:
     6px 10px 6px -7px rgb(165 184 253 / 35%)
   padding: 23px 19px

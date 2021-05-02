@@ -39,6 +39,8 @@
   let DATA = _DATA.allClinics
 
   import { contactsIsLoaded, showCallModal } from '../components/stores/Store-call.js';
+  import { showMenu } from '../components/stores/Store-branches.js';
+
 
   // components
   import SearchBox from '../components/search/Search-box.svelte';
@@ -52,6 +54,11 @@
   function callModalHandler(){
     showCallModal.set(true)
   }
+
+  function showSearchMenu(){
+    showMenu.set(true)
+  }
+
 </script>
 
 
@@ -94,7 +101,7 @@ svelte:head
       .input-wrap
         SearchBox
       .btn-wrap
-        Button(size='mini' text="Найти")
+        Button(size='mini' text="Найти" on:click!='{showSearchMenu}')
     .buttons
       .btn-wrap
         Button(size='mini' href='/promotion/' iconR='arrow-r' text="Акции")
@@ -246,7 +253,7 @@ CardWrapper
         color: var(--color--txt---light-blue)
         margin-bottom: 10px
         padding-bottom: 7px
-        @mixin devider_bottom
+        @mixin divider_bottom
 
       .button-wrap
         margin-bottom: 15px
@@ -569,7 +576,7 @@ CardWrapper
         padding-top: 10px
         padding-bottom: 10px
         max-width: 200px
-        @mixin devider_right
+        @mixin divider_right
 
 .address_card
   display: grid

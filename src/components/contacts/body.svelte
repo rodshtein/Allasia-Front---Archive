@@ -8,13 +8,14 @@
     h3.h3 {contact.city}
     a.phone-number( href='{contact.tel_link}' ) {contact.tel}
     a.email( href='mailto:{contact.mail}' ) {contact.mail}
-      span.label Написать письмо
+      span.label Написать
     +if('contact.fields')
       .ex_fields
         +each('sort(contact.fields) as field')
           a.ex_field(href='{field.link}' target="_blank" rel="nofollow")
-            span.name {field.name + ': '}
-            span.description  {field.description}
+            .wrap
+              span.name {field.name + ': '}
+              span.description  {field.description}
             span.label {field.link_name}
     +if('contact?.description?.document')
       .content

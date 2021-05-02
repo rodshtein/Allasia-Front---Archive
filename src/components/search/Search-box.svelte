@@ -252,14 +252,14 @@ input
 
   height: 35px
   width: 100%
-  border: 1px solid var(--color--borders---inputs)
+  border: 1px solid var(--color--input--border---main)
   box-sizing: border-box
   border-radius: 9px
   padding-left: 35px
   padding-right: 10px
 
   appearance: none
-  caret-color: var(--color--txt-placeholder)
+  caret-color: var(--color--input--caret)
   color: var(--color--txt-subheaders)
 
   &::-webkit-search-cancel-button
@@ -273,10 +273,10 @@ input
     content: url("/icons/17/spinner.svg")
 
   &::placeholder
-    color: var(--color--txt-placeholder)
+    color: var(--color--input--placeholder)
 
   &:hover, &:focus
-    border-color: var(--color--btn-border---active)
+    border-color: var(--color--input--border---active)
 
   &:disabled
     animation:

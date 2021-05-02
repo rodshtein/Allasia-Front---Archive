@@ -100,10 +100,10 @@ Nailer
   &:after
     content: ''
     position: absolute
-    height: 100%
-    width: 100%
+    height: calc(100% - 2px)
+    width: calc(100% - 2px)
     border-radius: 50%
-    border: 1px solid rgba(85, 142, 213, 0.15)
+    border: 1px solid rgba(37, 167, 92, 0.12)
 
 .name
   font-size: 15px

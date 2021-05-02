@@ -36,7 +36,7 @@
   color: var(--color--txt---light-blue)
   margin-bottom: 10px
   padding-bottom: 7px
-  @mixin devider_bottom
+  @mixin divider_bottom
 
 .wrap
   display: flex

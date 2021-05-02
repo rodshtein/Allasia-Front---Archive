@@ -15,27 +15,25 @@
 
 @define-mixin light_shadow
   box-shadow:
-    0px 3px 8px rgb(165 184 253 / 12%),
-    0px 3px 1px rgb(165 184 253 / 4%)
+    0px 5px 8px rgb(37 167 92 / 4%),
+    0px 3px 1px rgb(37 167 92 / 2%)
 
 @define-mixin popup_shadow
   box-shadow:
-    0px 64px 174px rgba(92, 92, 249, 0.16),
-    0px 26.7377px 78.4878px rgba(92, 92, 249, 0.0865857),
-    0px 14.2952px 49.6324px rgba(92, 92, 249, 0.0569902),
-    0px 8.01379px 32.0795px rgba(92, 92, 249, 0.0386768),
-    0px 4.25607px 19.2411px rgba(92, 92, 249, 0.0253196),
-    0px 1.77104px 8.88643px rgba(92, 92, 249, 0.013597)
+    0px 100px 148px rgba(36, 188, 70, 0.13),
+    0px 42.1788px 78.7166px rgba(36, 188, 70, 0.0601811),
+    0px 20.3394px 51.7335px rgba(36, 188, 70, 0.0305045),
+    0px 8.54989px 29.9995px rgba(36, 188, 70, 0.0131524)
 
 @define-mixin cards_decor__white
   border-radius: var(--radius--block)
-  border: solid 1px var(--color--borders---card-white)
-  background-color: var(--color--bg--card)
+  border: solid 1px var(--color--card--border---main)
+  background-color: var(--color--card--bg---main)
   @mixin light_shadow
 
 @define-mixin cards_decor__img
   border-radius: var(--radius--block)
-  border: solid 1px var(--color--borders---card-img)
+  border: solid 1px var(--color--card--border---img)
   @mixin light_shadow
 
 @define-mixin devider
@@ -44,17 +42,17 @@
   background-color: var(--BLUE)
   opacity: .1
 
-@define-mixin devider_bottom
+@define-mixin divider_bottom
   border-bottom-width: 1px
   border-bottom-color: var(--color--borders---devider)
   border-bottom-style: solid
 
-@define-mixin devider_top
+@define-mixin divider_top
   border-top-width: 1px
   border-top-color: var(--color--borders---devider)
   border-top-style: solid
 
-@define-mixin devider_right
+@define-mixin divider_right
   border-right-width: 1px
   border-right-color: var(--color--borders---devider)
   border-right-style: solid

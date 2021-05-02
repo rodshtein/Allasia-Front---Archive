@@ -120,6 +120,23 @@
   function check(left, right){
     return left < right
   }
+
+
+  let blockHeight_1, blockHeight_2, blockHeight_3;
+  let txtHeight_1, txtHeight_2, txtHeight_3;
+  let btnHeight = 22;
+  let showBtn_1, showBtn_2, showBtn_3;
+
+  $: console.log( blockHeight_1)
+  $: console.log( txtHeight_1 )
+
+  $: {
+    showBtn_1 = ( txtHeight_1 + btnHeight ) > blockHeight_1;
+    showBtn_2 = ( txtHeight_2 + btnHeight ) > blockHeight_2;
+    showBtn_2 = ( txtHeight_3 + btnHeight ) > blockHeight_3;
+  }
+
+
 </script>
 
 <template lang='pug'>
@@ -194,49 +211,64 @@
         .experience(use:nailer='{props}' class!='{cls("experience")}')
           +if('DATA.education')
             .experience_card.card_decor__white
-              .wrap
-                h3.h4 Образование
-                +each('infoEducation as text')
-                  p.p − { setPeriod(text) }
-              Button(
-                size='small'
-                text="Ещё →"
-                on:click!=`{showModal(
-                  infoEducation,
-                  "Образование",
-                  false
-                )}`
-              )
+              .wrap(
+                bind:offsetHeight!='{blockHeight_1}'
+                class:fade!='{showBtn_1}'
+                )
+                div(bind:clientHeight!='{txtHeight_1}')
+                  h3.h4 Образование
+                  +each('infoEducation as text')
+                    p.p − { setPeriod(text) }
+              +if('showBtn_1')
+                Button(
+                  size='small'
+                  text="Ещё →"
+                  on:click!=`{showModal(
+                    infoEducation,
+                    "Образование",
+                    false
+                  )}`
+                )
 
           +if('infoExperience')
             .experience_card.card_decor__white
-              .wrap
-                h3.h4 Опыт работы
-                +each('infoExperience as text')
-                  p.p − { setPeriod(text) }
-              Button(
-                size='small'
-                text="Ещё →"
-                on:click!=`{showModal(
-                  infoExperience,
-                  "Опыт работы",
-                  false
-                )}`
-              )
+              .wrap(
+                bind:offsetHeight!='{blockHeight_2}'
+                class:fade!='{showBtn_2}'
+                )
+                div(bind:clientHeight!='{txtHeight_2}')
+                  h3.h4 Опыт работы
+                  +each('infoExperience as text')
+                    p.p − { setPeriod(text) }
+              +if('showBtn_2')
+                Button(
+                  size='small'
+                  text="Ещё →"
+                  on:click!=`{showModal(
+                    infoExperience,
+                    "Опыт работы",
+                    false
+                  )}`
+                )
 
           +if('infoExtra')
             .experience_card.card_decor__white
-              .content.wrap
-                +html('infoExtra')
-              Button(
-                size="small"
-                text="Ещё →"
-                on:click!=`{showModal(
-                  infoExtra,
-                  "Дополнительная информация",
-                  true
-                )}`
-              )
+              .content.wrap(
+                bind:offsetHeight!='{blockHeight_3}'
+                class:fade!='{showBtn_3}'
+                )
+                div(bind:clientHeight!='{txtHeight_3}')
+                  +html('infoExtra')
+              +if('showBtn_3')
+                Button(
+                  size="small"
+                  text="Ещё →"
+                  on:click!=`{showModal(
+                    infoExtra,
+                    "Дополнительная информация",
+                    true
+                  )}`
+                )
 
   +if('DATA.promotions?.length')
     CardWrapper
@@ -332,7 +364,7 @@ header
       left: 10px
       right: 10px
     text-align: left
-    @mixin devider_top
+    @mixin divider_top
 
     @media ( width >= 650px )
       border: none
@@ -358,7 +390,7 @@ header
       @media ( width >= 650px )
         padding-bottom: 10px
         margin-bottom: 7px
-        @mixin devider_bottom
+        @mixin divider_bottom
 
 
   .avatar
@@ -366,7 +398,7 @@ header
     background-repeat: no-repeat
     background-size: cover
     border-radius: 50%
-    border: solid 1px var(--color--borders---card-img)
+    border: solid 1px var(--color--card--border---img)
     width: 120px
     height: 120px
     order: -1
@@ -425,6 +457,10 @@ header
 
   &_card
     padding: 23px 19px
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: start
 
   h3
     margin-bottom: 10px
@@ -435,13 +471,14 @@ header
     max-height: 230px
     margin-bottom: 20px
     position: relative
-    mask-image:
-      linear-gradient(
-        to top,
-        transparent 5%,
-        black 30%,
-        black 100%
-      )
+    &.fade
+      mask-image:
+        linear-gradient(
+          to top,
+          transparent 5%,
+          black 30%,
+          black 100%
+        )
 
 .gallery_item
   display: inline

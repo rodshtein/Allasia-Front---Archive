@@ -57,7 +57,7 @@
 .header
   display: flex
   flex-wrap: wrap
-  background-color: var(--LIGHT-PURPLE)
+  background-color: var(--color--card--bg---accent)
   padding: 20px
   border-radius: 15px
 
@@ -96,16 +96,11 @@
     padding: 0
     width: 100%
 
-  .p-small
-    text-align: left
-    margin-bottom: 10px
-    padding-bottom: 7px
-    @mixin devider_bottom
-
   .number-wrap
     width: 100%
     display: grid
-    grid-auto-flow: row
+    grid-auto-flow: rows
+    grid-template-columns: max-content
     grid-gap: 20px
     @media(width > 660px)
       grid-auto-flow: column
@@ -115,6 +110,9 @@
       font-weight: 700
       font-size: 33px
       line-height: 85%
+      margin-top: 8px
+      padding-top: 10px
+      @mixin divider_top
       @media(width < 380px)
         font-size: 27px
 
