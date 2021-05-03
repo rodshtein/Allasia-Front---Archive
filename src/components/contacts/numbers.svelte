@@ -72,7 +72,7 @@ button.card
   font-size: 13px
   font-weight: normal
   line-height: 120%
-  color: var(--color--txt---light-blue)
+  color: var(--color--txt-subheaders)
 
   font-style: normal
   font-weight: normal

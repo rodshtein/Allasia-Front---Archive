@@ -53,7 +53,7 @@
   &.card_decor__img
     background-size: cover
     background-position: center
-    background-color: var(--PURPLE)
+    background-color: var(--LIGHT-GREEN)
 
     & .h3, .p-mini, .subheader-h3
       color: white

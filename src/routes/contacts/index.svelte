@@ -42,7 +42,7 @@ header
   CardWrapper
     CardHeader(header='{country?.name}')
     +each('sort(country.contacts, "city") as contact')
-      .contact-card
+      .contact-card.card_decor__white
         Contact('{contact}')
 
 </template>
@@ -104,11 +104,6 @@ header
   flex-direction: column
   justify-content: space-between
   max-width: 600px
-  border-radius: var(--radius--block)
-  border: solid 1px var(--color--card--border---main)
-  background-color: var(--color--card--bg---main)
-  box-shadow:
-    6px 10px 6px -7px rgb(165 184 253 / 35%)
   padding: 23px 19px
   margin-bottom: 20px
 

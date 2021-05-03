@@ -259,7 +259,7 @@ Popup(
 
 .info
   display: block
-  background-color: var(--LIGHT-PURPLE)
+  background-color: var(--LIGHT-GRAY)
   padding: 10px 13px
   border-radius: 15px
   margin-bottom: 20px
@@ -403,7 +403,7 @@ Popup(
     margin-left: 12px
 
   &:hover
-    border-color: var(--color--btn-border---active)
+    border-color: var(--color--btn--border---active)
 
   &:active
     transform: translateY(-2px)

@@ -102,7 +102,7 @@
     position: absolute
     width: 1px
     height: 100%
-    background: var(--BLUE)
+    background: var(--GREEN)
     z-index: 2
     transition: all .3s ease-out
     @media(width < 800px)

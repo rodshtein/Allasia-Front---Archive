@@ -38,7 +38,7 @@
   font-size: 13px
   font-weight: normal
   line-height: 120%
-  color: var(--color--txt---light-blue)
+  color: var(--color--txt-subheaders)
   margin-bottom: 10px
 
 .h3, .info
