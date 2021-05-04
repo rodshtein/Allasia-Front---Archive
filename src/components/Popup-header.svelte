@@ -45,7 +45,7 @@ header
     height: 300px
     background-size: cover
     background-position: center
-    background-color: var(--PURPLE)
+    background-color: var(--LIGHT-GRAY)
     color: white
     .h1, .h2
       color: white

@@ -41,18 +41,26 @@
           a.short_logo(sapper:prefetch href=".")
             span Главная страница
         li
-          Button(invert iconR='search' text='Поиск лечения'
-            on:click!='{searchHandler}')
+          Button(
+            iconR='search---light'
+            text='Поиск лечения'
+            on:click!='{searchHandler}'
+          )
         li
-          Button(loading='{!$chatIsLoaded}' invert iconR='chat' text='Задать вопрос' on:click!='{openChatra}')
+          Button(
+            loading='{!$chatIsLoaded}'
+            iconR='chat---light'
+            text='Задать вопрос'
+            on:click!='{openChatra}'
+          )
         li
-          Button(invert text='Вопрос-ответ' href='./wiki')
+          Button( text='Вопрос-ответ' href='./wiki')
         li
-          Button(invert text='Клиники' href='./clinics')
+          Button( text='Клиники' href='./clinics')
         li
-          Button(invert text='Акции' href='./promotion')
+          Button( text='Акции' href='./promotion')
         li
-          Button(invert text='Контакты' href='./contacts')
+          Button( text='Контакты' href='./contacts')
 
 </template>
 

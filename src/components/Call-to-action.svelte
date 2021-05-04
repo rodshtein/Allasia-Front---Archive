@@ -26,8 +26,9 @@
       +if('btnText')
         .button-wrap
           Button(
+            invert
             size='mini'
-            invert iconR='chat'
+            iconR='chat---light'
             text='{btnText}')
   +if('tel')
     .tel-wrap

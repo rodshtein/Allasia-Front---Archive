@@ -38,7 +38,7 @@
   font-size: 13px
   font-weight: normal
   line-height: 120%
-  color: var(--color--txt-subheaders)
+  color: var(--color--txt--subheaders)
   margin-bottom: 10px
 
 .h3, .info
@@ -56,7 +56,7 @@
   font-weight: 700
   font-size: 33px
   text-decoration: none
-  color: var(--color--txt-headers)
+  color: var(--color--txt--headers)
   line-height: 85%
 
   &:after
@@ -82,7 +82,7 @@
   font-size: 22px
   line-height: 85%
   text-decoration: none
-  color: var(--color--txt-headers)
+  color: var(--color--txt--headers)
   padding-top: 15px
 
   .label
@@ -113,7 +113,7 @@
   font-style: normal
   line-height: 120%
   text-decoration: none
-  color: var(--color--txt-headers)
+  color: var(--color--txt--headers)
   padding:
     top: 5px
     bottom: 5px

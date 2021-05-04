@@ -203,7 +203,7 @@ header
       text-align: center
       font-size: 14px
       line-height: 120%
-      color: var(--color--txt-subheaders)
+      color: var(--color--txt--subheaders)
 
       @media(width > 650px)
         /* margin-top: 10px */

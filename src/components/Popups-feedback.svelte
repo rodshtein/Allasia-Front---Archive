@@ -63,7 +63,7 @@ const date = d => {
   margin-bottom: 5px
 
 .p-small
-  color: var(--LIGHT-BLUE)
+  color: var(--color--txt--small)
 
 .devider
   margin-bottom: 10px

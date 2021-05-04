@@ -63,7 +63,7 @@
     position: absolute
     width: 1px
     height: 100%
-    background: var(--GREEN)
+    background: var(--color--border---devider)
     z-index: 2
     transition: all .3s ease-out
     @media(width < 800px)
@@ -131,7 +131,7 @@
       transition: all .3s ease-out
 
     &:hover:after
-      background-color: var(--LIGHT-PURPLE)
+      background-color: var(--LIGHT-GRAY)
 
 .slider-wrapper
   position: relative

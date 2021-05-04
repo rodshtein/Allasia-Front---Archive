@@ -95,7 +95,7 @@ FeedbackPopup(
     margin-bottom: 13px
 
     .p-small
-      color: var(--LIGHT-BLUE)
+      color: var(--color--txt--small)
 
   .content
     overflow: hidden

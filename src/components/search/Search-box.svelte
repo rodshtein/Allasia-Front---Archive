@@ -260,7 +260,7 @@ input
 
   appearance: none
   caret-color: var(--color--input--caret)
-  color: var(--color--txt-subheaders)
+  color: var(--color--txt--subheaders)
 
   &::-webkit-search-cancel-button
     -webkit-appearance: none

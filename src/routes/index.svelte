@@ -250,7 +250,7 @@ CardWrapper
         font-size: 13px
         line-height: 120%
         text-align: center
-        color: var(--color--txt---light-blue)
+        color: var(--color--txt--small)
         margin-bottom: 10px
         padding-bottom: 7px
         @mixin divider_bottom
@@ -449,7 +449,7 @@ CardWrapper
       margin-bottom: 30px
       max-width: 400px
       text-align: center
-      color: var(--color--txt-p)
+      color: var(--color--txt--p)
       @media( width > 650px )
         text-align: left
 
@@ -649,7 +649,7 @@ CardWrapper
       margin-bottom: 30px
       max-width: 400px
       text-align: center
-      color: var(--color--txt-p)
+      color: var(--color--txt--p)
       @media( width > 650px )
         text-align: left
 

@@ -38,6 +38,7 @@ mixin body
 
   .btn-wrap
     Button(
+      invert
       size='small'
       text='Подробнее'
       on:click!='{ () => toggle(el) }'
@@ -111,7 +112,7 @@ TechnologyPopup(
   &.card_decor__img
     background-size: cover
     background-position: center
-    background-color: var(--PURPLE)
+    background-color: var(--color--card--bg---img)
 
     & h3
       color: white

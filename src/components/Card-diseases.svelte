@@ -52,11 +52,11 @@
       display: none
 
   .p-small
-    color: var(--LIGHT-BLUE)
+    color: var(--color--txt--small)
 
   .info
     justify-self: end
-    color: var(--LIGHT-BLUE)
+    color: var(--color--txt--small)
     margin-top: 15px
     padding-top: 7px
     @mixin divider_top

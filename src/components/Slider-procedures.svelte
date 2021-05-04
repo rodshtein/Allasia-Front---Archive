@@ -100,7 +100,7 @@
       color: var( --LIGHT-BLACK )
 
     .conditions
-      color: var( --LIGHT-BLUE )
+      color: var( --color--txt--small )
 
   .description-wrap
     display: grid

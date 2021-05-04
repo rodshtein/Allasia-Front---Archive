@@ -348,7 +348,7 @@ header
     font-weight: 400
     line-height: 120%
     margin-bottom: 5px
-    color: var(--LIGHT-BLUE)
+    color: var(--color--txt--subheaders)
 
   .ranks
     display: flex

@@ -105,7 +105,7 @@ function handleKeydown(e) {
 
 <template lang="pug">
 +if('paintModal')
-  .popup(
+  .modal(
     role='dialog'
     aria-modal='true'
     bind:this='{modal}'
@@ -141,7 +141,7 @@ function handleKeydown(e) {
       width: 100%
       top: -100vh
       left: 0px
-      background: var(--MILK-BLUE)
+      background: var(--LIGHT-GRAY)
       opacity: 0
       transition:
         opacity .4s ease-in,
@@ -162,7 +162,7 @@ function handleKeydown(e) {
           top .0s ease-out .0s
 
 
-.popup
+.modal
   display: block
   position: absolute
   top: 0
@@ -192,9 +192,9 @@ function handleKeydown(e) {
   overflow: hidden
 
   background: #ffffff
-  border: solid 1px var(--color--borders---popup)
+  border: solid 1px var(--color--card--border---main)
   border-radius: var(--radius--popup)
-  @mixin popup_shadow
+  @mixin modal_shadow
 
   .slot-wrapper
     padding:

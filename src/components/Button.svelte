@@ -93,14 +93,12 @@
   &.spinner
     &:after, &:before
       content: url('/icons/$(size)/spinner.svg')
-
-@define-mixin icons--invert $size
-  &.search
+  &.search---light
     &:before
       content: url('/icons/$(size)/search-l-w.svg')
     &:after
       content: url('/icons/$(size)/search-r-w.svg')
-  &.chat
+  &.chat---light
     &:before
       content: url('/icons/$(size)/chat-l-w.svg')
     &:after
@@ -202,8 +200,12 @@ a
       @mixin icons--base 23
 
     &.invert
-      background-color: var(--color--btn--bg---light)
-      @mixin icons--invert 23
+      background-color: none
+      border-color: var(--color--btn--border---invert)
+      color: var(--color--btn--txt---invert)
+
+      &:hover
+        border-color: var(--color--btn--border---invert---active)
 
 
 
@@ -232,8 +234,12 @@ a
       @mixin icons--base 17
 
     &.invert
-      background-color: var(--color--btn--bg---light)
-      @mixin icons--invert 17
+      background-color: none
+      border-color: var(--color--btn--border---invert)
+      color: var(--color--btn--txt---invert)
+
+      &:hover
+        border-color: var(--color--btn--border---invert---active)
 
   &.small
     height: 21px
@@ -249,7 +255,12 @@ a
       background-color: var(--color--btn--bg---light)
 
     &.invert
-      background-color: var(--color--btn--bg---light)
+      background-color: none
+      border-color: var(--color--btn--border---invert)
+      color: var(--color--btn--txt---invert)
+
+      &:hover
+        border-color: var(--color--btn--border---invert---active)
 
 .loading
   animation: pulse 2.5s infinite

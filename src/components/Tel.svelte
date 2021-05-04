@@ -33,7 +33,7 @@
   font-style: normal
   font-size: 13px
   line-height: 120%
-  color: var(--color--txt---light-blue)
+  color: var(--color--txt--small)
   margin-bottom: 10px
   padding-bottom: 7px
   @mixin divider_bottom

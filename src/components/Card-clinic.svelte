@@ -26,6 +26,7 @@
 
   .btn-wrap
     Button(
+      invert
       size='small'
       text='Подробнее'
       href!=`{href + ( data && data.id ? data.id : '#') }`
@@ -53,7 +54,7 @@
   &.card_decor__img
     background-size: cover
     background-position: center
-    background-color: var(--LIGHT-GREEN)
+    background-color: var(--color--card--bg---img)
 
     & .h3, .p-mini, .subheader-h3
       color: white

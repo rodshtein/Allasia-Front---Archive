@@ -72,7 +72,7 @@ button.card
   font-size: 13px
   font-weight: normal
   line-height: 120%
-  color: var(--color--txt-subheaders)
+  color: var(--color--txt--subheaders)
 
   font-style: normal
   font-weight: normal
@@ -96,7 +96,7 @@ button.card
   font-weight: normal
   font-size: 16px
   line-height: 85%
-  color: var(--color--txt-headers)
+  color: var(--color--txt--headers)
   white-space: nowrap
 
 .country-number
