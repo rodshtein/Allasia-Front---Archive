@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 
 let url = process.env.NODE_ENV === 'development'
   ? 'http://localhost:3001/admin/api'
-  : 'https://tildateamtop.ru/admin/api';
+  : 'https://new.allasia.su/admin/api';
 
 const cache = new Map();
 const client = createClient({
