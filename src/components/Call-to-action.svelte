@@ -3,6 +3,7 @@
   import Button from './Button.svelte';
   import CardWrapper from './Card-wrapper.svelte';
   import { contactsIsLoaded, showCallModal } from './stores/Store-call.js';
+  import { chatIsLoaded } from './stores/Store-chat.js';
 
   export let header = 'Header';
   export let text = null;
@@ -11,6 +12,10 @@
 
   function callModalHandler(){
     showCallModal.set(true)
+  }
+
+  function openChatra(){
+    window.Chatra('openChat')
   }
 
 </script>
@@ -26,10 +31,12 @@
       +if('btnText')
         .button-wrap
           Button(
-            invert
+            loading='{!$chatIsLoaded}'
             size='mini'
             iconR='chat---light'
-            text='{btnText}')
+            text='{btnText}'
+            on:click!='{openChatra}'
+            )
   +if('tel')
     .tel-wrap
       .block
