@@ -29,68 +29,11 @@
   <link   rel="preload" type="font/woff2" crossorigin="anonymous"
           href="/fonts/IBMPlexSans-Bold-Cyrillic.woff2" as="font">
 
-  <!-- Sapper creates a <script> tag containing `src/client.js`
-       and anything else it needs to hydrate the app and
-       initialise the router -->
   %sapper.scripts%
-
-  <!-- Sapper generates a <style> tag containing critical CSS
-       for the current page. CSS for the rest of the app is
-       lazily loaded when it precaches secondary pages -->
   %sapper.styles%
-
-  <!-- This contains the contents of the <svelte:head> component, if
-       the current page has one -->
   %sapper.head%
 </head>
 <body>
-  <!-- The application will be rendered inside this element,
-       because `src/client.js` references it -->
   <div id="sapper">%sapper.html%</div>
-
-  <!-- focus-visible -->
-  <!-- <script src="focus-visible.min.js"></script> -->
 </body>
-<!-- Chatra {literal} -->
-<style>
-    #chatra:not(.chatra--expanded) {
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none;
-        transition: none;
-    }
-    #chatra.chatra--expanded #chatra__iframe-wrapper {
-        -webkit-box-shadow: 0 0 3px rgb(11 7 179 / 14%), 0 5px 50px rgb(94 37 232 / 20%);
-        box-shadow: 0 0 3px rgb(11 7 179 / 14%), 0 5px 50px rgb(94 37 232 / 20%);
-        }
-</style>
-<script>
-    // (function(d, w, c) {
-    //     w.ChatraID = 'LSqpL2wnNngikEHXG';
-    //     var s = d.createElement('script');
-    //     w[c] = w[c] || function() {
-    //         (w[c].q = w[c].q || []).push(arguments);
-    //     };
-    //     s.async = true;
-    //     s.src = 'https://call.chatra.io/chatra.js';
-    //     if (d.head) d.head.appendChild(s);
-    // })(document, window, 'Chatra');
-
-    // window.ChatraSetup = {
-    //     buttonStyle: 'round',
-    //     colors: {
-    //         buttonText: '#ffffff',
-    //         buttonBg: '#3A33D9'
-    //     },
-    //     onAnalyticEvent: function(eventName) {
-    //         console.log('An event just happend:', eventName);
-    //     }
-    // };
-
-</script>
-<!-- Carrot quest BEGIN -->
-<script type="text/javascript">
-// !function(){function t(t,e){return function(){window.carrotquestasync.push(t,arguments)}}if("undefined"==typeof carrotquest){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src="//cdn.carrotquest.app/api.min.js",document.getElementsByTagName("head")[0].appendChild(e),window.carrotquest={},window.carrotquestasync=[],carrotquest.settings={};for(var n=["connect","track","identify","auth","oth","onReady","addCallback","removeCallback","trackMessageInteraction"],a=0;a<n.length;a++)carrotquest[n[a]]=t(n[a])}}(),carrotquest.connect("42433-6c6d34f41c209f12bb319fcd5e");
-</script>
-
 </html>

@@ -17,8 +17,8 @@
     }
   }
 
-  function openChatra(){
-    window.Chatra('openChat')
+  function openChat(){
+    window.carrotquest.open();
   }
 
 
@@ -51,7 +51,7 @@
             loading='{!$chatIsLoaded}'
             iconR='chat---light'
             text='Задать вопрос'
-            on:click!='{openChatra}'
+            on:click!='{openChat}'
           )
         li
           Button( text='Вопрос-ответ' href='./wiki')

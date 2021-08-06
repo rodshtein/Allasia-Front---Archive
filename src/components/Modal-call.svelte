@@ -14,7 +14,6 @@ client(CONTACTS).then(
 );
 
 function setData(data){
-  console.log('is loaded')
   DATA = data
   contactsIsLoaded.set(true)
 }

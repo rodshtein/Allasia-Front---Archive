@@ -38,6 +38,7 @@
   // Short data path
   let DATA = _DATA.allClinics
 
+  import { country } from '../components/stores/Store-country.js';
   import { contactsIsLoaded, showCallModal } from '../components/stores/Store-call.js';
   import { showMenu } from '../components/stores/Store-branches.js';
 
@@ -58,6 +59,12 @@
   function showSearchMenu(){
     showMenu.set(true)
   }
+
+  $: setPhoneNumber(country, contactsIsLoaded);
+
+  function setPhoneNumber(){
+    console.log('test')
+  };
 
 </script>
 

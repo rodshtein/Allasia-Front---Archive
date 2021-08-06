@@ -4,7 +4,7 @@ import { chatIsLoaded } from './stores/Store-chat.js';
 import { contactsIsLoaded, showCallModal } from './stores/Store-call.js';
 
 function openChatra(){
-  window.Chatra('openChat', true)
+  window.carrotquest.open();
 }
 
 function callModalHandler(){
@@ -14,66 +14,32 @@ function callModalHandler(){
 </script>
 
 <template lang="pug">
-
-.floating-wrap
-  button.message( class:loading='{!$chatIsLoaded}' on:click='{openChatra}' )
   button.call( class:loading='{!$contactsIsLoaded}' disabled='{!$contactsIsLoaded}' on:click!='{callModalHandler}')
 
 </template>
 
 <style lang='postcss'>
-
-.floating-wrap
+button
   position: fixed
-  right: 0
-  bottom: 0
-  display: flex
-  flex-direction: row
-  justify-content: center
   z-index: 10
-  padding-bottom: 10px
-  width: 100%
+  background-size: contain
+  right: 25px
+  bottom: 100px
+  border-width: 0
+  cursor: pointer
+  height: 60px
+  width: 60px
+  background-color: #fff
+  background-position: center
+  background-repeat: no-repeat
+  border-radius: 50%
+  box-shadow: 0 3px 12px 1px rgba(0,0,0,.2)
+  transition: all .3s ease
 
-  @media(width > 550px)
-    flex-direction: column
-    width: auto
-    padding:
-      bottom: 50px
-      right: 40px
+  &.loading
+    opacity: 0
+    cursor: none
 
-  button
-    border-width: 0
-    cursor: pointer
-    height: 61px
-    width: 61px
-    padding: 10px
-    background-color: rgba(212, 221, 254, 0.45)
-    backdrop-filter: blur(5px)
-    background-position: center
-    background-repeat: no-repeat
-    border-radius: 50%
-
-    &.loading
-      animation: pulse 2.5s infinite
-      cursor: progress
-      &:hover
-        border-color: var(--color--btn-border)
-      &:active
-        transform: translateY(0)
-      &:after, &:before
-        opacity: .2
-
-  .message
-    background-image: url('/icons/49/chat.svg')
-
-  .call
-    background-image: url('/icons/49/handset.svg')
-
-@keyframes pulse
-  0%
-    opacity: .3
-  70%
-    opacity: .7
-  100%
-    opacity: .3
+.call
+  background-image: url('/icons/49/handset.svg')
 </style>
