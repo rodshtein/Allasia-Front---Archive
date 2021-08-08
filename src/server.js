@@ -11,7 +11,7 @@ function getLocation(req){
 	let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 	let geo = geoip.lookup(ip);
 	// console.log(ip.split(`:`).pop())
-	return geo
+	return geo ? geo.country : null;
 }
 
 polka()
