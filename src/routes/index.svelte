@@ -31,7 +31,7 @@
   import CardWrapper from '../components/Card-wrapper.svelte';
   import Clinics from '../components/Slider-clinics.svelte';
   import CallToAction from '../components/Call-to-action.svelte';
-
+  import Popup from '../components/Popup.svelte';
   // set preloaded data to cache
   onMount(()=> {
     cache.set(
@@ -69,6 +69,8 @@
 
   function showSearchMenu(){showMenu.set(true)}
   function callModalHandler(){showCallModal.set(true)}
+
+  let showVideoModal = false;
 </script>
 
 
@@ -124,8 +126,8 @@ svelte:head
 .also_block
   h3.h3 Смотрите так же
   .wrapper
-    Button(size='regular' href='#' iconR='arrow-r' text="Акции")
-    Button(size='regular' href='#' iconR='arrow-r' text="Клиники")
+    Button(size='regular' href='./promotion' iconR='arrow-r' text="Акции")
+    Button(size='regular' href='./clinics' iconR='arrow-r' text="Клиники")
 
 CardWrapper
   .wiki_card
@@ -148,11 +150,18 @@ CardWrapper
     h2.h2-I О компании
     p.subheader-h2-I Рассказываем о нашей работе
     p.p Мы работаем с 2013 года. За это время перевезли более пяти тысяч пациентов, перевели тысячи листов медицинской документации, провели сотни часов онлайн-консультаций. Мы знаем как подобрать клинику, врача, подготовить документы, забронировать удобную гостиницу и другие тонкости организации поездки.
-    .video_placeholder
+
+    .video_placeholder(on:click!='{() => showVideoModal = !showVideoModal}')
+
+    Popup(header='О компании' bind:show!='{ showVideoModal }')
+      .video_container
+        iframe.video( title="youtube" allowfullscreen="true" src="//www.youtube.com/embed/ZiBMvF9zdhE" frameborder="0" )
 
     .KTO-wrapper
       .illustration
       p Сотрудничаем с Южнокорейской организацией по туризму
+
+
 
 Quote
 
@@ -171,7 +180,6 @@ CardWrapper
       h2.h2-I Контакты
       p.p Организуем лечение из любого города России, Казахстана или Кыргызстана
       Button(size='regular' href='/contacts/' iconR='arrow-r' text="Контакты")
-
 </template>
 
 
@@ -535,6 +543,7 @@ CardWrapper
   .video_placeholder
     position: relative
     border-radius: 22px
+    cursor: pointer
     max-width: 360px
     width: 100%
     height: calc( 360px / 2 )
@@ -666,4 +675,21 @@ CardWrapper
       @media( width > 650px )
         text-align: left
 
+.video_container
+  position: relative
+  width: 100%
+  height: 0
+  padding-bottom: 56.25%
+  &:after
+    content: 'Загрузка видео…'
+    font-size: 22px
+    @media( width < 650px )
+      font-size: 16px
+
+.video
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
 </style>

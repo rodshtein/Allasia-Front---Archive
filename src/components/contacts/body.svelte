@@ -64,7 +64,7 @@
   &:after
     content: url("/icons/25/handset.svg")
     height: 25px
-    margin-left: 20px
+    margin-left: 15px
 
   &:hover
     color: var(--ORANGE)
