@@ -64,15 +64,15 @@ header
     | Найдите ответы или задайте свой вопрос
   .illustration
 
-.wrap
-  +each('sortTrees(sortConf(data)) as section')
-    CardWrapper
-      CardHeader(header!='{section.name}')
-      Nailer(let:props)
-        .slider(use:nailer='{props}' class!='{cls("slider")}')
-          +each('section.questions as question')
-            +if('question.answer && question.question')
-              CardQuestion(data='{question}')
+
++each('sortTrees(sortConf(data)) as section')
+  CardWrapper
+    CardHeader(header!='{section.name}')
+    Nailer(let:props)
+      .slider(use:nailer='{props}' class!='{cls("slider")}')
+        +each('section.questions as question')
+          +if('question.answer && question.question')
+            CardQuestion(data='{question}')
 
 </template>
 
@@ -160,8 +160,4 @@ header
     grid-auto-columns: calc((100% - 15px) / 2)
     @media(width < 650px)
       grid-auto-columns: calc((83% - 15px))
-
-.wrap
-  margin-bottom: 80px
-
 </style>

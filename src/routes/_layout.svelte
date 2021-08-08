@@ -79,7 +79,7 @@ main
     left: auto
     right: auto
     top: 130px
-    bottom: 0
+    bottom: 80px
   padding: 0
   transform: translateY(0)
   transition: transform .5s ease-out
