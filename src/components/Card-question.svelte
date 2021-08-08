@@ -68,7 +68,7 @@ Popup(
   .head
     position: relative
     align-self: stretch
-    border: solid 1px var(--color--btn-border)
+    border: solid 1px var(--color--btn--border---main)
     border-radius: 14px
     padding:
       top: 10px

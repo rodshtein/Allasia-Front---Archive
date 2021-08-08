@@ -1,18 +1,45 @@
+<script context="module">
+  import { client, cache }  from '../tinyClient';
+  import { CONTACTS } from './contacts/queries';
+
+
+  export async function preload() {
+    return { DATA : await client(CONTACTS) };
+  }
+
+</script>
+
+
 <script>
+  export let DATA;
   export let segment;
 
+  import { stores } from '@sapper/app';
   import { onMount, afterUpdate} from "svelte";
-  import { stores } from "@sapper/app";
+  import { contactsIsLoaded } from '../components/stores/Store-call.js';
+  import { sort } from '../helpers';
+
   import NProgress from "nprogress";
   import Nav from '../components/Nav.svelte';
   import Floating from '../components/Floating-buttons.svelte';
-
   import CallModal from '../components/Modal-call.svelte';
   import Branches from '../components/branches/Nav-branches.svelte';
 
-  const { preloading } = stores();
+  // Load and process contacts
+  const { preloading, session } = stores();
+  let shift = {field: "ISO", search: $session.geo || "RU"};
+
+  let contacts = sort(DATA.allContactCountries, "name", shift);
+  contactsIsLoaded.set(true)
 
   onMount(async () => {
+    cache.set(
+      JSON.stringify({
+        query: CONTACTS
+      }),
+      DATA
+    )
+
     NProgress.configure({
       // parent: "#sapper", // set class .nprogress-custom-parent
       showSpinner: true
@@ -29,17 +56,17 @@
   let layout_shift = segment ? true : false;
   afterUpdate( () => layout_shift = segment ? true : false );
 
-
 </script>
 
 
 <Nav {segment}/>
+
 <main class:layout_shift>
   <slot/>
 </main>
 
 <Branches/>
-<CallModal/>
+<CallModal {contacts} />
 <Floating/>
 
 <style global lang="postcss">

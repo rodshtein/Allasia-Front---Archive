@@ -2,6 +2,7 @@ export const CONTACTS = `
   query {
     allContactCountries {
       name
+      ISO
       contacts {
         id
         city
@@ -23,6 +24,3 @@ export const CONTACTS = `
     }
   }
 `;
-
-
-

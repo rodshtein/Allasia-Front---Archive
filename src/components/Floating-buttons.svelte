@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 import { chatIsLoaded } from './stores/Store-chat.js';
-import { contactsIsLoaded, showCallModal } from './stores/Store-call.js';
+import { contacts, showCallModal } from './stores/Store-call.js';
 
 function openChatra(){
   window.carrotquest.open();
@@ -14,8 +14,7 @@ function callModalHandler(){
 </script>
 
 <template lang="pug">
-  button.call( class:loading='{!$contactsIsLoaded}' disabled='{!$contactsIsLoaded}' on:click!='{callModalHandler}')
-
+  button( class:bottom='{!$chatIsLoaded}' disabled='{!$contacts}' on:click!='{callModalHandler}')
 </template>
 
 <style lang='postcss'>
@@ -32,14 +31,24 @@ button
   background-color: #fff
   background-position: center
   background-repeat: no-repeat
+  background-image: url('/icons/49/handset.svg')
   border-radius: 50%
   box-shadow: 0 3px 12px 1px rgba(0,0,0,.2)
   transition: all .3s ease
 
-  &.loading
-    opacity: 0
-    cursor: none
+  &.bottom
+    bottom: 25px
 
-.call
-  background-image: url('/icons/49/handset.svg')
+  &:disabled
+    animation: pulse 2.5s infinite
+    cursor: progress
+
+
+@keyframes pulse
+  0%
+    opacity: .1
+  70%
+    opacity: 1
+  100%
+    opacity: .1
 </style>

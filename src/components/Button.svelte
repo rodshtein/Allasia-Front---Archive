@@ -54,12 +54,12 @@
   //- TODO Подумать над rel='prefetch' и rel='external'
 
 +if('href')
-  a.btn( sapper:prefetch href='{href}' class='{cls}' disabled='{disabled}' on:click )
+  a.btn( sapper:prefetch href='{href}' class='{cls}' disabled='{disabled || loading}' on:click )
     +if('text')
       span {text}
 
   +else
-    button.btn( class='{cls}' class:loading disabled='{disabled}' on:click )
+    button.btn( class='{cls}' class:loading disabled='{disabled || loading}' on:click )
       +if('text')
         span {text}
 
@@ -155,7 +155,6 @@ a
     transform: translateY(2px)
 
   &:disabled
-    cursor: default
     & span
       opacity: .3
     &:hover

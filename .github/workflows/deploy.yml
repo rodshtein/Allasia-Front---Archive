@@ -31,6 +31,7 @@ jobs:
           command: |
             cd /var/www/front
             git pull
+            node ./node_modules/geoip-lite/scripts/updatedb.js license_key=4vTKRbTAfDeHLb9X
             pm2 restart Public\ App
           host: 84.38.182.174
           username: admin

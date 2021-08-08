@@ -1,5 +1,4 @@
 <script context="module">
-  import { onMount } from 'svelte';
   import { client, cache }  from '../../tinyClient';
   import { CONTACTS } from './queries';
 
@@ -12,13 +11,15 @@
 <script>
   export let DATA;
 
+  import { stores } from '@sapper/app';
+  import { onMount } from 'svelte';
+  import { sort } from '../../helpers';
+  import { contacts, contactsIsLoaded } from '../../components/stores/Store-call.js';
+
   import CardPromotion from '../../components/Card-promotion.svelte';
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
   import Contact from '../../components/contacts/body.svelte';
-
-  import { sort } from '../../helpers';
-
 
   // set preloaded data to cache
   onMount(()=> {
@@ -30,6 +31,13 @@
     )
   });
 
+  // Load and process contacts
+  const { preloading, session } = stores();
+  let shift = {field: "ISO", search: $session.geo || "RU"};
+  let _contacts = sort(DATA.allContactCountries, "name", shift);
+  if(!$contacts) contacts.set(_contacts)
+  contactsIsLoaded.set(true)
+
 </script>
 
 <template lang='pug'>
@@ -38,7 +46,7 @@ header
   p.subheader-h1 Организуем лечение из любого города России, Казахстана или Кыргызстана
   .illustration
 
-+each('sort(DATA.allContactCountries) as country')
++each('_contacts as country')
   CardWrapper
     CardHeader(header='{country?.name}')
     +each('sort(country.contacts, "city") as contact')

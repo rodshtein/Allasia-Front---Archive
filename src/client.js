@@ -6,7 +6,6 @@ sapper.start({
   target: document.querySelector('#sapper')
 }).then(() => {
 
-
     if(process.env.NODE_ENV !== 'development') {
     // Add chat
     function t(t){

@@ -1,16 +1,24 @@
 <script context="module">
+  import { stores } from '@sapper/app';
   import { onMount } from 'svelte';
   import { client, cache }  from '../../tinyClient';
+  import { sort } from '../../helpers.js';
+  import { contactsIsLoaded, showCallModal, contacts } from '../../components/stores/Store-call.js';
   import { PROMO_PAGES } from './queries';
+  import { CONTACTS } from './../contacts/queries';
 
   export async function preload() {
-    return { DATA : await client(PROMO_PAGES) };
+    return {
+      DATA : await client(PROMO_PAGES),
+      _CONTACTS: await client( CONTACTS )
+    };
   }
 
 </script>
 
 <script>
   export let DATA;
+  export let _CONTACTS;
 
   import CardPromotion from '../../components/Card-promotion.svelte';
   import CardWrapper from '../../components/Card-wrapper.svelte';
@@ -25,6 +33,15 @@
         query: PROMO_PAGES
       }),
       DATA
+    )
+    cache.set(
+      JSON.stringify({
+        query: CONTACTS,
+        variables : {
+          first: 3
+        }
+      }),
+      _CONTACTS
     )
   });
 
@@ -47,6 +64,15 @@
   }
  */
 
+   // Load and process contacts
+   const { preloading, session } = stores();
+  let shift = {field: "ISO", search: $session.geo || "RU"};
+  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
+  let contact = _contacts[0].contacts.find(el=>el.main_number) || cont[0].contacts[0];
+
+  if(!$contacts) contacts.set(_contacts)
+  contactsIsLoaded.set(true)
+
 </script>
 
 <template lang='pug'>
@@ -62,10 +88,10 @@ CardWrapper
         CardPromotion(data='{promo}' href='./promotion/')
 CardWrapper
   CallToAction(
+    {contact}
     header='Есть вопросы?'
     text='Напишите или позвоните, расскажите какая акция вас интересует — мы вам поможем.'
     btnText='Заполнить заявку'
-    tel
   )
 </template>
 

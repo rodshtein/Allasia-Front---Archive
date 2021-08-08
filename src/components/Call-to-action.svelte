@@ -1,21 +1,23 @@
 <script>
+  export let header = 'Header';
+  export let text = null;
+  export let btnText = null;
+  export let contact = null;
+
   import Popup from './Popup.svelte';
   import Button from './Button.svelte';
   import CardWrapper from './Card-wrapper.svelte';
   import { contactsIsLoaded, showCallModal } from './stores/Store-call.js';
   import { chatIsLoaded } from './stores/Store-chat.js';
 
-  export let header = 'Header';
-  export let text = null;
-  export let btnText = null;
-  export let tel = null;
+
 
   function callModalHandler(){
     showCallModal.set(true)
   }
 
-  function openChatra(){
-    window.Chatra('openChat')
+  function openChat(){
+    window.carrotquest.open();
   }
 
 </script>
@@ -35,14 +37,15 @@
             size='mini'
             iconR='chat---light'
             text='{btnText}'
-            on:click!='{openChatra}'
+            on:click!='{openChat}'
             )
-  +if('tel')
+  +if('contact')
     .tel-wrap
       .block
-        p.p-small Единый, бесплатный номер в РФ
+        +if('contact?.main_number_desc')
+          p.p-small {contact?.main_number_desc}
         .number-wrap
-          p.phone-number 8 800 250 82 97
+          a.phone-number(href='{contact?.tel_link}') {contact?.tel}
           .button-wrap
             Button(
               disabled='{!$contactsIsLoaded}'
@@ -120,6 +123,8 @@
       line-height: 85%
       margin-top: 8px
       padding-top: 10px
+      text-decoration: none
+      color: var(--color--txt--headers)
       @mixin divider_top
       @media(width < 380px)
         font-size: 27px

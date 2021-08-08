@@ -81,9 +81,18 @@ export function serializeAndCut (data, length = false) {
 
 
 
-export function sort(arr, value='name'){
+export function sort(arr, value='name', shift=null){
   if(arr.length < 2) return arr;
-  return arr.slice().sort((a, b) => valueCompare(a,b,value));
+  arr = arr.slice().sort((a, b) => valueCompare(a,b,value));
+  if(shift) {
+    arr.forEach((el, i) => {
+      if(el[shift.field] == shift.search){
+        arr.splice(i, 1)
+        arr.unshift(el);
+      }
+    })
+  }
+  return arr
 }
 
 function valueCompare(a,b,value){

@@ -1,47 +1,27 @@
 <script context="module">
-  import { onMount } from 'svelte';
   import { client, cache }  from '../tinyClient';
   import { INDEX_CLINICS } from './queries';
-
+  import { CONTACTS } from './contacts/queries';
 
   export async function preload() {
+    let _CLINICS = await client( INDEX_CLINICS, { first: 10 } );
+    let _CONTACTS = await client( CONTACTS )
 
-    let query = await client(
-      INDEX_CLINICS,
-      { first: 10 }
-    );
-
-    return {
-      _DATA: query
-    };
+    return { _CLINICS, _CONTACTS };
   }
-
 </script>
 
 
 <script >
-  export let _DATA;
+  export let _CLINICS;
+  export let _CONTACTS;
 
-  // set preloaded data to cache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify({
-        query: INDEX_CLINICS,
-        variables : {
-          first: 3
-        }
-      }),
-      _DATA
-    )
-  });
-
-  // Short data path
-  let DATA = _DATA.allClinics
-
+  import { stores } from '@sapper/app';
+  import { onMount } from 'svelte';
   import { country } from '../components/stores/Store-country.js';
-  import { contactsIsLoaded, showCallModal } from '../components/stores/Store-call.js';
+  import { contactsIsLoaded, showCallModal, contacts } from '../components/stores/Store-call.js';
   import { showMenu } from '../components/stores/Store-branches.js';
-
+  import { sort } from '../helpers';
 
   // components
   import SearchBox from '../components/search/Search-box.svelte';
@@ -52,20 +32,43 @@
   import Clinics from '../components/Slider-clinics.svelte';
   import CallToAction from '../components/Call-to-action.svelte';
 
-  function callModalHandler(){
-    showCallModal.set(true)
-  }
+  // set preloaded data to cache
+  onMount(()=> {
+    cache.set(
+      JSON.stringify({
+        query: INDEX_CLINICS,
+        variables : {
+          first: 3
+        }
+      }),
+      _CLINICS
+    )
+    cache.set(
+      JSON.stringify({
+        query: CONTACTS,
+        variables : {
+          first: 3
+        }
+      }),
+      _CONTACTS
+    )
+  });
 
-  function showSearchMenu(){
-    showMenu.set(true)
-  }
 
-  $: setPhoneNumber(country, contactsIsLoaded);
+  // Short data path
+  let DATA = _CLINICS.allClinics
 
-  function setPhoneNumber(){
-    console.log('test')
-  };
+  // Load and process contacts
+  const { preloading, session } = stores();
+  let shift = {field: "ISO", search: $session.geo || "RU"};
+  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
+  let contact = _contacts[0].contacts.find(el=>el.main_number) || cont[0].contacts[0];
 
+  if(!$contacts) contacts.set(_contacts)
+  contactsIsLoaded.set(true)
+
+  function showSearchMenu(){showMenu.set(true)}
+  function callModalHandler(){showCallModal.set(true)}
 </script>
 
 
@@ -81,8 +84,9 @@ svelte:head
     h1 Лечение<br>за рубежом
     p.p-large Подбираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
     .tel_wrapper.card_decor__white
-      .info Единый, бесплатный номер в РФ
-      .phone-number 8 800 250 82 97
+      +if('contact?.main_number_desc')
+        .info {contact?.main_number_desc}
+      a.phone-number(href='{contact?.tel_link}') {contact?.tel}
       .button-wrap
         Button(
           disabled='{!$contactsIsLoaded}'
@@ -154,10 +158,10 @@ Quote
 
 CardWrapper
   CallToAction(
+    contact = '{contact}'
     header='Консультируем онлайн'
     text='Напишите или позвоните. Расскажите о вашей проблеме, опишите диагноз, задайте вопросы, узнайте условия, сроки и стоимость'
     btnText='Открыть чат'
-    tel
   )
 
 CardWrapper
@@ -274,6 +278,8 @@ CardWrapper
         line-height: 85%
         margin-bottom: 20px
         text-align: center
+        text-decoration: none
+        color: var(--color--txt--headers)
 
         @media( width < 380px )
           font-size: 27px

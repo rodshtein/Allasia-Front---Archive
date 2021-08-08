@@ -1,20 +1,25 @@
 <script context="module">
+  import { stores } from '@sapper/app';
   import { onMount } from 'svelte';
   import { client, cache }  from '../../tinyClient';
-  import { getBranchPath, clearProcedures } from '../../helpers';
-  import { MEDICAL_PAGE } from './queries';
+  import { sort, getBranchPath, clearProcedures } from '../../helpers';
   import { searchString } from '../../components/stores/Store-search';
   import { branchId, showMenu } from '../../components/stores/Store-branches';
+  import { contactsIsLoaded, showCallModal, contacts } from '../../components/stores/Store-call.js';
+  import { MEDICAL_PAGE } from './queries';
+  import { CONTACTS } from './../contacts/queries';
 
   export async function preload(page) {
     let query = await client(
       MEDICAL_PAGE,
       { id: page.params.slug }
     );
+    let _CONTACTS = await client( CONTACTS )
 
     return {
       PAGE: page,
       _DATA: query,
+      _CONTACTS
     };
   }
 
@@ -23,6 +28,7 @@
 <script>
   export let PAGE;
   export let _DATA;
+  export let _CONTACTS;
 
   // components
   import CardWrapper from '../../components/Card-wrapper.svelte';
@@ -51,6 +57,15 @@
         }
       }),
       _DATA
+    )
+    cache.set(
+      JSON.stringify({
+        query: CONTACTS,
+        variables : {
+          first: 3
+        }
+      }),
+      _CONTACTS
     )
   });
 
@@ -81,6 +96,15 @@
       showMenu.set(true)
     }
   }
+
+  // Load and process contacts
+  const { preloading, session } = stores();
+  let shift = {field: "ISO", search: $session.geo || "RU"};
+  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
+  let contact = _contacts[0].contacts.find(el=>el.main_number) || cont[0].contacts[0];
+
+  if(!$contacts) contacts.set(_contacts)
+  contactsIsLoaded.set(true)
 
 </script>
 
@@ -137,10 +161,10 @@
 
 CardWrapper
   CallToAction(
+    {contact}
     header='Не нашли нужную услугу?'
     text='Напишите или позвоните, расскажите какая услуга вас интересует. Мы подберём для вас варианты и посчитаем стоимость.'
     btnText='Открыть чат'
-    tel
   )
 
 +if('DATA.feedback && DATA.feedback[0]')

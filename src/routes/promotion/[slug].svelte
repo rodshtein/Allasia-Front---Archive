@@ -1,18 +1,21 @@
 <script context="module">
+  import { stores } from '@sapper/app';
   import { onMount } from 'svelte';
   import { client, cache }  from '../../tinyClient';
+  import { sort, serialize, numDeclension } from '../../helpers.js';
+  import { contactsIsLoaded, showCallModal, contacts } from '../../components/stores/Store-call.js';
   import { PROMOMOTION } from './queries';
+  import { CONTACTS } from './../contacts/queries';
 
   export async function preload(page) {
 
-    let query = await client(
-      PROMOMOTION,
-      { url: page.params.slug }
-    );
+    let _DATA = await client(PROMOMOTION,{ url: page.params.slug });
+    let _CONTACTS = await client( CONTACTS )
 
     return {
       PAGE: page,
-      _DATA: query,
+      _DATA,
+      _CONTACTS
     };
   }
 
@@ -21,8 +24,7 @@
 <script>
   export let PAGE;
   export let _DATA;
-
-  import { serialize } from '../../helpers.js';
+  export let _CONTACTS;
 
   // components
   import CardWrapper from '../../components/Card-wrapper.svelte';
@@ -44,11 +46,28 @@
       }),
       _DATA
     )
+    cache.set(
+      JSON.stringify({
+        query: CONTACTS,
+        variables : {
+          first: 3
+        }
+      }),
+      _CONTACTS
+    )
   });
 
   // Short data path
   $: DATA = _DATA.allPromotions[0]
 
+  // Load and process contacts
+  const { preloading, session } = stores();
+  let shift = {field: "ISO", search: $session.geo || "RU"};
+  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
+  let contact = _contacts[0].contacts.find(el=>el.main_number) || cont[0].contacts[0];
+
+  if(!$contacts) contacts.set(_contacts)
+  contactsIsLoaded.set(true)
 
 </script>
 
@@ -83,10 +102,10 @@
 
   CardWrapper
     CallToAction(
+      {contact}
       header='Хотите участвовать в акции?'
       text='Напишите или позвоните, — мы всё устроим!'
       btnText='Открыть чат'
-      tel
     )
 
 </template>

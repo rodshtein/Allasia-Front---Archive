@@ -1,6 +1,5 @@
 <script>
   export let contact = null;
-  export let short = false;
   import { serialize, sort } from '../../helpers';
 </script>
 
@@ -8,10 +7,9 @@
   +if('!contact.main_number')
     h3.h3 {contact.city}
     a.phone-number( href='{contact.tel_link}' ) {contact.tel}
-    +if('!short')
-      a.email( href='mailto:{contact.mail}' ) {contact.mail}
-        span.label Написать
-    +if('contact.fields && !short')
+    a.email( href='mailto:{contact.mail}' ) {contact.mail}
+      span.label Написать
+    +if('contact.fields')
       .ex_fields
         +each('sort(contact.fields) as field')
           a.ex_field(href='{field.link}' target="_blank" rel="nofollow")

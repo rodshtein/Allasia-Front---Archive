@@ -1,43 +1,40 @@
 <script>
-import Popup from './Popup.svelte';
-import Contact from './contacts/numbers.svelte';
-import { sort } from './../helpers';
-import { showCallModal, contactsIsLoaded } from './stores/Store-call.js';
-import { client }  from '../tinyClient';
-import { CONTACTS } from './contacts/queries.js';
+  export let contacts;
 
-let DATA;
+  import Popup from './Popup.svelte';
+  import Contact from './contacts/body.svelte';
+  import CardHeader from './Card-header.svelte';
+  import { sort } from './../helpers';
+  import { showCallModal } from './stores/Store-call.js';
 
-client(CONTACTS).then(
-    result => setData(result.allContactCountries),
-    error => console.error(error)
-);
-
-function setData(data){
-  DATA = data
-  contactsIsLoaded.set(true)
-}
+  // check for data is ready
+  $: header = contacts?.[0].name || null;
 </script>
 
 <template lang='pug'>
-Popup(
-  bind:show!='{ $showCallModal }'
-  header='Телефоны')
-
-  +each('sort(DATA) as country')
-    +if('country?.name')
-      h2.h4 {country.name}
+Popup({header} bind:show!='{ $showCallModal }')
+  +each('contacts as country, i')
+    .wrap
+      +if('i > 0')
+        CardHeader(header='{country?.name}')
       +each('sort(country.contacts, "city") as contact')
-        Contact('{contact}')
+        .contact-card.card_decor__white
+          Contact('{contact} short')
 
 
 </template>
 
 <style lang='postcss'>
+.wrap
+  margin-bottom: 40px
+  &:last-child, &:only-child
+    margin-bottom: 0
 
-.h4
-  margin:
-    bottom: 15px
-    top: 30px
-
+.contact-card
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  max-width: 600px
+  padding: 23px 19px
+  margin-bottom: 20px
 </style>

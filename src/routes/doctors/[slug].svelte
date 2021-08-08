@@ -1,18 +1,21 @@
 <script context="module">
+  import { stores } from '@sapper/app';
   import { onMount } from 'svelte';
+  import { sort, serialize, numDeclension } from '../../helpers.js';
+  import { contactsIsLoaded, showCallModal, contacts } from '../../components/stores/Store-call.js';
   import { client, cache }  from '../../tinyClient';
   import { DOCTOR } from './queries';
+  import { CONTACTS } from './../contacts/queries';
 
   export async function preload(page) {
 
-    let query = await client(
-      DOCTOR,
-      { id: page.params.slug }
-    );
+    let query = await client(DOCTOR,{ id: page.params.slug });
+    let _CONTACTS = await client( CONTACTS )
 
     return {
       PAGE: page,
       _DATA: query,
+      _CONTACTS
     };
   }
 
@@ -21,8 +24,9 @@
 <script>
   export let PAGE;
   export let _DATA;
+  export let _CONTACTS;
 
-  import { serialize, serializeAndCut, numDeclension } from '../../helpers.js';
+
   import { nailer } from '../../components/nailer';
 
   // components
@@ -48,6 +52,15 @@
         }
       }),
       _DATA
+    )
+    cache.set(
+      JSON.stringify({
+        query: CONTACTS,
+        variables : {
+          first: 3
+        }
+      }),
+      _CONTACTS
     )
   });
 
@@ -127,15 +140,20 @@
   let btnHeight = 22;
   let showBtn_1, showBtn_2, showBtn_3;
 
-  $: console.log( blockHeight_1)
-  $: console.log( txtHeight_1 )
-
   $: {
     showBtn_1 = ( txtHeight_1 + btnHeight ) > blockHeight_1;
     showBtn_2 = ( txtHeight_2 + btnHeight ) > blockHeight_2;
     showBtn_2 = ( txtHeight_3 + btnHeight ) > blockHeight_3;
   }
 
+  // Load and process contacts
+  const { preloading, session } = stores();
+  let shift = {field: "ISO", search: $session.geo || "RU"};
+  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
+  let contact = _contacts[0].contacts.find(el=>el.main_number) || cont[0].contacts[0];
+
+  if(!$contacts) contacts.set(_contacts)
+  contactsIsLoaded.set(true)
 
 </script>
 
@@ -277,10 +295,10 @@
 
   CardWrapper
     CallToAction(
+      {contact}
       header='Хотите пройти лечение у этого специалиста?'
       text='Напишите или позвоните, расскажите какая услуга вас интересует — мы всё устроим.'
       btnText='Открыть чат'
-      tel
     )
 
   +if('DATA.feedback?.length')
