@@ -68,7 +68,7 @@
    const { preloading, session } = stores();
   let shift = {field: "ISO", search: $session.geo || "RU"};
   let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
-  let contact = _contacts[0].contacts.find(el=>el.main_number) || cont[0].contacts[0];
+  let contact = _contacts[0].contacts.find(el=>el.main_number) || _contacts[0].contacts[0];
 
   if(!$contacts) contacts.set(_contacts)
   contactsIsLoaded.set(true)

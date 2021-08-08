@@ -68,10 +68,15 @@
 <Branches/>
 <CallModal {contacts} />
 <Floating/>
+<code>{$session.geo}</code>
 
 <style global lang="postcss">
 @import "../style/global.sss"
 
+code
+  position: absolute
+  width: 100%
+  text-align: center
 main
   position: relative
   max-width: 1040px
@@ -79,7 +84,7 @@ main
     left: auto
     right: auto
     top: 130px
-    bottom: 80px
+    bottom: 60px
   padding: 0
   transform: translateY(0)
   transition: transform .5s ease-out
