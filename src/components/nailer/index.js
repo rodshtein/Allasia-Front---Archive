@@ -25,11 +25,10 @@ export function nailer(node, {
   //   characterData: true,
   //   subtree: true,
   // });
-
   afterUpdate(init)
 
   // initial props
-  let downX, nodeX, pathX, pointerX, isInitiated = false;
+  let downX, downY, nodeX, nodeY, pathX, pathY, pointerX, pointerY, isInitiated = false;
 
   // Cacl force
   let force, vectorForce, Tmark, Xmark;
@@ -338,11 +337,13 @@ export function nailer(node, {
 
     // cacl Force initial values
     downX = morph(e).clientX;
+    downY = morph(e).clientY;
     Tmark = performance.now()
     Xmark = downX
     node.style.cursor = 'grabbing'
 
 
+    // passive for improve browser animation
     window.addEventListener('mousemove', onMove, {passive: true});
     window.addEventListener('mouseup', onUp, {passive: true});
 
@@ -356,10 +357,18 @@ export function nailer(node, {
     node.onclick = () => false;
 
     pointerX = morph(e).clientX
+    pointerY = morph(e).clientY
     pathX = pointerX - downX
-    // console.log(pathX)
+    pathY = pointerY - downY
     nodeX = node.NAILER.x
+    nodeY = node.NAILER.y
 
+    // prevent scroll if is looks like vertical
+    // it's just compare X:Y path distance
+    // and if Y > 1.5X it's take as vert scroll
+    let normal_pathX = pathX < 0 ? pathX * -1 : pathX;
+    let normal_pathY = pathY < 0 ? pathY * -1 : pathY;
+    if(normal_pathX < normal_pathY) return
 
     // corner grips
     let point = nodeX + pathX;
@@ -403,9 +412,7 @@ export function nailer(node, {
     // and freeze for some time at the end point
     calcForce()
 
-    // let closestPos = cb(closest(node.NAILER.stepCords, node.NAILER.x));
     let closestPos = closest(node.NAILER.stepCords, node.NAILER.x);
-    // let startPos = node.NAILER.ss != node.NAILER.x ? node.NAILER.ss : node.NAILER.x ;
     let startPos = node.NAILER.x;
 
     // force scroll
@@ -413,7 +420,7 @@ export function nailer(node, {
     let endPoint = vectorForce > 0
       ? startPos + distance
       : startPos - distance;
-    // let closesForcePoint = cb(closest(node.NAILER.stepCords, endPoint));
+
     let closesForcePoint = closest(node.NAILER.stepCords, endPoint);
     let duration = force * time;
 
@@ -440,7 +447,6 @@ export function nailer(node, {
 
 
     node.NAILER.animDirection = finish < startPos ? 'left' : 'right';
-
 
     function makeEaseOut(timing) {
       return function(timeFraction) {

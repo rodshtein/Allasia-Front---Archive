@@ -64,8 +64,6 @@
   let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
   let contact = _contacts[0].contacts.find(el=>el.main_number) || _contacts[0].contacts[0];
 
-  console.log($session.geo)
-
 
   if(!$contacts) contacts.set(_contacts)
   contactsIsLoaded.set(true)
@@ -156,7 +154,7 @@ CardWrapper
 
     .video_placeholder(on:click!='{() => showVideoModal = !showVideoModal}')
 
-    Popup(header='О компании' bind:show!='{ showVideoModal }')
+    Popup(width=800 header='О компании' bind:show!='{ showVideoModal }')
       .video_container
         iframe.video( title="youtube" allowfullscreen="true" src="//www.youtube.com/embed/ZiBMvF9zdhE" frameborder="0" )
 
