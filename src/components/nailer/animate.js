@@ -35,6 +35,14 @@ export function back(t) {
   return Math.pow(t, 2) * ((x + 1) * t - x)
 }
 
+function isBrowser(){
+  try {
+    return this === window;
+  } catch(e) {
+    return false;
+  }
+}
+
 const requestAnimationFrame = window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
       window.mozRequestAnimationFrame ||
@@ -67,7 +75,6 @@ export function animate({timing, draw, duration, node, id}) {
         resolve()
       }
 		});
-
 	})
 }
 

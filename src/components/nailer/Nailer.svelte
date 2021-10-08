@@ -34,10 +34,10 @@
         bind:this='{props.nextBtn}'
         transition:fly='{{duration: 400, x: -25}}'
       )
-
-  .slider-wrapper
-    .slider(use:nailer='{props}' on:update='{eventHandler}')
-      slot
+  .mask
+    .slider-wrapper
+      .slider(use:nailer='{props}' on:update='{eventHandler}')
+        slot
 
 
 </template>
@@ -133,19 +133,19 @@
     &:hover:after
       background-color: var(--LIGHT-GRAY)
 
+.mask
+  overflow: hidden
+
 .slider-wrapper
   position: relative
   overflow: hidden
   padding: 0
-  padding:
-    top: 15px
-    bottom: 15px
-  margin:
-    top: -15px
-    bottom: -15px
 
 .slider
   display: flex
+  padding:
+    top: 15px
+    bottom: 15px
   margin: 0 15px
   @media( 500px < width < 800px)
     margin: 0 30px

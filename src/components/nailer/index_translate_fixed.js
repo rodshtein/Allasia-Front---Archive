@@ -46,11 +46,6 @@ export function nailer(node, {
     detail: data,
   });
 
-  function afterScroll() {
-    if ( node.NAILER.isDrag ) return;
-    node.NAILER.x = node.parentNode.scrollLeft * -1;
-    checkOverside();
-  }
 
   // Buttons Handlers
   function setBtn(node, direction){
@@ -79,6 +74,7 @@ export function nailer(node, {
 
     if (direction == 'left'){
       for(var i = cords.length; i--;) {
+
         if( cords[i] <= startPos && startPos <= cords[i-1]) {
           if(cords[i] == startPos) {
             if (i-1 >= 0) slide(cords[i-1])
@@ -92,7 +88,6 @@ export function nailer(node, {
     }
 
     function slide(point) {
-      nodeScroll()
       node.NAILER.animationId++
       let calc = point - startPos;
       let currAnimId = node.NAILER.animationId;
@@ -107,15 +102,8 @@ export function nailer(node, {
           checkOverside()
         },
       }).then(() => {
-        // Prevent set container overflow to scroll
         // if animate was break outside
         if ( currAnimId != node.NAILER.animationId ) return;
-
-        // enable scroll
-        nodeScroll(true)
-
-        // Used by afterScroll function
-        // Need for detect that the scroll is initiated by change css overflow model
         node.NAILER.isDrag = false;
       })
     }
@@ -276,17 +264,7 @@ export function nailer(node, {
       let value = prop[2];
       node.style[stl] = value
     })
-    node.parentNode.style.marginBottom = '';
     nailerIsInit = false
-  }
-
-  function setStyles(styles){
-    styles.forEach(prop => {
-      let node = prop[0];
-      let stl = prop[1];
-      let value = prop[2];
-      node.style[stl] = value
-    });
   }
 
   function init(update){
@@ -300,7 +278,8 @@ export function nailer(node, {
 
     // console.log(update ? 'update': 'init')
     node.addEventListener('mousedown', onDown);
-    node.addEventListener('onscroll', checkOverflow);
+    node.addEventListener('touchstart', onDown);
+    // node.addEventListener('onscroll', checkOverflow);
 
     if(!node.NAILER) node.NAILER = {
       x: 0,
@@ -310,33 +289,21 @@ export function nailer(node, {
       isAnimated: false,
       isMovedTo: false,
       isDrag: false,
-      scrollBarHeight: 0,
     };
 
-    // Need for update NAILER.x position, and check overside by scroll
-    if(!update) node.parentNode.addEventListener('scroll', afterScroll);
-
-    // If nodes was updated the scroll position can be updated too
-    // We need to sync scroll position with node store
-    // Scroll position must be always negative
-    if(update) node.NAILER.x = node.parentNode.scrollLeft * -1;
 
     // init styling
     if(!nailerIsInit) initStyles([
       [node, 'cursor', 'grab'],
-      [node, 'willChange', 'transform'],
-      [node, 'zIndex', '1'],
+      [node, 'touchAction', 'pan-y'],
+      // BUG node.style.willChange = 'transform'
+      // ↑ it causes a splash on mobile devices
+      [node, 'transform', 'translate(0)'],
+      // ↑ need to fix freeze over mouse move
       [node.parentNode, 'zIndex', '1'],
-      [node.parentNode, 'overflow-x', 'scroll'],
+      [node.parentNode, 'overflow', 'hidden'],
+      [node, 'zIndex', '1'],
     ])
-
-    // Hide scrollbar
-    if(!nailerIsInit){
-      node.NAILER.scrollBarHeight = node.parentNode.offsetHeight - node.parentNode.clientHeight;
-      node.parentNode.style.marginBottom = '-'+node.NAILER.scrollBarHeight+'px';
-    }
-
-
     storeCardsX()
     checkOverside()
     nailerIsInit = true;
@@ -351,51 +318,20 @@ export function nailer(node, {
 
     // Remove listeners
     node.removeEventListener('mousedown', onDown);
+    node.removeEventListener('touchstart', onDown);
     nailerIsInit = false
-  }
-
-  function nodeScroll(enable){
-    if(enable) {
-      setStyles([
-        [node.parentNode, 'overflow-x', 'scroll'],
-        [node, 'transform', 'translate(0)'],
-      ])
-      node.parentNode.style.marginBottom = '-'+node.NAILER.scrollBarHeight+'px';
-      // Scroll always positive, but x is negative
-      // We make it positive by × -1
-      node.parentNode.scrollLeft = node.NAILER.x * -1;
-    } else {
-      // Transform styles from scroll to transform:translate
-      // NAILER.x always represent a real scroll position
-      setStyles([
-        [node, 'transform', `translate(${node.NAILER.x}px)`],
-        [node.parentNode, 'overflow-x', 'hidden'],
-        [node.parentNode, 'marginBottom', 0],
-      ])
-
-      // Reset scroll position for scroll by transition
-      node.parentNode.scrollLeft = 0;
-    }
   }
 
   function onDown(e) {
     // Prevent click for drag over links
     e.preventDefault()
 
-    // Prevent drag by right click
-    if(e.button == 2) return
-
-    // Used by afterScroll function
-    // Need for detect that the scroll is initiated by change css overflow model
     node.NAILER.isDrag = true;
 
     // Stop All Animation by change anim id
     // TODO Make reactive add speed if already scroll
     // TODO Prevent kill animation if we continue slide on prev direction
     node.NAILER.animationId++
-
-    // disable scroll
-    nodeScroll(false)
 
     // calc Force initial values
     downX = morph(e).clientX
@@ -407,6 +343,9 @@ export function nailer(node, {
     // passive for improve browser animation
     window.addEventListener('mousemove', onMove, {passive: true});
     window.addEventListener('mouseup', onUp, {passive: true});
+
+    window.addEventListener('touchmove', onMove, {passive: true});
+    window.addEventListener('touchend', onUp, {passive: true});
   }
 
   function onMove(e) {
@@ -527,19 +466,15 @@ export function nailer(node, {
       // Prevent set container overflow to scroll
       // if animate was break outside
       if ( currAnimId != node.NAILER.animationId ) return;
-
-
-      // enable scroll
-      nodeScroll(true)
-
-      // Used by afterScroll function
-      // Need for detect that the scroll is initiated by change css overflow model
       node.NAILER.isDrag = false;
     })
 
     node.style.cursor = 'grab'
     window.removeEventListener('mousemove', onMove, {passive: true});
     window.removeEventListener('mouseup', onUp, {passive: true});
+
+    window.removeEventListener('touchmove', onMove, {passive: true});
+    window.removeEventListener('touchend', onUp, {passive: true});
 
     // Allow click && drag by links
     // Timeout for prevent event after drag
@@ -566,7 +501,8 @@ export function nailer(node, {
     },
     destroy() {
       node.removeEventListener('mousedown', onDown);
-      node.addEventListener('onscroll', checkOverflow);
+      node.removeEventListener('touchstart', onDown);
+      // node.addEventListener('onscroll', checkOverflow);
     }
   };
 }

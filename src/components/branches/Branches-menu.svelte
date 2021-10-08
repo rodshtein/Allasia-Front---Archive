@@ -62,20 +62,20 @@
           bind:this='{props.nextBtn}'
           transition:fly='{{duration: 400, x: -25}}'
         )
-
-    .slider-wrapper
-      ul.slider(
-        use:nailer='{props}'
-        on:update='{eventHandler}'
-        style=`--columns--3:{styleMapBranches.col[3]};`
-        )
-        +each('menuBranches as branch, i')
-          li.item-grid.item.light_shadow.branch(class='{styleMapBranches.map[i]}')
-            button( on:click!=`{() => {
-                showMenu.set(true)
-                branchId.set(branch.id)
-              }}`)
-              span {branch.name}
+    .mask
+      .slider-wrapper
+        ul.slider(
+          use:nailer='{props}'
+          on:update='{eventHandler}'
+          style=`--columns--3:{styleMapBranches.col[3]};`
+          )
+          +each('menuBranches as branch, i')
+            li.item-grid.item.light_shadow.branch(class='{styleMapBranches.map[i]}')
+              button( on:click!=`{() => {
+                  showMenu.set(true)
+                  branchId.set(branch.id)
+                }}`)
+                span {branch.name}
 
 </template>
 
@@ -84,15 +84,14 @@
 
 .container
   position: relative
-  margin-left: -15px
-  margin-right: -15px
-
-  @media( width < 900px )
+  margin:
+    left: -15px
+    right: -15px
+  @media(width < 800px)
     margin:
       left: -30px
       right: -30px
-
-    @media( width < 600px )
+    @media(width < 500px)
       margin:
         left: -15px
         right: -15px
@@ -102,7 +101,7 @@
     position: absolute
     width: 1px
     height: 100%
-    background: var(--GREEN)
+    background: var(--color--border---devider)
     z-index: 2
     transition: all .3s ease-out
     @media(width < 800px)
@@ -147,31 +146,22 @@
     &:hover::after
       background-color: var(--LIGHT-PURPLE)
 
+.mask
+  overflow: hidden
 
 .slider-wrapper
   position: relative
   overflow: hidden
   padding: 0
-  padding:
-    top: 15px
-    bottom: 15px
-  margin:
-    top: -15px
-    bottom: -15px
 
 .slider
+  display: flex
+  padding: 15px 0
   margin: 0 15px
-  @media(width < 900px)
+  @media( 500px < width < 800px)
     margin: 0 30px
-  @media(width < 600px)
-    margin: 0 15px
 
   list-style: none
-  padding: 0
-  margin:
-    top: 0
-    bottom: 0
-
   display: grid
   grid-auto-flow: column
   grid-column-gap: 15px
@@ -195,6 +185,14 @@
       var(--color--card--border---main)
     background-color:
       var(--color--card--bg---main)
+
+    &::before
+      content: ''
+      position: absolute
+      left: -15px
+      right: -15px
+      top: -15px
+      bottom: -15px
 
     &:hover
       border-color: var(--color--btn--border---active)

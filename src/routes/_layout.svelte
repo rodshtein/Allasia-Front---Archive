@@ -68,7 +68,7 @@
 <Branches/>
 <CallModal {contacts} />
 <Floating/>
-<code>{$session.geo}</code>
+<!-- <code>{$session.geo}</code> -->
 
 <style global lang="postcss">
 @import "../style/global.sss"
