@@ -191,8 +191,6 @@
       position: absolute
       left: -15px
       right: -15px
-      top: -15px
-      bottom: -15px
 
     &:hover
       border-color: var(--color--btn--border---active)
