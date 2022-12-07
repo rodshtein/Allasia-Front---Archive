@@ -3,10 +3,6 @@ import { onMount } from 'svelte';
 import { chatIsLoaded } from './stores/Store-chat.js';
 import { contacts, showCallModal } from './stores/Store-call.js';
 
-function openChatra(){
-  window.carrotquest.open();
-}
-
 function callModalHandler(){
   showCallModal.set(true)
 }
@@ -14,41 +10,74 @@ function callModalHandler(){
 </script>
 
 <template lang="pug">
-  button( class:bottom='{!$chatIsLoaded}' disabled='{!$contacts}' on:click!='{callModalHandler}')
+.floating-wrap
+  button.message( class:loading='{!$chatIsLoaded}' on:click!="{()=> Chatra('openChat', false)}")
+  button.call( class:bottom='{!$chatIsLoaded}' disabled='{!$contacts}' on:click!='{callModalHandler}')
 </template>
 
 <style lang='postcss'>
-button
+.floating-wrap
   position: fixed
+  right: 0
+  bottom: 0
+  display: flex
+  flex-direction: row
+  justify-content: center
   z-index: 10
-  background-size: contain
-  right: 25px
-  bottom: 100px
-  border-width: 0
-  cursor: pointer
-  height: 60px
-  width: 60px
-  background-color: #fff
-  background-position: center
-  background-repeat: no-repeat
-  background-image: url('/icons/49/handset.svg')
-  border-radius: 50%
-  box-shadow: 0 3px 12px 1px rgba(0,0,0,.2)
-  transition: all .3s ease
+  padding-bottom: 10px
+  width: 100%
 
-  &.bottom
+  @media(width > 550px)
+    flex-direction: column
+    width: auto
+    padding:
+      bottom: 50px
+      right: 40px
+
+  button
+    position: fixed
+    z-index: 10
+    border-width: 0
+    cursor: pointer
+    height: 61px
+    width: 61px
+    right: 25px
+    bottom: 100px
+    padding: 10px
+    background-size: contain
+    background-color: rgba(212, 221, 254, 0.45)
+    backdrop-filter: blur(5px)
+    background-position: center
+    background-repeat: no-repeat
+    border-radius: 50%
+    box-shadow: 0 3px 12px 1px rgba(0,0,0,.2)
+    transition: all .3s ease
+
+    &.loading
+      animation: pulse 2.5s infinite
+      cursor: progress
+      &:hover
+        border-color: var(--color--btn-border)
+      &:active
+        transform: translateY(0)
+      &:after, &:before
+        opacity: .2
+
+  .message
+    background-image: url('/icons/49/chat.svg')
     bottom: 25px
 
-  &:disabled
-    animation: pulse 2.5s infinite
-    cursor: progress
-
+  .call
+    background-image: url('/icons/49/handset.svg')
 
 @keyframes pulse
   0%
-    opacity: .1
+    opacity: .3
   70%
-    opacity: 1
+    opacity: .7
   100%
-    opacity: .1
+    opacity: .3
 </style>
+
+
+

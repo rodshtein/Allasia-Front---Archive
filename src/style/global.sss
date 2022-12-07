@@ -11,6 +11,17 @@ html
     font-weight: 450
 
 
+// Chatra {literal}
+#chatra:not(.chatra--expanded)
+  visibility: hidden !important
+  opacity: 0 !important
+  pointer-events: none
+  transition: none
+
+#chatra.chatra--expanded #chatra__iframe-wrapper
+  box-shadow: 0 0 3px rgb(11 7 179 / 14%), 0 5px 50px rgb(94 37 232 / 20%)
+
+
 body
   margin: 0
   background-color: var(--color--bg--body)

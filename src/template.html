@@ -32,6 +32,20 @@
     %sapper.scripts%
     %sapper.styles%
     %sapper.head%
+
+    <!-- Chatra {literal} -->
+    <style>
+      #chatra:not(.chatra--expanded) {
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none;
+        transition: none;
+      }
+      #chatra.chatra--expanded #chatra__iframe-wrapper {
+        -webkit-box-shadow: 0 0 3px rgb(11 7 179 / 14%), 0 5px 50px rgb(94 37 232 / 20%);
+        box-shadow: 0 0 3px rgb(11 7 179 / 14%), 0 5px 50px rgb(94 37 232 / 20%);
+      }
+    </style>
   </head>
   <body>
     <div id="sapper">%sapper.html%</div>

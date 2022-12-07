@@ -17,11 +17,6 @@
     }
   }
 
-  function openChat(){
-    window.carrotquest.open();
-  }
-
-
   let layout_shift = segment ? true : false;
   afterUpdate( () => layout_shift = segment ? true : false );
 
@@ -51,7 +46,7 @@
             loading='{!$chatIsLoaded}'
             iconR='chat---light'
             text='Задать вопрос'
-            on:click!='{openChat}'
+            on:click!="{()=> Chatra('openChat', false)}"
           )
         li
           Button( text='Вопрос-ответ' href='./wiki')
