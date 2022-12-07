@@ -12,27 +12,26 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: '14'
       # Build
       - run: npm install --global yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn install
       - run: yarn build
       # Setup key
       - run: set -eu
       - run: mkdir "$HOME/.ssh"
-      - run: echo "${{ secrets.DEV_KEY }}" > "$HOME/.ssh/DEV_KEY"
-      - run: chmod 600 "$HOME/.ssh/DEV_KEY"
+      - run: echo "${{ secrets.DEV_KEY }}" > "$HOME/.ssh/rodshtein"
+      - run: chmod 600 "$HOME/.ssh/rodshtein"
       # Deploy bild
-      - run: cd __sapper__/build && rsync -e "ssh -i $HOME/.ssh/DEV_KEY -o StrictHostKeyChecking=no" --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__/build/
-      # Git pull and restart app
-      - name: git pull on sever
+      - run: rsync -e "ssh -i $HOME/.ssh/rodshtein -o StrictHostKeyChecking=no" --exclude-from=".rsyncignore" --archive --compress --delete . admin@81.163.26.40:/var/www/allasia/front
+      #  restart app
+      - name: restart app
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
-            cd /var/www/front
-            git pull
-            node ./node_modules/geoip-lite/scripts/updatedb.js license_key=4vTKRbTAfDeHLb9X
-            pm2 restart Public\ App
-          host: 84.38.182.174
+            cd /var/www/allasia/front
+            yarn install
+            pm2 restart Allasia_Front
+          host: 81.163.26.40
           username: admin
           privateKey: ${{ secrets.DEV_KEY }}

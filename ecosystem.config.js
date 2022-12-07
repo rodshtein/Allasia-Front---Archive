@@ -1,8 +1,8 @@
 module.exports = {
   apps: [
     {
-      name: "Public App",
-      cwd: "/var/www/front/",
+      name: "Allasia_Front",
+      cwd: "/var/www/allasia/front/",
       script: "yarn start",
       instances: 1,
       watch: false,
