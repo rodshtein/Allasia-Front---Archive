@@ -10,8 +10,7 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
-    "deploy_static": "cd static && rsync --archive --compress --delete . admin@84.38.182.174:/var/www/front/static/",
-    "deploy_build": "cd __sapper__/build && rsync --archive --compress --delete . admin@84.38.182.174:/var/www/front/__sapper__/build/"
+    "deploy": "rsync --exclude-from='.rsyncignore' --archive --compress --delete  --progress __sapper__/export/ admin@81.163.26.40:/var/www/allasia"
   },
   "browserslist": [
     "defaults"
