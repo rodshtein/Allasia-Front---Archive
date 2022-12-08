@@ -25,6 +25,10 @@
 
 <template lang="pug">
 
+.info
+  h2.h4 ⚠️ Это архив сайта Allasia 
+  p.p Компания больше не работает. Все услуги и предложения утратили актуальность
+
 .head(class:layout_shift)
   a.full_logo(sapper:prefetch href='.')
     span Главная страница
@@ -56,12 +60,22 @@
           Button( text='Акции' href='./promotion')
         li
           Button( text='Контакты' href='./contacts')
-
 </template>
 
 
 <style lang='postcss'>
 @import "../style/mixins.sss"
+
+.info
+  display: block
+  background-color: var(--WITHE)
+  padding: 10px 13px
+  margin-bottom: 20px
+  text-align: center
+
+  .h4
+    margin-bottom: 4px
+
 .head
   transform: none
 
