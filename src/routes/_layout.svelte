@@ -50,8 +50,9 @@
     });
   });
 
-  let layout_shift = segment ? true : false;
-  afterUpdate( () => layout_shift = segment ? true : false );
+  let layout_shift = true;
+  // let layout_shift = segment ? true : false;
+  // afterUpdate( () => layout_shift = segment ? true : false );
 
 </script>
 
@@ -85,6 +86,7 @@ main
   padding: 0
   transform: translateY(0)
   transition: transform .5s ease-out
+  will-change: transform
 
   @media ( width >= 500px )
     padding: 0 15px

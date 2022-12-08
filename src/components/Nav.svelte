@@ -17,8 +17,9 @@
     }
   }
 
-  let layout_shift = segment ? true : false;
-  afterUpdate( () => layout_shift = segment ? true : false );
+  let layout_shift = true;
+  // let layout_shift = segment ? true : false;
+  // afterUpdate( () => layout_shift = segment ? true : false );
 
 </script>
 
@@ -77,7 +78,8 @@
     margin-bottom: 4px
 
 .head
-  transform: none
+  transform: translateY(0px)
+  will-change: transform
 
   @media ( width >= 900px )
     transition: transform .3s ease-out
