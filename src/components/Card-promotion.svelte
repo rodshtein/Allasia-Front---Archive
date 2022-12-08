@@ -61,6 +61,13 @@ let cardWidth = '';
     overflow: hidden
     position: relative
     margin-bottom: 20px
+    mask-image:
+      linear-gradient(
+        to top,
+        transparent 5%,
+        #00000030 30%,
+        black 100%
+      )
 
   .btn-wrap
     margin-top: 20px
