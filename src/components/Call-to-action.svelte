@@ -37,7 +37,7 @@
             size='mini'
             iconR='chat---light'
             text='{btnText}'
-            on:click!='{openChat}'
+            on:click!="{()=> Chatra('openChat', false)}"
             )
   +if('contact')
     .tel-wrap
