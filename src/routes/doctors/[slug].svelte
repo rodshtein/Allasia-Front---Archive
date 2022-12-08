@@ -143,7 +143,7 @@
   $: {
     showBtn_1 = ( txtHeight_1 + btnHeight ) > blockHeight_1;
     showBtn_2 = ( txtHeight_2 + btnHeight ) > blockHeight_2;
-    showBtn_2 = ( txtHeight_3 + btnHeight ) > blockHeight_3;
+    showBtn_3 = ( txtHeight_3 + btnHeight ) > blockHeight_3;
   }
 
   // Load and process contacts
