@@ -2,30 +2,11 @@
   import { nailer } from '../nailer';
   import { fly, fade } from 'svelte/transition';
   import { showMenu, branchId } from '../stores/Store-branches.js';
-  import { client }  from '../../tinyClient';
-  import { BRANCHES } from './queries';
+  import { BRANCHES } from './branchesData';
   import { sort, columnMark } from "../../helpers";
 
-  let styleMapBranches = {};
-  let menuBranches;
-
-
-  client(BRANCHES).then(
-    result => prepareData(result.allMedicalBranches),
-    error => console.error(error)
-  );
-
-  function prepareData(queryResult){
-    if(queryResult.length) {
-      menuBranches = sort(queryResult.filter(item => !item.parent));
-    }
-  }
-
-  $: {
-    if(menuBranches && menuBranches.length) {
-      styleMapBranches = columnMark({L:menuBranches.length})
-    }
-  }
+  let menuBranches = sort(BRANCHES.allMedicalBranches.filter(item => !item.parent));
+  let styleMapBranches = columnMark({L:menuBranches.length})
 
   //Nailer
   let overflowL = false;

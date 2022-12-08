@@ -7,10 +7,7 @@ import Button from './Button.svelte';
 import Popup from './Popup.svelte';
 import { serializeAndCut, getExpirationLabel } from '../helpers.js';
 
-
 let cardWidth = '';
-
-$: console.log(cardWidth)
 </script>
 
 

@@ -22,21 +22,10 @@ const toggle = async () => {
 
 <template lang='pug'>
 +if('data')
-  .wiki-card.card.card_decor__white
-    .head
-      h3.p-mini {data.question}
-    +if('data.answer')
-      //- p.p-mini.answer(use:ellipsis='{ellipsisProps}')
-      p.p-mini.answer
-        +html('serializeAndCut(JSON.parse(data.answer.document))')
-    .btn-wrap
-      Button(
-        size='small'
-        text='Читать полностью'
-        on:click!='{toggle}'
-        bind:this='{ellipsisProps.effectNode}'
-      )
-
+  .wiki-card.card.card_decor__white(
+    on:click!='{toggle}'
+  )
+    h3.p-mini {data.question}
 
 Popup(
   bind:show!='{showAnswer}'
@@ -50,44 +39,52 @@ Popup(
 
 <style lang='postcss'>
 .wiki-card
+  width: 100%
+  cursor: pointer
   position: relative
-  display: flex
-  flex-direction: column
-  align-items: start
-  max-height: 230px
-  padding: 15px
+  align-self: stretch
+  border: solid 1px var(--color--btn--border---main)
+  background: var(--color--btn--bg---light)
+  border-radius: 14px
+  padding:
+    top: 15px
+    right: 12px
+    bottom: 19px
+    left: 28px
+  margin-bottom: 15px
+  transition: transform .4s
+  will-change: transform
+
+  @media( width < 600px )
+    padding:
+      top: 12px
+      right: 17px
+      bottom: 14px
+      left: 19px
+
+  &:hover
+    transform: scale(1.03)
+    transition: transform .2s
 
   &::before
     content: ''
     position: absolute
-    left: -15px
-    right: -15px
-    top: -15px
-    bottom: -15px
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
 
-  .head
-    position: relative
-    align-self: stretch
-    border: solid 1px var(--color--btn--border---main)
-    border-radius: 14px
-    padding:
-      top: 10px
-      right: 12px
-      bottom: 12px
-      left: 12px
-    margin-bottom: 15px
+  &::after
+    content: url(/icons/special/tail.svg)
+    position: absolute
+    left: 0
+    bottom: -20px
 
-    &::after
-      content: url(/icons/special/tail.svg)
-      position: absolute
-      left: 0
-      bottom: -20px
+  h3
+    font-size: 24px
+    line-height: 130%
+    font-weight: 500
 
-  .answer
-    overflow: hidden
-    position: relative
-
-  .btn-wrap
-    margin-top: 20px
-
+    @media( width < 600px )
+      font-size: 21px
   </style>

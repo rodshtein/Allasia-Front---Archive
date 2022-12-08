@@ -139,8 +139,13 @@ export function sortTrees({
   sortedArr.sort((a, b) => {
     a = a[ sort_field ] ? a[ sort_field ] : '';
     b = b[ sort_field ] ? b[ sort_field ] : '';
-    return a.localeCompare(b)
+
+    if(typeof a === 'string' ) {
+      return a.localeCompare(b)
+    }
+    return a - b
   });
+
   return sortedArr
 }
 

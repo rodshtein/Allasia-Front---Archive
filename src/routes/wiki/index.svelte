@@ -35,7 +35,7 @@
 
   const sortConf = (data) => { return {
     data: data,
-    sort_field: 'name',
+    sort_field: 'sort',
     sub_selector: 'questions',
     sub_sort_field: 'question'
   }}
@@ -45,13 +45,6 @@
 		await tick();
 		showFeedback=!showFeedback
   }
-
-
-  let cls = (name) => {
-    if(data.length > 2) return name
-    if(data.length < 2) return `${name} ${name}__1`
-    if(data.length < 3) return `${name} ${name}__2`
-  };
 </script>
 
 
@@ -68,11 +61,9 @@ header
 +each('sortTrees(sortConf(data)) as section')
   CardWrapper
     CardHeader(header!='{section.name}')
-    Nailer(let:props)
-      .slider(use:nailer='{props}' class!='{cls("slider")}')
-        +each('section.questions as question')
-          +if('question.answer && question.question')
-            CardQuestion(data='{question}')
+    +each('section.questions as question')
+      +if('question.answer && question.question')
+        CardQuestion(data='{question}')
 
 </template>
 
@@ -129,35 +120,4 @@ header
       align-self: center
       margin-bottom: 0
       grid-area: 1 / 2 / span 2
-
-.slider
-  display: grid
-  grid:
-    template: auto / repeat(3, 1fr)
-    column-gap: 20px
-    row-gap: 30px
-  justify-items: start
-  margin: 0 15px
-
-  @media( width <= 950px)
-    grid-auto-flow: column
-    grid-auto-columns: calc(83% / 2)
-    grid-template-columns: unset
-
-  @media( width <= 650px)
-    grid-auto-columns: calc(83%)
-
-  @media(width < 400px)
-    grid-auto-columns: calc(100% - 30px)
-
-  @media( 500px < width < 800px)
-    margin: 0 30px
-
-  &__1
-    grid-auto-columns: 100%
-
-  &__2
-    grid-auto-columns: calc((100% - 15px) / 2)
-    @media(width < 650px)
-      grid-auto-columns: calc((83% - 15px))
 </style>

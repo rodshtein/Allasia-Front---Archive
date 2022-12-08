@@ -2,13 +2,10 @@
   import { client, cache }  from '../tinyClient';
   import { CONTACTS } from './contacts/queries';
 
-
   export async function preload() {
     return { DATA : await client(CONTACTS) };
   }
-
 </script>
-
 
 <script>
   export let DATA;

@@ -1,8 +1,6 @@
 <script>
-import { client }  from '../../tinyClient';
 import { sort, numDeclension, columnMark } from '../../helpers';
-import { BRANCHES } from './queries';
-
+import { BRANCHES } from './branchesData';
 import { showMenu, branchId } from '../stores/Store-branches.js';
 import { searchInProgress, searchString, backPointId, searchResult } from '../stores/Store-search.js';
 
@@ -10,10 +8,10 @@ import { searchInProgress, searchString, backPointId, searchResult } from '../st
 import Popup from '../Popup.svelte';
 import SearchBox from '../search/Search-box.svelte';
 
-let branches;
+let branches = BRANCHES.allMedicalBranches;
 
 // Level Data
-let mainBranches;
+let mainBranches = sort(BRANCHES.allMedicalBranches.filter(item => !item.parent));
 let menuBrunchName;
 let menuParentId;
 let currentLevelId;
@@ -22,18 +20,7 @@ let menuBranches;
 let styleMapBranches = {};
 let styleMapPages = {};
 
-
-client(BRANCHES).then(
-    result => prepareData(result.allMedicalBranches),
-    error => console.error(error)
-  );
-
-function prepareData(queryResult){
-  branches = queryResult
-  mainBranches = sort(queryResult.filter(item => !item.parent));
-  paintMainLevel()
-  // showMenu.set(true)
-}
+paintMainLevel()
 
 function paintMainLevel(){
   menuBrunchName = null
