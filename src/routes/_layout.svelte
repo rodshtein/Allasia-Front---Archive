@@ -16,6 +16,8 @@
   import { onMount } from "svelte";
   import { stores } from '@sapper/app';
   import { branches } from '../components/stores/Store-branches.js';
+  import Modal from '../components/Modal.svelte';
+  import Button from '../components/Button.svelte';
   import { contactsIsLoaded, contacts, mainContact } from '../components/stores/Store-contacts.js';
   import { sort } from '../helpers';
 
@@ -27,9 +29,15 @@
 
   const { session, preloading } = stores();
 
+  let devWarning = false;
+
+  function warningHandler(){
+    devWarning = false
+    localStorage.setItem('devWarning', false);
+  }
+
   onMount(async () => {
     NProgress.configure({
-      // parent: "#sapper", // set class .nprogress-custom-parent
       showSpinner: true
     });
     preloading.subscribe(loading => {
@@ -39,6 +47,11 @@
         NProgress.done();
       }
     });
+
+    
+    if (!localStorage.getItem('devWarning')){
+      devWarning = true;
+    }
   });
 
   // Store branches to global store
@@ -59,9 +72,11 @@
 </script>
 
 <template lang="pug">
-.developer-warning
-  h2.h4 ⚠️ Это архив сайта Allasia.su
-  p.p Компания больше не работает. Все услуги и предложения утратили актуальность
+
+Modal(width=800 header='⚠️ Это архив сайта Allasia.su' bind:show!='{ devWarning }')
+  .developer-warning
+    p.p Компания больше не работает. 
+    p.p Все услуги и предложения утратили актуальность
 
 Nav({segment})
 main.layout_shift
@@ -79,7 +94,6 @@ Floating
   background-color: var(--WITHE)
   padding: 10px 13px
   margin-bottom: 20px
-  text-align: center
 
   .h4
     margin-bottom: 4px
