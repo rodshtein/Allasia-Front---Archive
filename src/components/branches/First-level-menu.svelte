@@ -1,11 +1,10 @@
 <script>
   import { nailer } from '../nailer';
   import { fly, fade } from 'svelte/transition';
-  import { showMenu, branchId } from '../stores/Store-branches.js';
-  import { BRANCHES } from './branchesData';
+  import { branches, showMenu, branchId } from '../stores/Store-branches.js';
   import { sort, columnMark } from "../../helpers";
 
-  let menuBranches = sort(BRANCHES.allMedicalBranches.filter(item => !item.parent));
+  let menuBranches = sort($branches.filter(item => !item.parent));
   let styleMapBranches = columnMark({L:menuBranches.length})
 
   //Nailer

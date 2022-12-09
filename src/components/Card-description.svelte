@@ -1,5 +1,5 @@
 <script>
-  import Popup from './Popup.svelte';
+  import Modal from './Modal.svelte';
   import Button from './Button.svelte';
   import { serialize } from '../helpers.js';
 
@@ -32,7 +32,7 @@
   .list-2
   .list-3
 
-Popup(
+Modal(
   bind:show!='{showContent}'
   header='{header}'
   header2='{subHeader}'

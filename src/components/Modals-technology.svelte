@@ -1,5 +1,5 @@
 <script>
-import Popup from './Popup.svelte';
+import Modal from './Modal.svelte';
 import Button from './Button.svelte';
 import { serialize } from '../helpers.js';
 
@@ -12,7 +12,7 @@ export let showTechnology;
 
 +if('data')
   +if('data.head_img && data.head_img.publicUrl')
-    Popup(
+    Modal(
       bind:show!='{showTechnology}'
       header='Технологии'
       header2='{data.name}'
@@ -21,7 +21,7 @@ export let showTechnology;
       .content
         +html('serialize(JSON.parse(data.description.document))')
     +else
-      Popup(
+      Modal(
         bind:show!='{showTechnology}'
         header='{data.name}'
       )

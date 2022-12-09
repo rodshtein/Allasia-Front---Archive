@@ -1,5 +1,5 @@
 <script>
-import Popup from './Popup.svelte';
+import Modal from './Modal.svelte';
 import Button from './Button.svelte';
 import { serialize, numDeclension } from '../helpers.js';
 
@@ -17,7 +17,7 @@ const date = d => {
 <template lang='pug'>
 
 +if('data')
-  Popup(
+  Modal(
     bind:show!='{showFeedback}'
     header='{data.header}')
 

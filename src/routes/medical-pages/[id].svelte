@@ -1,35 +1,20 @@
 <script context="module">
-  import { stores } from '@sapper/app';
-  import { onMount } from 'svelte';
-  import { client, cache }  from '../../tinyClient';
-  import { sort, getBranchPath, clearProcedures } from '../../helpers';
-  import { searchString } from '../../components/stores/Store-search';
-  import { branchId, showMenu } from '../../components/stores/Store-branches';
-  import { contactsIsLoaded, showCallModal, contacts } from '../../components/stores/Store-call.js';
-  import { MEDICAL_PAGE } from './queries';
-  import { CONTACTS } from './../contacts/queries';
-
   export async function preload(page) {
-    let query = await client(
-      MEDICAL_PAGE,
-      { id: page.params.slug }
-    );
-    let _CONTACTS = await client( CONTACTS )
+    const res = await this.fetch(`medical-pages/${page.params.id}.json`);
+    let json = await res.json();
 
-    return {
-      PAGE: page,
-      _DATA: query,
-      _CONTACTS
-    };
+    return { DATA: json };
   }
-
+  
 </script>
 
 <script>
-  export let PAGE;
-  export let _DATA;
-  export let _CONTACTS;
+  export let DATA;
 
+  import { sort, getBranchPath, clearProcedures } from '../../helpers';
+  import { searchString } from '../../components/stores/Store-search';
+  import { branchId, showMenu } from '../../components/stores/Store-branches';
+  
   // components
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
@@ -45,32 +30,7 @@
   import CallToAction from '../../components/Call-to-action.svelte';
 
   import Button from '../../components/Button.svelte';
-  import Popup from '../../components/Popup.svelte';
-
-  // set preloaded data to cache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify({
-        query: MEDICAL_PAGE,
-        variables : {
-          id: PAGE.params.slug
-        }
-      }),
-      _DATA
-    )
-    cache.set(
-      JSON.stringify({
-        query: CONTACTS,
-        variables : {
-          first: 3
-        }
-      }),
-      _CONTACTS
-    )
-  });
-
-  // Short data path
-  $: DATA = _DATA.MedicalPage;
+  import Modal from '../../components/Modal.svelte';
 
   // remove empty elements from ssr data
   // data will updated on user routing
@@ -96,19 +56,11 @@
       showMenu.set(true)
     }
   }
-
-  // Load and process contacts
-  const { preloading, session } = stores();
-  let shift = {field: "ISO", search: $session.geo || "RU"};
-  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
-  let contact = _contacts[0].contacts.find(el=>el.main_number) || _contacts[0].contacts[0];
-
-  if(!$contacts) contacts.set(_contacts)
-  contactsIsLoaded.set(true)
-
 </script>
 
 <template lang='pug'>
+svelte:head
+  title {`${DATA.name} — ${branch}`}
 
 +if('!DATA')
   p Что-то пошло не так…
@@ -161,7 +113,6 @@
 
 CardWrapper
   CallToAction(
-    {contact}
     header='Не нашли нужную услугу?'
     text='Напишите или позвоните, расскажите какая услуга вас интересует. Мы подберём для вас варианты и посчитаем стоимость.'
     btnText='Открыть чат'

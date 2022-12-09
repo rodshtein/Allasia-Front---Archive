@@ -1,27 +1,20 @@
 <script>
-  export let contacts;
-
-  import Popup from './Popup.svelte';
+  import Modal from './Modal.svelte';
   import Contact from './contacts/body.svelte';
   import CardHeader from './Card-header.svelte';
   import { sort } from './../helpers';
-  import { showCallModal } from './stores/Store-call.js';
-
-  // check for data is ready
-  $: header = contacts?.[0].name || null;
+  import { contacts, showCallModal } from './stores/Store-contacts.js';
 </script>
 
 <template lang='pug'>
-Popup({header} bind:show!='{ $showCallModal }')
-  +each('contacts as country, i')
+Modal(header!='{$contacts[0].name}' bind:show!='{ $showCallModal }')
+  +each('$contacts as country, i')
     .wrap
       +if('i > 0')
         CardHeader(header='{country?.name}')
       +each('sort(country.contacts, "city") as contact')
         .contact-card.card_decor__white
           Contact('{contact} short')
-
-
 </template>
 
 <style lang='postcss'>

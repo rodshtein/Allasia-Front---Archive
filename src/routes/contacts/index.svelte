@@ -1,58 +1,38 @@
 <script context="module">
-  import { client, cache }  from '../../tinyClient';
-  import { CONTACTS } from './queries';
-
-  export async function preload() {
-    return { DATA : await client(CONTACTS) };
+  export async function preload(){
+    let res = await this.fetch(`contacts/data.json`);
+    let json = await res.json()
+    return { DATA: json };
   }
-
 </script>
 
 <script>
   export let DATA;
 
   import { stores } from '@sapper/app';
-  import { onMount } from 'svelte';
   import { sort } from '../../helpers';
-  import { contacts, contactsIsLoaded } from '../../components/stores/Store-call.js';
 
   import CardPromotion from '../../components/Card-promotion.svelte';
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
   import Contact from '../../components/contacts/body.svelte';
-
-  // set preloaded data to cache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify({
-        query: CONTACTS
-      }),
-      DATA
-    )
-  });
-
-  // Load and process contacts
-  const { preloading, session } = stores();
-  let shift = {field: "ISO", search: $session.geo || "RU"};
-  let _contacts = sort(DATA.allContactCountries, "name", shift);
-  if(!$contacts) contacts.set(_contacts)
-  contactsIsLoaded.set(true)
-
 </script>
 
 <template lang='pug'>
+svelte:head
+  title Контакты
+  
 header
   h1.h1 Контакты
   p.subheader-h1 Организуем лечение из любого города России, Казахстана или Кыргызстана
   .illustration
 
-+each('_contacts as country')
++each('DATA as country')
   CardWrapper
     CardHeader(header='{country?.name}')
     +each('sort(country.contacts, "city") as contact')
       .contact-card.card_decor__white
         Contact('{contact}')
-
 </template>
 
 <style lang='postcss'>

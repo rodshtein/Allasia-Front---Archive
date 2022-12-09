@@ -1,81 +1,31 @@
 <script context="module">
-  import { stores } from '@sapper/app';
-  import { onMount } from 'svelte';
-  import { client, cache }  from '../../tinyClient';
-  import { sort } from '../../helpers.js';
-  import { contactsIsLoaded, showCallModal, contacts } from '../../components/stores/Store-call.js';
-  import { PROMO_PAGES } from './queries';
-  import { CONTACTS } from './../contacts/queries';
+  export async function preload(){
+    let req = await this.fetch(`promotion/data.json`);
+    let json = await req.json()
 
-  export async function preload() {
-    return {
-      DATA : await client(PROMO_PAGES),
-      _CONTACTS: await client( CONTACTS )
-    };
+    return { DATA:json };
   }
-
 </script>
 
 <script>
   export let DATA;
-  export let _CONTACTS;
 
   import CardPromotion from '../../components/Card-promotion.svelte';
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
 
-
-  // set preloaded data to cache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify({
-        query: PROMO_PAGES
-      }),
-      DATA
-    )
-    cache.set(
-      JSON.stringify({
-        query: CONTACTS,
-        variables : {
-          first: 3
-        }
-      }),
-      _CONTACTS
-    )
-  });
-
   let date = new Date(Date.now())
 
   function check(start, finish){
     return date >= new Date(start) && date < new Date(finish)
   };
-
-  /*
-  // better arrangement
-
-  function calcCards(name){
-    let q = DATA.allPromotions.reduce(
-      (val, el) => check(el.date_start, el.date_finish) ? ++val : val,
-    0);
-    let qty = isInteger(q / 3) ? 'full' : q;
-
-    return name + qty
-  }
- */
-
-   // Load and process contacts
-   const { preloading, session } = stores();
-  let shift = {field: "ISO", search: $session.geo || "RU"};
-  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
-  let contact = _contacts[0].contacts.find(el=>el.main_number) || _contacts[0].contacts[0];
-
-  if(!$contacts) contacts.set(_contacts)
-  contactsIsLoaded.set(true)
-
 </script>
 
 <template lang='pug'>
+svelte:head
+  title Промоакции
+
 header
   h1.h1 Промоакции
   p.subheader-h1 Скидки, специальные предложения, выездные консультации, бесплатное лечение
@@ -83,12 +33,11 @@ header
 
 CardWrapper
   .promo-container
-    +each('DATA.allPromotions as promo')
+    +each('DATA as promo')
       +if('check(promo.date_start, promo.date_finish)')
         CardPromotion(data='{promo}' href='./promotion/')
 CardWrapper
   CallToAction(
-    {contact}
     header='Есть вопросы?'
     text='Напишите или позвоните, расскажите какая акция вас интересует — мы вам поможем.'
     btnText='Заполнить заявку'

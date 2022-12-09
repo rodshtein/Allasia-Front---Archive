@@ -1,17 +1,14 @@
 <script>
 import { sort, numDeclension, columnMark } from '../../helpers';
-import { BRANCHES } from './branchesData';
-import { showMenu, branchId } from '../stores/Store-branches.js';
+import { branches, showMenu, branchId } from '../stores/Store-branches.js';
 import { searchInProgress, searchString, backPointId, searchResult } from '../stores/Store-search.js';
 
 // Components
-import Popup from '../Popup.svelte';
+import Modal from '../Modal.svelte';
 import SearchBox from '../search/Search-box.svelte';
 
-let branches = BRANCHES.allMedicalBranches;
-
 // Level Data
-let mainBranches = sort(BRANCHES.allMedicalBranches.filter(item => !item.parent));
+let mainBranches = sort($branches.filter(item => !item.parent));
 let menuBrunchName;
 let menuParentId;
 let currentLevelId;
@@ -30,7 +27,7 @@ function paintMainLevel(){
 }
 
 function paintSubLevel() {
-  let item = branches.find(item => item.id == $branchId);
+  let item = $branches.find(item => item.id == $branchId);
   menuBrunchName = item.name
   menuPages = item.pages.length ? sort(item.pages) : null
   menuParentId = item.parent ? item.parent.id : null;
@@ -81,7 +78,7 @@ function backHandler() {
 
 $: backButtonName = () => {
   let sublevel = $branchId
-  ? branches.find(item => item.id == $branchId)
+  ? $branches.find(item => item.id == $branchId)
   : null;
 
   let name = sublevel
@@ -130,7 +127,7 @@ $: {
 
 <template lang='pug'>
 
-Popup(
+Modal(
   bind:show!='{ $showMenu }'
   header="{ $branchId ? null : 'Разделы медицины' }"
   btnText='{ backButtonName() }'

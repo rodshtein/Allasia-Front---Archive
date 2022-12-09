@@ -1,13 +1,9 @@
 <script context="module">
-  import { onMount } from 'svelte';
-  import { client, cache }  from '../../tinyClient';
-  import { WIKI } from './queries';
-
-  export async function preload() {
-    return { DATA : await client(WIKI) };
+  export async function preload(){
+    let res = await this.fetch(`wiki/data.json`);
+    let json = await res.json()
+    return { DATA:json };
   }
-
-
 </script>
 
 <script>
@@ -23,33 +19,18 @@
   import { nailer } from '../../components/nailer';
   import { serialize, serializeAndCut } from '../../helpers.js';
 
-  // set preloaded data to chache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify(WIKI),
-      DATA
-    )
-  });
-
-  let data = DATA.allWikiSections;
-
-  const sortConf = (data) => { return {
-    data: data,
+  const sortedData = sortTrees({
+    data: DATA,
     sort_field: 'sort',
     sub_selector: 'questions',
     sub_sort_field: 'question'
-  }}
-
-  const toggle = async (el) => {
-		feedback = el
-		await tick();
-		showFeedback=!showFeedback
-  }
+  })
 </script>
 
-
-
 <template lang='pug'>
+svelte:head
+  title Вопрос-ответ
+
 header
   h1.h1 Вопрос-ответ
   p.subheader-h1
@@ -58,7 +39,7 @@ header
   .illustration
 
 
-+each('sortTrees(sortConf(data)) as section')
++each('sortedData as section')
   CardWrapper
     CardHeader(header!='{section.name}')
     +each('section.questions as question')

@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 import { chatIsLoaded } from './stores/Store-chat.js';
-import { contacts, showCallModal } from './stores/Store-call.js';
+import { contacts, showCallModal } from './stores/Store-contacts.js';
 
 function callModalHandler(){
   showCallModal.set(true)

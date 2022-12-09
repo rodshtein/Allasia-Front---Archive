@@ -1,86 +1,27 @@
 <script>
-  import { client }  from '../tinyClient';
-
-  export const QUOTE_COUNT = `{
-    _allFeedbackQuotesMeta { count }
-  }`;
-
-  export const QUOTE = `
-    query ($int: Int){
-      allFeedbackQuotes ( skip: $int  first: 1 ) {
-        quote
-        feedback {
-          header
-          name
-          age
-          date
-          city {
-            name
-          }
-          country {
-            name
-          }
-          review {
-            document
-          }
-          gallery {
-            alt
-            img {
-              publicUrl
-            }
-          }
-        }
-      },
-    }`;
-
   // components
+  export let quotes = null;
+
   import Button from './Button.svelte';
-  import FeedbackPopup from './Popups-feedback.svelte';
+  import FeedbackModal from './Modals-feedback.svelte';
   import { scale } from 'svelte/transition';
 
-  client(QUOTE_COUNT)
-    .then (
-      result => {
-        count = result._allFeedbackQuotesMeta.count
-        intArr = shuffle(Array.from(Array(count).keys()))
-        int = intArr[intCount]
-        getQuote(int)
-      }
-    )
-
+  let quoteTotal = 11; // We have only 11 quote in db for now
   let quoteQuery;
   let animateClass;
   let count;
-  let intArr;
+  let intArr = shuffle(Array.from(Array(quoteTotal).keys()));
   let intCount = 0;
-  let int = 0;
+  let int = intArr[intCount];
   let showFeedback = false;
   let feedbackBtnOff = false;
-  let quote = null;
-
-  function getQuote(int){
-    animateClass = 'mask'
-    feedbackBtnOff= true
-
-    client( QUOTE, {int: int})
-      .then(
-      (result) => {
-        if (result.errors) {
-          console.log({ 'result error':result.errors })
-        } else {
-          quote = result.allFeedbackQuotes[0]
-          animateClass = ''
-          feedbackBtnOff = false
-        }
-      },
-      (error) => console.log({ 'request error':error  })
-    );
-  }
+  let quote = quotes[0];
 
   function handleClick() {
 		intCount = intCount != intArr.length-1 ? ++intCount : 0;
     int = intArr[intCount];
-    getQuote(int)
+    console.log(int)
+    quote = quotes[int]
 	}
 
   let blockHeight = 160;
@@ -128,7 +69,7 @@
     on:click='{handleClick}')
 
 +if('quote && quote.feedback')
-  FeedbackPopup(
+  FeedbackModal(
     data='{quote.feedback}'
     bind:showFeedback!='{showFeedback}'
   )

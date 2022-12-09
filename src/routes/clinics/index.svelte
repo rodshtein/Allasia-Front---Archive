@@ -1,48 +1,39 @@
 <script context="module">
-  import { onMount } from 'svelte';
-  import { client, cache }  from '../../tinyClient';
-  import { sortTrees } from '../../helpers';
-  import { CLINICS_COUNTRY_CLINICS } from './queries';
+  export async function preload(){
+    let req = await this.fetch(`clinics/data.json`);
+    let json = await req.json()
 
-  export async function preload() {
-    return { DATA : await client(CLINICS_COUNTRY_CLINICS) };
+    return { DATA:json };
   }
-
 </script>
 
 <script>
   export let DATA;
 
+  import { sortTrees } from '../../helpers';
   import CardWrapper from '../../components/Card-wrapper.svelte';
   import CardHeader from '../../components/Card-header.svelte';
   import Clinic from '../../components/Card-clinic.svelte';
   import Clinics from '../../components/Slider-clinics.svelte';
 
-  // set preloaded data to cache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify({
-        query: CLINICS_COUNTRY_CLINICS
-      }),
-      DATA
-    )
-  });
-
-  const sortConf = (data) => { return {
-    data: data,
+  const sordedData = sortTrees({
+    data: DATA,
     sort_field: 'name',
     sub_selector: 'clinics',
     sub_sort_field: 'name_ru'
-  }}
+  });
 </script>
 
 <template lang='pug'>
+svelte:head
+  title Клиники
+  
 header
   h1.h1 Клиники
   p.subheader-h1 Мы сотрудничаем с множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
   .illustration
 
-+each(`sortTrees(sortConf(DATA.allClinicCountries)) as country`)
++each(`sordedData as country`)
   CardWrapper
     CardHeader(header!='{country.name}')
     .clinics-container

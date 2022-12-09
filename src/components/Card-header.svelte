@@ -1,5 +1,5 @@
 <script>
-  import Popup from './Popup.svelte';
+  import Modal from './Modal.svelte';
   import Button from './Button.svelte';
 
   // Content

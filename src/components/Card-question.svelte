@@ -3,7 +3,7 @@ export let data;
 
 import ellipsis from '../lib/ellipsis';
 import Button from './Button.svelte';
-import Popup from './Popup.svelte';
+import Modal from './Modal.svelte';
 import { tick } from 'svelte';
 import { serialize, serializeAndCut } from '../helpers.js';
 
@@ -27,7 +27,7 @@ const toggle = async () => {
   )
     h3.p-mini {data.question}
 
-Popup(
+Modal(
   bind:show!='{showAnswer}'
   header='{data.question}'
 )

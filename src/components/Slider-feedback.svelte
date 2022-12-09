@@ -3,7 +3,7 @@
 
   import Nailer from './nailer/Nailer.svelte';
   import Button from './Button.svelte';
-  import FeedbackPopup from './Popups-feedback.svelte';
+  import FeedbackModal from './Modals-feedback.svelte';
   import { tick } from 'svelte';
   import { serialize, numDeclension } from '../helpers.js';
 
@@ -42,7 +42,7 @@ Nailer
           on:click!='{() => toggle(el) }'
         )
 
-FeedbackPopup(
+FeedbackModal(
   data='{feedback}'
   bind:showFeedback!='{showFeedback}'
 )

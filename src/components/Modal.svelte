@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 import Button from './Button.svelte';
-import Header from './Popup-header.svelte';
+import Header from './Modal-header.svelte';
 
 export let show = false;
 export let width = 600;
@@ -27,7 +27,7 @@ function portalAction(node,parent){
   parent.appendChild(node);
 }
 
-//  Фиксируем контент при показе попапов
+//  Фиксируем контент при показе Модалок
 function fix_content(param) {
   if (!isMounted) return;
 
@@ -193,7 +193,7 @@ function handleKeydown(e) {
 
   background: #ffffff
   border: solid 1px var(--color--card--border---main)
-  border-radius: var(--radius--popup)
+  border-radius: var(--radius--modal)
   @mixin modal_shadow
 
   .slot-wrapper

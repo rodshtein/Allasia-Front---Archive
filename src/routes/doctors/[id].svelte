@@ -1,36 +1,22 @@
 <script context="module">
-  import { stores } from '@sapper/app';
-  import { onMount } from 'svelte';
-  import { sort, serialize, numDeclension } from '../../helpers.js';
-  import { contactsIsLoaded, showCallModal, contacts } from '../../components/stores/Store-call.js';
-  import { client, cache }  from '../../tinyClient';
-  import { DOCTOR } from './queries';
-  import { CONTACTS } from './../contacts/queries';
-
   export async function preload(page) {
+    const res = await this.fetch(`doctors/${page.params.id}.json`);
+    let json = await res.json();
 
-    let query = await client(DOCTOR,{ id: page.params.slug });
-    let _CONTACTS = await client( CONTACTS )
-
-    return {
-      PAGE: page,
-      _DATA: query,
-      _CONTACTS
-    };
+    return { DATA: json };
   }
 
 </script>
 
 <script>
-  export let PAGE;
-  export let _DATA;
-  export let _CONTACTS;
-
-
+  export let DATA;
+  
+  import { stores } from '@sapper/app';
+  import { sort, serialize, numDeclension } from '../../helpers.js';
   import { nailer } from '../../components/nailer';
 
   // components
-  import Popup from '../../components/Popup.svelte';
+  import Modal from '../../components/Modal.svelte';
   import Button from '../../components/Button.svelte';
   import Nailer from '../../components/nailer/NailerGrid.svelte';
   import CardWrapper from '../../components/Card-wrapper.svelte';
@@ -41,32 +27,8 @@
   import Feedback from '../../components/Slider-feedback.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
 
-
-  // set preloaded data to cache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify({
-        query: DOCTOR,
-        variables : {
-          id: PAGE.params.slug
-        }
-      }),
-      _DATA
-    )
-    cache.set(
-      JSON.stringify({
-        query: CONTACTS,
-        variables : {
-          first: 3
-        }
-      }),
-      _CONTACTS
-    )
-  });
-
   let clinicsUrl = '/clinics/';
   let serializePreset = { h2: "h4"};
-
 
   // data
   $: infoExtra = DATA?.extra?.document
@@ -79,13 +41,11 @@
     ? JSON.parse(DATA.education)
     : null;
 
-
   // modals
   let modalIsShowing;
   let modalHeader;
   let modalContent;
   let modalContentIsHtml;
-
 
   function showModal(content, header, isHtml){
     modalHeader = header
@@ -93,10 +53,6 @@
     modalIsShowing =! modalIsShowing
     modalContent = content
   }
-
-  // Short data path
-  $: DATA = _DATA.Doctor
-
 
   // Experience
   function getExperience(){
@@ -129,35 +85,24 @@
     if(count < 3) return `${name} ${name}__2`
   };
 
-
   function check(left, right){
     return left < right
   }
 
-
   let blockHeight_1, blockHeight_2, blockHeight_3;
   let txtHeight_1, txtHeight_2, txtHeight_3;
   let btnHeight = 22;
-  let showBtn_1, showBtn_2, showBtn_3;
 
-  $: {
-    showBtn_1 = ( txtHeight_1 + btnHeight ) > blockHeight_1;
-    showBtn_2 = ( txtHeight_2 + btnHeight ) > blockHeight_2;
-    showBtn_3 = ( txtHeight_3 + btnHeight ) > blockHeight_3;
-  }
-
-  // Load and process contacts
-  const { preloading, session } = stores();
-  let shift = {field: "ISO", search: $session.geo || "RU"};
-  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
-  let contact = _contacts[0].contacts.find(el=>el.main_number) || _contacts[0].contacts[0];
-
-  if(!$contacts) contacts.set(_contacts)
-  contactsIsLoaded.set(true)
+  $: showBtn_1 = ( txtHeight_1 + btnHeight ) > blockHeight_1;
+  $: showBtn_2 = ( txtHeight_2 + btnHeight ) > blockHeight_2;
+  $: showBtn_3 = ( txtHeight_3 + btnHeight ) > blockHeight_3;
 
 </script>
 
 <template lang='pug'>
+
+svelte:head
+  title {`Врач ${DATA.name}, ${DATA?.country?.name}`}
 
 +if('!DATA')
   p Что-то пошло не так…
@@ -295,7 +240,6 @@
 
   CardWrapper
     CallToAction(
-      {contact}
       header='Хотите пройти лечение у этого специалиста?'
       text='Напишите или позвоните, расскажите какая услуга вас интересует — мы всё устроим.'
       btnText='Открыть чат'
@@ -307,7 +251,7 @@
       Feedback(data='{DATA.feedback}')
 
 
-Popup(
+Modal(
   bind:show!='{modalIsShowing}'
   header='{modalHeader}'
 )
@@ -486,6 +430,7 @@ header
   .wrap
     overflow: hidden
     width: 100%
+    height: 100%
     max-height: 230px
     margin-bottom: 20px
     position: relative

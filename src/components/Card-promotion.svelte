@@ -4,7 +4,7 @@ export let href = '/promotion/';
 
 import ellipsis from '../lib/ellipsis';
 import Button from './Button.svelte';
-import Popup from './Popup.svelte';
+import Modal from './Modal.svelte';
 import { serializeAndCut, getExpirationLabel } from '../helpers.js';
 
 let cardWidth = '';

@@ -1,30 +1,17 @@
 <script context="module">
-  import { stores } from '@sapper/app';
-  import { onMount } from 'svelte';
-  import { client, cache }  from '../../tinyClient';
-  import { sort, serialize, numDeclension } from '../../helpers.js';
-  import { contactsIsLoaded, showCallModal, contacts } from '../../components/stores/Store-call.js';
-  import { PROMOMOTION } from './queries';
-  import { CONTACTS } from './../contacts/queries';
-
   export async function preload(page) {
+    const res = await this.fetch(`promotion/${page.params.url}.json`);
+    let json = await res.json();
 
-    let _DATA = await client(PROMOMOTION,{ url: page.params.slug });
-    let _CONTACTS = await client( CONTACTS )
-
-    return {
-      PAGE: page,
-      _DATA,
-      _CONTACTS
-    };
+    return { DATA: json };
   }
-
+  
 </script>
 
 <script>
-  export let PAGE;
-  export let _DATA;
-  export let _CONTACTS;
+  export let DATA;
+
+  import { serialize } from '../../helpers.js';
 
   // components
   import CardWrapper from '../../components/Card-wrapper.svelte';
@@ -33,45 +20,11 @@
   import Doctors from '../../components/Slider-doctors.svelte';
   import Technology from '../../components/Slider-technology.svelte';
   import CallToAction from '../../components/Call-to-action.svelte';
-
-
-  // set preloaded data to cache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify({
-        query: PROMOMOTION,
-        variables : {
-          url: PAGE.params.slug
-        }
-      }),
-      _DATA
-    )
-    cache.set(
-      JSON.stringify({
-        query: CONTACTS,
-        variables : {
-          first: 3
-        }
-      }),
-      _CONTACTS
-    )
-  });
-
-  // Short data path
-  $: DATA = _DATA.allPromotions[0]
-
-  // Load and process contacts
-  const { preloading, session } = stores();
-  let shift = {field: "ISO", search: $session.geo || "RU"};
-  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
-  let contact = _contacts[0].contacts.find(el=>el.main_number) || _contacts[0].contacts[0];
-
-  if(!$contacts) contacts.set(_contacts)
-  contactsIsLoaded.set(true)
-
 </script>
 
 <template lang='pug'>
+svelte:head
+  title {DATA.name}
 
 +if('!DATA')
   p Что-то пошло не так…
@@ -102,7 +55,6 @@
 
   CardWrapper
     CallToAction(
-      {contact}
       header='Хотите участвовать в акции?'
       text='Напишите или позвоните, — мы всё устроим!'
       btnText='Открыть чат'

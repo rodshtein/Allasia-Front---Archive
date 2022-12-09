@@ -1,9 +1,11 @@
 <script context="module">
-  import { client, cache }  from '../tinyClient';
-  import { CONTACTS } from './contacts/queries';
+  export async function preload(){
+    let res = await this.fetch(`data-layout.json`);
+    let json = await res.json()
 
-  export async function preload() {
-    return { DATA : await client(CONTACTS) };
+    return { 
+      DATA: json
+    };
   }
 </script>
 
@@ -11,9 +13,10 @@
   export let DATA;
   export let segment;
 
+  import { onMount } from "svelte";
   import { stores } from '@sapper/app';
-  import { onMount, afterUpdate} from "svelte";
-  import { contactsIsLoaded } from '../components/stores/Store-call.js';
+  import { branches } from '../components/stores/Store-branches.js';
+  import { contactsIsLoaded, contacts, mainContact } from '../components/stores/Store-contacts.js';
   import { sort } from '../helpers';
 
   import NProgress from "nprogress";
@@ -22,21 +25,9 @@
   import CallModal from '../components/Modal-call.svelte';
   import Branches from '../components/branches/Nav-branches.svelte';
 
-  // Load and process contacts
-  const { preloading, session } = stores();
-  let shift = {field: "ISO", search: $session.geo || "RU"};
-
-  let contacts = sort(DATA.allContactCountries, "name", shift);
-  contactsIsLoaded.set(true)
+  const { session, preloading } = stores();
 
   onMount(async () => {
-    cache.set(
-      JSON.stringify({
-        query: CONTACTS
-      }),
-      DATA
-    )
-
     NProgress.configure({
       // parent: "#sapper", // set class .nprogress-custom-parent
       showSpinner: true
@@ -50,31 +41,49 @@
     });
   });
 
+  // Store branches to global store
+  branches.set(DATA.branches)
+
+
+  // Load and process contacts
+  let shift = {field: "ISO", search: $session.geo || "RU"};
+  contacts.set(sort(DATA.contacts, "name", shift))
+  mainContact.set($contacts[0].contacts.find(el=>el.main_number) || $contacts[0].contacts[0])
+  contactsIsLoaded.set(true)
+
+  // Control header height
+  // TODO Temporary disabled
   let layout_shift = true;
   // let layout_shift = segment ? true : false;
   // afterUpdate( () => layout_shift = segment ? true : false );
-
 </script>
 
+<template lang="pug">
+.developer-warning
+  h2.h4 ⚠️ Это архив сайта Allasia.su
+  p.p Компания больше не работает. Все услуги и предложения утратили актуальность
 
-<Nav {segment}/>
-
-<main class:layout_shift>
-  <slot/>
-</main>
-
-<Branches/>
-<CallModal {contacts} />
-<Floating/>
-<!-- <code>{$session.geo}</code> -->
+Nav({segment})
+main.layout_shift
+  slot
+Branches
+CallModal({contacts})
+Floating
+</template>
 
 <style global lang="postcss">
 @import "../style/global.sss"
 
-code
-  position: absolute
-  width: 100%
+.developer-warning
+  display: block
+  background-color: var(--WITHE)
+  padding: 10px 13px
+  margin-bottom: 20px
   text-align: center
+
+  .h4
+    margin-bottom: 4px
+
 main
   position: relative
   max-width: 1040px
@@ -101,7 +110,4 @@ main
     margin-top: 50px
     &.layout_shift
       transform: translateY(130px)
-
-
-
 </style>

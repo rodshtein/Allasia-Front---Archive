@@ -1,77 +1,34 @@
 <script context="module">
-  import { client, cache }  from '../tinyClient';
-  import { INDEX_CLINICS } from './queries';
-  import { CONTACTS } from './contacts/queries';
-
-  export async function preload() {
-    let _CLINICS = await client( INDEX_CLINICS, { first: 10 } );
-    let _CONTACTS = await client( CONTACTS )
-
-    return { _CLINICS, _CONTACTS };
+  export async function preload(){
+    let res = await this.fetch(`data-index.json`);
+    let json = await res.json()
+    return { DATA: json };
   }
 </script>
 
-
 <script >
-  export let _CLINICS;
-  export let _CONTACTS;
+  export let DATA;
 
   import { stores } from '@sapper/app';
-  import { onMount } from 'svelte';
   import { country } from '../components/stores/Store-country.js';
-  import { contactsIsLoaded, showCallModal, contacts } from '../components/stores/Store-call.js';
+  import { contactsIsLoaded, showCallModal, mainContact } from '../components/stores/Store-contacts.js';
   import { showMenu } from '../components/stores/Store-branches.js';
   import { sort } from '../helpers';
 
   // components
   import SearchBox from '../components/search/Search-box.svelte';
   import Button from '../components/Button.svelte';
-  import BranchesMenu from '../components/branches/Branches-menu.svelte';
+  import FirstLevelMenu from '../components/branches/First-level-menu.svelte';
   import Quote from '../components/Quote.svelte';
   import CardWrapper from '../components/Card-wrapper.svelte';
   import Clinics from '../components/Slider-clinics.svelte';
   import CallToAction from '../components/Call-to-action.svelte';
-  import Popup from '../components/Popup.svelte';
-  // set preloaded data to cache
-  onMount(()=> {
-    cache.set(
-      JSON.stringify({
-        query: INDEX_CLINICS,
-        variables : {
-          first: 3
-        }
-      }),
-      _CLINICS
-    )
-    cache.set(
-      JSON.stringify({
-        query: CONTACTS,
-        variables : {
-          first: 3
-        }
-      }),
-      _CONTACTS
-    )
-  });
+  import Modal from '../components/Modal.svelte';
 
-
-  // Short data path
-  let DATA = _CLINICS.allClinics
-
-  // Load and process contacts
-  const { preloading, session } = stores();
-  let shift = {field: "ISO", search: $session.geo || "RU"};
-  let _contacts = sort(_CONTACTS.allContactCountries, "name", shift);
-  let contact = _contacts[0].contacts.find(el=>el.main_number) || _contacts[0].contacts[0];
-
-
-  if(!$contacts) contacts.set(_contacts)
-  contactsIsLoaded.set(true)
+  let showVideoModal = false;
 
   function showSearchMenu(){showMenu.set(true)}
   function callModalHandler(){showCallModal.set(true)}
-
-  let showVideoModal = false;
 </script>
 
 
@@ -87,9 +44,9 @@ svelte:head
     h1 Лечение<br>за рубежом
     p.p-large Подбираем выгодные условия, консультируем с известными врачами. Организуем поездку на всех этапах. Сотрудничаем с клиниками по всему миру, поэтому наши услуги — бесплатны.
     .tel_wrapper.card_decor__white
-      +if('contact?.main_number_desc')
-        .info {contact?.main_number_desc}
-      a.phone-number(href='{contact?.tel_link}') {contact?.tel}
+      +if('$mainContact?.main_number_desc')
+        .info {$mainContact?.main_number_desc}
+      a.phone-number(href='{$mainContact?.tel_link}') {$mainContact?.tel}
       .button-wrap
         Button(
           disabled='{!$contactsIsLoaded}'
@@ -122,7 +79,7 @@ svelte:head
       .btn-wrap
         Button(size='mini' href='/clinics/' iconR='arrow-r' text="Клиники")
 
-  BranchesMenu
+  FirstLevelMenu
 
 .also_block
   h3.h3 Смотрите так же
@@ -144,7 +101,7 @@ CardWrapper
       h2.h2-I Клиники
       p.p Мы сотрудничаем со множеством клиник по всему миру, что даёт вам возможность делать выбор в широком диапазоне стран, цен и технологий лечения
       Button(size='regular' href='/clinics' iconR='arrow-r' text="Все клиники")
-    Clinics( data='{DATA}')
+    Clinics( data='{DATA.clinics}')
 
 CardWrapper
   .about_block
@@ -154,7 +111,7 @@ CardWrapper
 
     .video_placeholder(on:click!='{() => showVideoModal = !showVideoModal}')
 
-    Popup(width=800 header='О компании' bind:show!='{ showVideoModal }')
+    Modal(width=800 header='О компании' bind:show!='{ showVideoModal }')
       .video_container
         iframe.video( title="youtube" allowfullscreen="true" src="//www.youtube.com/embed/ZiBMvF9zdhE" frameborder="0" )
 
@@ -164,11 +121,10 @@ CardWrapper
 
 
 
-Quote
+Quote(quotes='{DATA.quotes}')
 
 CardWrapper
   CallToAction(
-    contact = '{contact}'
     header='Консультируем онлайн'
     text='Напишите или позвоните. Расскажите о вашей проблеме, опишите диагноз, задайте вопросы, узнайте условия, сроки и стоимость'
     btnText='Открыть чат'
@@ -181,11 +137,23 @@ CardWrapper
       h2.h2-I Контакты
       p.p Организуем лечение из любого города России, Казахстана или Кыргызстана
       Button(size='regular' href='/contacts/' iconR='arrow-r' text="Контакты")
+
+a.visuallyHidden(href='/map') map
 </template>
 
 
 <style lang='postcss'>
 @import "../style/mixins.sss"
+
+.visuallyHidden
+  position: absolute
+  width: 1px
+  height: 1px
+  margin: -1px
+  padding: 0
+  overflow: hidden
+  border: 0
+  clip: rect(0 0 0 0)
 
 .head_block
   display: grid

@@ -2,15 +2,12 @@
   export let header = 'Header';
   export let text = null;
   export let btnText = null;
-  export let contact = null;
 
-  import Popup from './Popup.svelte';
+  import Modal from './Modal.svelte';
   import Button from './Button.svelte';
   import CardWrapper from './Card-wrapper.svelte';
-  import { contactsIsLoaded, showCallModal } from './stores/Store-call.js';
+  import { mainContact, contactsIsLoaded, showCallModal } from './stores/Store-contacts.js';
   import { chatIsLoaded } from './stores/Store-chat.js';
-
-
 
   function callModalHandler(){
     showCallModal.set(true)
@@ -19,7 +16,6 @@
   function openChat(){
     window.carrotquest.open();
   }
-
 </script>
 
 <template lang='pug'>
@@ -39,13 +35,13 @@
             text='{btnText}'
             on:click!="{()=> Chatra('openChat', false)}"
             )
-  +if('contact')
+  +if('$mainContact')
     .tel-wrap
       .block
-        +if('contact?.main_number_desc')
-          p.p-small {contact?.main_number_desc}
+        +if('$mainContact?.main_number_desc')
+          p.p-small {$mainContact?.main_number_desc}
         .number-wrap
-          a.phone-number(href='{contact?.tel_link}') {contact?.tel}
+          a.phone-number(href='{$mainContact?.tel_link}') {$mainContact?.tel}
           .button-wrap
             Button(
               disabled='{!$contactsIsLoaded}'

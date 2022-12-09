@@ -40,3 +40,32 @@ export const BRANCHES = `
       }
     }
   }`;
+  
+
+  export const QUOTES = `
+    query {
+      allFeedbackQuotes ( first: 11 ) {
+        quote
+        feedback {
+          header
+          name
+          age
+          date
+          city {
+            name
+          }
+          country {
+            name
+          }
+          review {
+            document
+          }
+          gallery {
+            alt
+            img {
+              publicUrl
+            }
+          }
+        }
+      },
+    }`;

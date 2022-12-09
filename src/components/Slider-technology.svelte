@@ -3,7 +3,7 @@
 
   import Nailer from './nailer/Nailer.svelte';
   import Button from './Button.svelte';
-  import TechnologyPopup from './Popups-technology.svelte';
+  import TechnologyModal from './Modals-technology.svelte';
   import { tick } from 'svelte';
   import { serialize } from '../helpers';
   import { colorFilter } from '../color-filter';
@@ -58,7 +58,7 @@ Nailer
             )
           +body
 
-TechnologyPopup(
+TechnologyModal(
   data='{technology}'
   bind:showTechnology!='{showTechnology}'
 )

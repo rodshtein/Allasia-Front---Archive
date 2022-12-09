@@ -214,7 +214,7 @@ function keyHandler(e) {
     disabled='{disabled}'
     maxlength="260"
     aria-autocomplete="both"
-    aria-haspopup="false"
+    aria-hasmodal="false"
     autocapitalize="off"
     autocomplete="off"
     autocorrect="off"

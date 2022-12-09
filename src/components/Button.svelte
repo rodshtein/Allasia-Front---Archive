@@ -140,7 +140,7 @@ a
 
   /* transition: transform .2s
 
-  BUG Transition on buttons cause flash with popups
+  BUG Transition on buttons cause flash with Modals
   */
   cursor: pointer
   user-select: none
