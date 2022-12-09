@@ -135,15 +135,15 @@ svelte:head
                 +if('DATA.specialty.length - 1 === i')
                   | {el.name.toLowerCase()}
 
-            +if('DATA.employer[0].positions.length')
+            +if('DATA.employer[0]?.positions.length')
               p.p-mini
-                +each('DATA.employer[0].positions as el, i')
-                  +if('check(i, DATA.employer[0].positions.length - 1)')
+                +each('DATA.employer[0]?.positions as el, i')
+                  +if('check(i, DATA.employer[0]?.positions.length - 1)')
                     +if('i === 0')
                       | {el.name + ', '}
                       +else
                       | {el.name.toLowerCase() + ', '}
-                  +if('DATA.employer[0].positions.length - 1 === i')
+                  +if('DATA.employer[0]?.positions.length - 1 === i')
                     | {el.name.toLowerCase() + '.'}
 
           +if('DATA.employer.length')
