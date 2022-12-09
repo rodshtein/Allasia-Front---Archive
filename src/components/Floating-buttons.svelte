@@ -7,42 +7,41 @@ function callModalHandler(){
   showCallModal.set(true)
 }
 
+let showCallBtn = true;
+let showMsgBtn = true;
+
+
+$: $chatIsLoaded, setTimeout(()=>showCallBtn=false, 800);
+$: $contacts, setTimeout(()=>showMsgBtn=false, 600);
+
+
 </script>
 
 <template lang="pug">
 .floating-wrap
-  button.message( class:loading='{!$chatIsLoaded}' on:click!="{()=> Chatra('openChat', false)}")
-  button.call( class:bottom='{!$chatIsLoaded}' disabled='{!$contacts}' on:click!='{callModalHandler}')
+  button.call( class:loading='{showCallBtn}' disabled='{!$contacts}' on:click!='{callModalHandler}')
+  button.message( class:loading='{showMsgBtn}' on:click!="{()=> Chatra('openChat', false)}")
 </template>
 
 <style lang='postcss'>
 .floating-wrap
   position: fixed
-  right: 0
-  bottom: 0
+  bottom: 25px
+  right: 20px
   display: flex
-  flex-direction: row
+  flex-direction: column
   justify-content: center
   z-index: 10
-  padding-bottom: 10px
-  width: 100%
+    @media(width < 600px)
+      right: 10px
+      bottom: 15px
 
-  @media(width > 550px)
-    flex-direction: column
-    width: auto
-    padding:
-      bottom: 50px
-      right: 40px
 
   button
-    position: fixed
-    z-index: 10
     border-width: 0
     cursor: pointer
     height: 61px
     width: 61px
-    right: 25px
-    bottom: 100px
     padding: 10px
     background-size: contain
     background-color: rgba(212, 221, 254, 0.45)
@@ -51,32 +50,25 @@ function callModalHandler(){
     background-repeat: no-repeat
     border-radius: 50%
     box-shadow: 0 3px 12px 1px rgba(0,0,0,.2)
-    transition: all .3s ease
+    will-change: transform
+    transition: all .5s ease-in-out
+
+    @media(width < 600px)
+      height: 51px
+      width: 51px
+
+    &:hover
+      border-color: var(--color--btn-border)
 
     &.loading
-      animation: pulse 2.5s infinite
-      cursor: progress
-      &:hover
-        border-color: var(--color--btn-border)
-      &:active
-        transform: translateY(0)
-      &:after, &:before
-        opacity: .2
+      transform: translateX(100px)
 
   .message
     background-image: url('/icons/49/chat.svg')
-    bottom: 25px
 
   .call
     background-image: url('/icons/49/handset.svg')
-
-@keyframes pulse
-  0%
-    opacity: .3
-  70%
-    opacity: .7
-  100%
-    opacity: .3
+    margin-bottom: 10px
 </style>
 
 
