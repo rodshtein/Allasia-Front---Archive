@@ -66,29 +66,6 @@ function search () {
   let branchCount = 0;
   let pageCount = 0;
 
-  /*
-    foundBranches = [
-      // eg. branch
-      {
-        id: '',       // 0 if root
-        name: '',
-        branches: [
-          {
-            id: '',
-            name: '',
-          }
-        ]
-      },
-    ]
-
-    Branch folder name = branch.parent ? branch.parent : 'root';
-
-
-    Pages folder name = branch.parent ? branch.parent : branch;
-
-
-  */
-
   branches.forEach( branch => {
     if(branch.pages.length) pageSearch(branch)
 
@@ -118,23 +95,6 @@ function search () {
       }
     }
   });
-
-  /*
-  foundPages = [
-    // eg. branch
-    {
-      id: '';
-      name: '';
-      pages: [
-        {
-          id: ''
-          name: ''
-        },
-
-      ];
-    },
-  ]
-  */
 
   function pageSearch(branch){
     branch.pages.forEach(page => {
@@ -214,7 +174,7 @@ function keyHandler(e) {
     disabled='{disabled}'
     maxlength="260"
     aria-autocomplete="both"
-    aria-hasmodal="false"
+    aria-haspopup="false"
     autocapitalize="off"
     autocomplete="off"
     autocorrect="off"
