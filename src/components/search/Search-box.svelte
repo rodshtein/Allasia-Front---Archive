@@ -153,10 +153,9 @@ function keyHandler(e) {
     bind:value='{$searchString}'
     placeholder=`{ disabled
       ? 'Поиск, загружаю данные…'
-      : 'Поиск, например: рак желудка'
+      : 'Поиск, например: пластика'
     }`
     on:keydown='{keyHandler}'
-    disabled='{disabled}'
     maxlength="260"
     aria-autocomplete="both"
     aria-haspopup="false"
@@ -206,6 +205,7 @@ input
   appearance: none
   caret-color: var(--color--input--caret)
   color: var(--color--txt--subheaders)
+  background-color: var(--color--input--background)
 
   &::-webkit-search-cancel-button
     -webkit-appearance: none
