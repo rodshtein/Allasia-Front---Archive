@@ -1,28 +1,13 @@
 <script>
-import { client }  from '../../tinyClient';
 import { orderSplice, getRootBranch } from "../../helpers";
-import { BRANCHES } from './queries';
-import { showMenu } from '../stores/Store-branches.js';
+import { showMenu, branches } from '../stores/Store-branches.js';
 import {  searchInProgress,
           searchString,
           prevSearchString,
           searchResult, } from '../stores/Store-search.js';
 
-let branches = [];
-let disabled = true;
-
-client(BRANCHES)
-  .then(
-    (result) => {
-      if (result.errors) {
-        console.log({ 'result error':result.errors })
-      } else {
-        branches = result.allMedicalBranches
-        disabled = false
-      }
-    },
-    (error) => console.log({ 'request error':error  })
-  );
+// No fetch, no problems
+let disabled = false;
 
 $: $searchString, searchThrottle();
 
@@ -44,7 +29,7 @@ function searchThrottle() {
 
   if(
     $searchInProgress ||
-    !branches.length ||
+    !$branches.length ||
     $prevSearchString === $searchString
     ) return
 
@@ -66,7 +51,7 @@ function search () {
   let branchCount = 0;
   let pageCount = 0;
 
-  branches.forEach( branch => {
+  $branches.forEach( branch => {
     if(branch.pages.length) pageSearch(branch)
 
     if (branch.name.toLowerCase().includes(string)) {
