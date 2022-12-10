@@ -111,6 +111,7 @@
       @media( width < 900px )
         overflow-x: hidden
         padding: 0
+        background: linear-gradient(180deg, #F5F5F5 25%, rgba(245, 245, 245, 0) 100%)
         backdrop-filter: blur(17px)
 
       & .slider
