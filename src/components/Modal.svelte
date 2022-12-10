@@ -8,7 +8,10 @@ export let width = 600;
 export let header = false;
 export let header2 = false;
 export let imageData = false;
-export let btnText = false;
+export let addTopBtnWithCaption = false;
+export let buttonCaption = 'Закрыть';
+export let buttonCallback = null;
+export let background = '#ffffff';
 
 let isMounted = false;
 let paintModal = false;
@@ -25,6 +28,11 @@ $: fix_content(show);
 function portalAction(node,parent){
   parent = parent || document.body;
   parent.appendChild(node);
+}
+
+function handleButtonClick () {
+  show=!show;
+  if(buttonCallback) buttonCallback()
 }
 
 //  Фиксируем контент при показе Модалок
@@ -112,19 +120,19 @@ function handleKeydown(e) {
     use:portalAction
     )
     .wrapper
-      .body(style='max-width: {width}px')
+      .body(style='max-width:{width}px; background:{background};')
         Header(
           bind:show='{show}'
           header='{header}'
           header2='{header2}'
           imageData='{imageData}'
-          btnText='{btnText}'
+          addTopBtnWithCaption='{addTopBtnWithCaption}'
           on:click
         )
         .slot-wrapper
           slot
         footer
-          Button( on:click!='{() => show=!show}' text='Закрыть')
+          Button( on:click='{handleButtonClick}' text='{buttonCaption}')
 
 </template>
 
@@ -191,7 +199,6 @@ function handleKeydown(e) {
   padding: 0
   overflow: hidden
 
-  background: #ffffff
   border: solid 1px var(--color--card--border---main)
   border-radius: var(--radius--modal)
   @mixin modal_shadow

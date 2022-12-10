@@ -130,7 +130,7 @@ $: {
 Modal(
   bind:show!='{ $showMenu }'
   header="{ $branchId ? null : 'Разделы медицины' }"
-  btnText='{ backButtonName() }'
+  addTopBtnWithCaption='{ backButtonName() }'
   on:click='{ backHandler }'
   width=800
 )

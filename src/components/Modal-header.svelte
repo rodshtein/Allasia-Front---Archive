@@ -3,7 +3,7 @@
   export let header = 'Header'
   export let header2 = false
   export let imageData = false
-  export let btnText = false
+  export let addTopBtnWithCaption = false
   export let btnIcon = 'arrow-l'
   let headerClass = header && header.length > 28 ? 'h3':'h2';
   import Button from './Button.svelte'
@@ -15,8 +15,8 @@
 +if('imageData.publicUrl')
   header.tall( use:colorFilter='{imageData}')
     .wrapper
-      +if('btnText')
-        Button(size='mini' iconL='{btnIcon}' on:click text='{btnText}')
+      +if('addTopBtnWithCaption')
+        Button(size='mini' iconL='{btnIcon}' on:click text='{addTopBtnWithCaption}')
         +else
           h1(class="{headerClass}") {header}
       button.closeBtn(on:click!='{() => show=!show}')
@@ -25,8 +25,8 @@
   +else
     header
       .wrapper
-        +if('btnText')
-          Button(size='mini' iconL='{btnIcon}' on:click text='{btnText}')
+        +if('addTopBtnWithCaption')
+          Button(size='mini' iconL='{btnIcon}' on:click text='{addTopBtnWithCaption}')
           +else
             h1(class="{headerClass}" ) {header}
         button.closeBtn(on:click!='{() => show=!show}')

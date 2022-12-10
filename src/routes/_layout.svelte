@@ -32,8 +32,7 @@
   let devWarning = false;
 
   function warningHandler(){
-    devWarning = false
-    localStorage.setItem('devWarning', false);
+    localStorage.setItem('hideDevWarning', true)
   }
 
   onMount(async () => {
@@ -49,7 +48,7 @@
     });
 
     
-    if (!localStorage.getItem('devWarning')){
+    if (!localStorage.getItem('hideDevWarning')){
       devWarning = true;
     }
   });
@@ -67,10 +66,11 @@
 
 <template lang="pug">
 
-Modal(width=800 header='⚠️ Это архив сайта Allasia.su' bind:show!='{ devWarning }')
+Modal(width=600 buttonCaption='Больше не показывать' background='#c1d2cc' buttonCallback='{warningHandler}' header='⚠️ Архив сайта' bind:show!='{ devWarning }')
   .developer-warning
-    p.p Компания больше не работает. 
-    p.p Все услуги и предложения утратили актуальность
+    h1 Это архив сайта Allasia.su
+    p.p Компания больше не работает.
+    p.p Все услуги и предложения утратили актуальность.
 
 Nav({segment})
 main
@@ -84,13 +84,16 @@ Floating
 @import "../style/global.sss"
 
 .developer-warning
-  display: block
-  background-color: var(--WITHE)
-  padding: 10px 13px
-  margin-bottom: 20px
-
-  .h4
-    margin-bottom: 4px
+  padding: 20px 17px 30px
+  margin: 30px 0 0
+  background: #fff
+  border-radius: 13px
+  h1
+    font-size: 23px
+    margin-bottom: 20px
+  p
+    font-size: 19px
+    margin-bottom: 5px
 
 main
   position: relative
