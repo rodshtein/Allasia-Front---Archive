@@ -63,12 +63,6 @@
   contacts.set(sort(DATA.contacts, "name", shift))
   mainContact.set($contacts[0].contacts.find(el=>el.main_number) || $contacts[0].contacts[0])
   contactsIsLoaded.set(true)
-
-  // Control header height
-  // TODO Temporary disabled
-  let layout_shift = true;
-  // let layout_shift = segment ? true : false;
-  // afterUpdate( () => layout_shift = segment ? true : false );
 </script>
 
 <template lang="pug">
@@ -79,7 +73,7 @@ Modal(width=800 header='⚠️ Это архив сайта Allasia.su' bind:sho
     p.p Все услуги и предложения утратили актуальность
 
 Nav({segment})
-main.layout_shift
+main
   slot
 Branches
 CallModal({contacts})
@@ -122,6 +116,4 @@ main
 
   @media ( width >= 900px )
     margin-top: 50px
-    &.layout_shift
-      transform: translateY(130px)
 </style>

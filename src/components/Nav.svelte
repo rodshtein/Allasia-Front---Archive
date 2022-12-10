@@ -16,16 +16,11 @@
       showMenu.set(true)
     }
   }
-
-  let layout_shift = true;
-  // let layout_shift = segment ? true : false;
-  // afterUpdate( () => layout_shift = segment ? true : false );
-
 </script>
 
 
 <template lang="pug">
-.head(class:layout_shift)
+.head
   a.full_logo(sapper:prefetch href='.')
     span Главная страница
 
@@ -62,35 +57,16 @@
 <style lang='postcss'>
 @import "../style/mixins.sss"
 .head
-  transform: translateY(0px)
-  will-change: transform
-
-  @media ( width >= 900px )
-    transition: transform .3s ease-out
-    transform: translateY(65px)
-
-    &.layout_shift
-      transform: translateY(130px)
-
-      & .full_logo
-        opacity: 1
-
-
   & .full_logo
     display: block
-    position: absolute
     width: 150px
     height: 50px
+    margin: 10px auto 0
 
     background-position: center
     background-repeat: no-repeat
     background-size: contain
     background-image: url('/icons/special/logo.svg')
-
-    top: -70px
-    opacity: 0
-    left: calc( ( 100% / 2 ) - 75px )
-    transition: all .5s ease-out
 
     @media ( width < 900px )
       display: none
