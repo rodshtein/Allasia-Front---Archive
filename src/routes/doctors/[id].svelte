@@ -97,6 +97,8 @@
   $: showBtn_2 = ( txtHeight_2 + btnHeight ) > blockHeight_2;
   $: showBtn_3 = ( txtHeight_3 + btnHeight ) > blockHeight_3;
 
+  // Filter employers for empty clinic
+  let employers = DATA.employer.filter(item=>item.clinic);
 </script>
 
 <template lang='pug'>
@@ -146,17 +148,17 @@ svelte:head
                   +if('DATA.employer[0]?.positions.length - 1 === i')
                     | {el.name.toLowerCase() + '.'}
 
-          +if('DATA.employer.length')
+          +if('employers.length')
             .ranks-block
-              +if('DATA.employer.length > 1')
+              +if('employers.length > 1')
                 h3.title Места работы
                 +else
                   h3.title Место работы
-              +each('DATA.employer as emp, i')
+              +each('employers as emp, i')
                 div
-                  p.h4(class!='{ singleNameClass(emp) }') { emp.clinic.name_ru }
-                  +if('emp.clinic.name_ru !== emp.clinic.full_name_ru && emp.clinic.full_name_ru')
-                    p.p-mini { emp.clinic.full_name_ru }
+                  p.h4(class!='{ singleNameClass(emp) }') { emp.clinic?.name_ru }
+                  +if('emp.clinic?.name_ru !== emp.clinic?.full_name_ru && emp.clinic?.full_name_ru')
+                    p.p-mini { emp.clinic?.full_name_ru }
                   .button-wrap
                     Button(
                       href!=`{ clinicsUrl + emp.clinic.id }`
