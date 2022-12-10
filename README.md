@@ -1,113 +1,61 @@
-# sapper-template
 
-A
+# Что это
+Это приложение-каталог зарубежных клиник, с отзывами врачами акциями и.т.п. 
+Фронт написан на Sapper. Бэкэнд на KeysoneJs
+<br>
 
-The default [Sapper](https://github.com/sveltejs/sapper) template, available for Rollup and webpack.
+Компания для которой делался сайт закрылась. Сайт есть в моем архиве в виде статической версии.
+<br>
 
+Посмотреть можно тут: [allasia.rodshtein.xyzr](https://allasia.rodshtein.xyz)
+<br>
+<br>
+# Что посмотреть   
 
-## Getting started
+## Библиотека для галереек Nailer
+У меня на гитхабе https://github.com/rodshtein/nailer
+Это headless решение, без сторонних библиотек. Построено на базе use функции Svelte.
 
+Поскольку это headless у неё нет стилей оформления.<br>
+Галлерею можно сделать из любого элемента. Главное условие, чтобы целевая нода была с переполнением по оcи x, тогда случится магия и блок превратится в скролл элемент. 
 
-### Using `degit`
+Она умеет умирать, когда у элемента пропадает скролл. Умеет подстраиваться под мутации. Умеет по разному позиционировать первый и последний элемент, что позволяет делать сроллеры как в приложениях iOS.
 
-[`degit`](https://github.com/Rich-Harris/degit) is a scaffolding tool that lets you create a directory from a branch in a repository. Use either the `rollup` or `webpack` branch in `sapper-template`:
+Посмотреть в работе можно тут [allasia.rodshtein.xyzr](https://allasia.rodshtein.xyz)
 
-```bash
-# for Rollup
-npx degit "sveltejs/sapper-template#rollup" my-app
-# for webpack
-npx degit "sveltejs/sapper-template#webpack" my-app
-```
+Код тут: [/src/components/nailer](/src/components/nailer)
+<br>
+<br>
 
+## Решение разбивки колонок меню
+Нужно было сделать адаптивную вёрстку колонок, чтобы:
+- Был классический вывод элементов колонок: сверху вниз, слева на право.
+- У каждой колонки был футер и хедер.
+- Колонки были адаптивные.
 
-### Using GitHub templates
+Js размечает колонки хэлпер-стилями на этапе отрисовки. 
 
-Alternatively, you can use GitHub's template feature with the [sapper-template-rollup](https://github.com/sveltejs/sapper-template-rollup) or [sapper-template-webpack](https://github.com/sveltejs/sapper-template-webpack) repositories.
+Код тут: [/src/helpers.js:260](/src/helpers.js#L260)
 
+Пример использования тут: [/src/components/branches/Branches-menu.svelte](/src/components/branches/Branches-menu.svelte)
+<br>
+<br>
+## Реализация простого поиска на клиенте
+Помню, что тут было несколько вызовов:
+ - Сохранить результаты поиска пользователя: если пользователь что-то искал, то возврат в меню всегда будет на то место, с которого он ушел.
+ - Сделать поиск по разделам и услугам. При этом разделить разделы услуги в разделах.
+ - Учесть сценарий, где пользователь проваливается в раздел, и потом может вернутся обратно к результатам поиска. 
+ - Плюс нужно было учесть разные сценарии работы с поиском и переходом по страницам и хоткеи.
 
-### Running the project
+Код тут: [src/components/search/Search-box.svelte](/src/components/search/Search-box.svelte)
+<br>
+<br>
 
-However you get the code, you can install dependencies and run the project in development mode with:
+## Фэйд фоновой картинки в преобладающий цвет
+Тут я считал преобладающий цвет картинки на фоне, и строил поверх него градиент с переходом в прозрачность (см. скрин ниже).
 
-```bash
-cd my-app
-npm install # or yarn
-npm run dev
-```
+Для подсчёта преобладающего цвета используется готовое решение. Оказалось достаточно нетривиальная задача быстро просчитывать цвет и не подвесить всю отрисовку. 
 
-Open up [localhost:3000](http://localhost:3000) and start clicking around.
+Вызовом было сделать так, чтобы до загрузки картинки ставить фэллбэк заливку, и ставить градиент после отрисовки картинки. С этим были проблемы на медленных соединениях. 
 
-Consult [sapper.svelte.dev](https://sapper.svelte.dev) for help getting started.
-
-
-## Structure
-
-Sapper expects to find two directories in the root of your project —  `src` and `static`.
-
-
-### src
-
-The [src](src) directory contains the entry points for your app — `client.js`, `server.js` and (optionally) a `service-worker.js` — along with a `template.html` file and a `routes` directory.
-
-
-#### src/routes
-
-This is the heart of your Sapper app. There are two kinds of routes — *pages*, and *server routes*.
-
-**Pages** are Svelte components written in `.svelte` files. When a user first visits the application, they will be served a server-rendered version of the route in question, plus some JavaScript that 'hydrates' the page and initialises a client-side router. From that point forward, navigating to other pages is handled entirely on the client for a fast, app-like feel. (Sapper will preload and cache the code for these subsequent pages, so that navigation is instantaneous.)
-
-**Server routes** are modules written in `.js` files, that export functions corresponding to HTTP methods. Each function receives Express `request` and `response` objects as arguments, plus a `next` function. This is useful for creating a JSON API, for example.
-
-There are three simple rules for naming the files that define your routes:
-
-* A file called `src/routes/about.svelte` corresponds to the `/about` route. A file called `src/routes/blog/[slug].svelte` corresponds to the `/blog/:slug` route, in which case `params.slug` is available to the route
-* The file `src/routes/index.svelte` (or `src/routes/index.js`) corresponds to the root of your app. `src/routes/about/index.svelte` is treated the same as `src/routes/about.svelte`.
-* Files and directories with a leading underscore do *not* create routes. This allows you to colocate helper modules and components with the routes that depend on them — for example you could have a file called `src/routes/_helpers/datetime.js` and it would *not* create a `/_helpers/datetime` route
-
-
-### static
-
-The [static](static) directory contains any static assets that should be available. These are served using [sirv](https://github.com/lukeed/sirv).
-
-In your [service-worker.js](src/service-worker.js) file, you can import these as `files` from the generated manifest...
-
-```js
-import { files } from '@sapper/service-worker';
-```
-
-...so that you can cache them (though you can choose not to, for example if you don't want to cache very large files).
-
-
-## Bundler config
-
-Sapper uses Rollup or webpack to provide code-splitting and dynamic imports, as well as compiling your Svelte components. With webpack, it also provides hot module reloading. As long as you don't do anything daft, you can edit the configuration files to add whatever plugins you'd like.
-
-
-## Production mode and deployment
-
-To start a production version of your app, run `npm run build && npm start`. This will disable live reloading, and activate the appropriate bundler plugins.
-
-You can deploy your application to any environment that supports Node 10 or above. As an example, to deploy to [Vercel Now](https://vercel.com) when using `sapper export`, run these commands:
-
-```bash
-npm install -g vercel
-vercel
-```
-
-If your app can't be exported to a static site, you can use the [now-sapper](https://github.com/thgh/now-sapper) builder. You can find instructions on how to do so in its [README](https://github.com/thgh/now-sapper#basic-usage).
-
-
-## Using external components
-
-When using Svelte components installed from npm, such as [@sveltejs/svelte-virtual-list](https://github.com/sveltejs/svelte-virtual-list), Svelte needs the original component source (rather than any precompiled JavaScript that ships with the component). This allows the component to be rendered server-side, and also keeps your client-side app smaller.
-
-Because of that, it's essential that the bundler doesn't treat the package as an *external dependency*. You can either modify the `external` option under `server` in [rollup.config.js](rollup.config.js) or the `externals` option in [webpack.config.js](webpack.config.js), or simply install the package to `devDependencies` rather than `dependencies`, which will cause it to get bundled (and therefore compiled) with your app:
-
-```bash
-npm install -D @sveltejs/svelte-virtual-list
-```
-
-
-## Bugs and feedback
-
-Sapper is in early development, and may have the odd rough edge here and there. Please be vocal over on the [Sapper issue tracker](https://github.com/sveltejs/sapper/issues).
+Код тут: [/src/color-filter.js](/src/color-filter.js)
