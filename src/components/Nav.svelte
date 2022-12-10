@@ -111,7 +111,6 @@
       @media( width < 900px )
         overflow-x: hidden
         padding: 0
-        border-radius: 16px
         backdrop-filter: blur(17px)
 
       & .slider

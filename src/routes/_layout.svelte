@@ -101,7 +101,7 @@ main
   margin:
     left: auto
     right: auto
-    top: 130px
+    top: 80px
     bottom: 60px
   padding: 0
   transform: translateY(0)
