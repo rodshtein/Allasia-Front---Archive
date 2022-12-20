@@ -23,19 +23,28 @@
   };
 
   let classConfig = { p: "p-mini" }
+
+
+  let blockHeight = [];
+  let txtHeight = [];
+  let btnHeight = 32;
+
+
 </script>
 
 <template lang='pug'>
 Nailer
-  +each('data as el (el.id + data.length)')
+  +each('data as el, i (el.id + data.length)')
     .slider-item.card_decor__white( class!='{cls("slider-item")}' )
       .head
         h3.h4 {el.header}
         p.p-small {el.name}, {el.age} {numDeclension(el.age)}
-      .content
-        +html('serialize(JSON.parse(el.review.document), classConfig)')
 
-      .btn-wrap
+      .content(bind:offsetHeight!='{blockHeight[i]}' class:fade!='{(txtHeight[i] + btnHeight ) > blockHeight[i]}')
+        div(bind:clientHeight!='{txtHeight[i]}')
+          +html('serialize(JSON.parse(el.review.document), classConfig)')
+
+      +if('(txtHeight[i] + btnHeight ) > blockHeight[i]')
         Button(
           size='small'
           text='Полный отзыв'
@@ -100,6 +109,10 @@ FeedbackModal(
   .content
     overflow: hidden
     position: relative
+    height: 100%
+    margin-bottom: 10px
+
+  .fade
     mask-image:
       linear-gradient(
         to top,
@@ -107,8 +120,5 @@ FeedbackModal(
         #00000030 30%,
         black 100%
       )
-
-  .btn-wrap
-    margin-top: 10px
 
 </style>
